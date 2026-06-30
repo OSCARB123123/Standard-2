@@ -1,647 +1,550 @@
-/* =========================================================
-   DECISION NETWORK v2 — Investment Journal Hero Animation
-   
-   A dense, richly-connected layered network simulating real
-   analysis flow: raw data -> aggregated signals -> thesis
-   branches -> a single decision core. This version adds:
-   
-   - Dense many-to-many connections (each node links to several
-     targets in the next layer, weighted by proximity) instead
-     of 1-2 sparse links
-   - Lateral "peer" connections within each layer (real network
-     diagrams show intra-layer relationships, not just a strict
-     tree)
-   - Tube-geometry edges with real visible thickness and additive
-     glow, instead of flat GL lines
-   - True cascading signal propagation: activation visibly
-     ripples layer-by-layer in synchronized waves (a "thought"
-     moving through the network), not just independent looping
-     pulses with no relationship to each other
-   - Structured nodes: each is a core sphere + rotating orbital
-     ring + outer wireframe shell, sized/lit by current activation
-     - not a single flat sphere
-   - A HUD data readout (node/edge/cascade counts, live "confidence"
-     metric derived from core activation)
-   ========================================================= */
+'use strict';
 
-const container = document.getElementById('canvas-container');
+// Animation main script (extracted from embedded HTML)
+// Expects a <canvas id="c"></canvas> in the document and THREE already loaded.
 
-// ---------- SCENE SETUP ----------
+// ── renderer ──────────────────────────────────────────────
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.shadowMap.enabled = false;
+
+// global error handler: show errors in the loading overlay so they are visible
+window.addEventListener('error', (ev) => {
+  console.error('Runtime error:', ev.error || ev.message);
+  const ld = document.getElementById('loading');
+  if (ld) {
+    ld.classList.remove('hidden');
+    ld.innerHTML = '<span style="color:#ffb4a3;">Error: '+
+      (ev.error?.message || ev.message || 'Unknown') +
+      '</span><pre style="color:#ffd;max-height:220px;overflow:auto;">'+
+      (ev.error?.stack || '') +'</pre>';
+  }
+});
+window.addEventListener('unhandledrejection', (ev) => {
+  console.error('Unhandled rejection:', ev.reason);
+  const ld = document.getElementById('loading');
+  if (ld) {
+    ld.classList.remove('hidden');
+    ld.innerHTML = '<span style="color:#ffb4a3;">Promise Rejection</span><pre style="color:#ffd;max-height:220px;overflow:auto;">'+
+      (ev.reason && ev.reason.stack) ? ev.reason.stack : String(ev.reason) +'</pre>';
+  }
+});
+
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x09070D);
-scene.fog = new THREE.FogExp2(0x09070D, 0.024);
+scene.fog = new THREE.FogExp2(0x09070D, 0.013);
 
-const camera = new THREE.PerspectiveCamera(
-  48, window.innerWidth / window.innerHeight, 0.1, 1000
-);
-camera.position.set(0, 1.5, 17);
+const camera = new THREE.PerspectiveCamera(48, window.innerWidth / window.innerHeight, 0.1, 300);
+camera.position.set(0, 0, 30);
 camera.lookAt(0, 0, 0);
 
-const renderer = new THREE.WebGLRenderer({
-  antialias: true, alpha: false, powerPreference: 'high-performance'
-});
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-container.appendChild(renderer.domElement);
-
-// ---------- COLOR PALETTE ----------
-const COLORS = {
-  black: 0x09070D, pearl: 0xFFEEC7, apricot: 0xFFC67E,
-  almond: 0xD98452, coffee: 0x7B5132
-};
-const palette = [
-  new THREE.Color(COLORS.pearl), new THREE.Color(COLORS.apricot),
-  new THREE.Color(COLORS.almond), new THREE.Color(COLORS.coffee)
-];
-
-// ---------- LIGHTING ----------
-scene.add(new THREE.AmbientLight(0xFFEEC7, 0.3));
-const coreLight = new THREE.PointLight(0xFFEEC7, 2.5, 14);
+// ── lighting ───────────────────────────────────────────────
+scene.add(new THREE.AmbientLight(0xFFEEC7, 0.18));
+const coreLight = new THREE.PointLight(0xFFC67E, 2.2, 22);
 scene.add(coreLight);
 
-// =========================================================
-// NETWORK GENERATION
-// =========================================================
+// ── palette (warm amber/pearl from v1) ─────────────────────
+const PAL = {
+  pearl:   new THREE.Color(0xFFEEC7),
+  apricot: new THREE.Color(0xFFC67E),
+  almond:  new THREE.Color(0xD98452),
+  coffee:  new THREE.Color(0x7B5132),
+  dark:    new THREE.Color(0x09070D),
+};
 
-const LAYER_CONFIG = [
-  { count: 32, radius: 10.5, depthSpread: 6.5, sizeRange: [0.045, 0.085] }, // raw data
-  { count: 18, radius: 7.0,  depthSpread: 4.5, sizeRange: [0.07, 0.12] },   // signals
-  { count: 8,  radius: 3.6,  depthSpread: 2.6, sizeRange: [0.11, 0.17] },   // thesis
-  { count: 1,  radius: 0,    depthSpread: 0,   sizeRange: [0.36, 0.36] }    // decision core
-];
+// ── glow sprite texture ────────────────────────────────────
+function makeGlowTex() {
+  const sz = 256;
+  const cv = document.createElement('canvas');
+  cv.width = cv.height = sz;
+  const ctx = cv.getContext('2d');
+  const g = ctx.createRadialGradient(sz/2,sz/2,0, sz/2,sz/2,sz/2);
+  g.addColorStop(0,    'rgba(255,255,255,1)');
+  g.addColorStop(0.12, 'rgba(255,230,180,0.9)');
+  g.addColorStop(0.4,  'rgba(255,190,100,0.35)');
+  g.addColorStop(0.75, 'rgba(200,130,60,0.08)');
+  g.addColorStop(1,    'rgba(0,0,0,0)');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, sz, sz);
+  const t = new THREE.Texture(cv);
+  t.needsUpdate = true;
+  return t;
+}
+const glowTex = makeGlowTex();
 
-const nodes = [];
-const edges = [];        // forward (feed-forward) connections, layer L -> L+1
-const lateralEdges = []; // peer connections within the same layer
+// ── shared shader snippets ─────────────────────────────────
+const ptVert = `
+  attribute float size;
+  varying vec3 vCol;
+  void main() {
+    vCol = color;
+    vec4 mv = modelViewMatrix * vec4(position, 1.0);
+    gl_PointSize = size * (380.0 / -mv.z);
+    gl_Position  = projectionMatrix * mv;
+  }`;
+const ptFrag = `
+  uniform sampler2D tex;
+  varying vec3 vCol;
+  void main() {
+    vec4 s = texture2D(tex, gl_PointCoord);
+    gl_FragColor = vec4(vCol, 1.0) * s;
+  }`;
 
-let nodeIdCounter = 0;
+function makeSpriteMat() {
+  return new THREE.ShaderMaterial({
+    uniforms: { tex: { value: glowTex } },
+    vertexShader: ptVert,
+    fragmentShader: ptFrag,
+    vertexColors: true,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+    transparent: true,
+  });
+}
 
-LAYER_CONFIG.forEach((layerCfg, layerIndex) => {
-  for (let i = 0; i < layerCfg.count; i++) {
-    let x, y, z;
-    if (layerCfg.radius === 0) {
-      x = 0; y = 0; z = 0;
-    } else {
-      const angle = (i / layerCfg.count) * Math.PI * 2 + layerIndex * 0.4;
-      const r = layerCfg.radius * (0.7 + Math.random() * 0.3);
-      x = Math.cos(angle) * r;
-      y = Math.sin(angle * 1.3) * r * 0.45 + (Math.random() - 0.5) * 1.5;
-      z = (Math.random() - 0.5) * layerCfg.depthSpread;
-    }
+// ══════════════════════════════════════════════════════════
+// NEURON LAYOUT
+// ══════════════════════════════════════════════════════════
+const N = 32;
+const neurons = [];
 
-    const size = THREE.MathUtils.lerp(layerCfg.sizeRange[0], layerCfg.sizeRange[1], Math.random());
+for (let i = 0; i < N; i++) {
+  // Fibonacci sphere for even distribution
+  const phi   = Math.acos(1 - 2*(i+0.5)/N);
+  const theta = Math.PI * (1 + Math.sqrt(5)) * i;
+  const r     = 8.5 + Math.random() * 4.5;
+  const pos   = new THREE.Vector3(
+    r * Math.sin(phi) * Math.cos(theta),
+    r * Math.sin(phi) * Math.sin(theta) * 0.65,
+    r * Math.cos(phi)
+  );
+  const somaR = 0.20 + Math.random() * 0.20;
 
-    let color;
-    if (layerIndex === 0) color = palette[3].clone().lerp(palette[2], Math.random() * 0.6);
-    else if (layerIndex === 1) color = palette[2].clone().lerp(palette[1], Math.random() * 0.7);
-    else if (layerIndex === 2) color = palette[1].clone().lerp(palette[0], Math.random() * 0.6);
-    else color = palette[0].clone();
+  // colour: deeper nodes get coffee/almond, outer get apricot/pearl
+  const depthT = (r - 8.5) / 4.5;
+  const col = PAL.coffee.clone().lerp(PAL.pearl, depthT * 0.7 + Math.random() * 0.3);
 
-    nodes.push({
-      id: nodeIdCounter++,
-      position: new THREE.Vector3(x, y, z),
-      basePosition: new THREE.Vector3(x, y, z),
-      size, color, layer: layerIndex,
-      pulsePhase: Math.random() * Math.PI * 2,
-      driftSeed: Math.random() * 1000,
-      activation: 0.15,
-      targetActivation: 0.15
-    });
-  }
-});
+  neurons.push({
+    id: i, pos, somaR, col,
+    activation: 0, targetAct: 0,
+    restPhase: Math.random() * Math.PI * 2,
+    driftSeed: Math.random() * 500,
+  });
+}
 
-// ---------- FEED-FORWARD CONNECTIONS (dense, many-to-many) ----------
-for (let layerIndex = 0; layerIndex < LAYER_CONFIG.length - 1; layerIndex++) {
-  const currentLayerNodes = nodes.filter(n => n.layer === layerIndex);
-  const nextLayerNodes = nodes.filter(n => n.layer === layerIndex + 1);
-
-  currentLayerNodes.forEach(node => {
-    const sorted = [...nextLayerNodes].sort((a, b) =>
-      node.basePosition.distanceTo(a.basePosition) - node.basePosition.distanceTo(b.basePosition)
-    );
-
-    const maxConnections = nextLayerNodes.length === 1
-      ? 1
-      : Math.min(nextLayerNodes.length, 2 + Math.floor(Math.random() * 3));
-
-    for (let c = 0; c < maxConnections; c++) {
-      const target = sorted[Math.min(c, sorted.length - 1)];
-      const strength = 1 - c * 0.22;
-      edges.push({
-        from: node, to: target,
-        strength,
-        pulseSpeed: 0.4 + Math.random() * 0.5,
-        pulseOffset: Math.random(),
-        cascadeDelay: layerIndex * 0.35 + Math.random() * 0.15
+// ── synaptic connections ───────────────────────────────────
+const synapses = [];
+neurons.forEach(n => {
+  const byDist = neurons
+    .filter(o => o !== n)
+    .sort((a,b) => n.pos.distanceTo(a.pos) - n.pos.distanceTo(b.pos));
+  const k = 2 + Math.floor(Math.random() * 3); // 2-4 connections
+  for (let c = 0; c < Math.min(k, byDist.length); c++) {
+    const tgt = byDist[c];
+    if (!synapses.some(s =>
+      (s.from===n && s.to===tgt) || (s.from===tgt && s.to===n)
+    )) {
+      synapses.push({
+        from: n, to: tgt,
+        strength: 1 - c * 0.22,
+        pulseT: Math.random(),
+        pulseSpd: 0.10 + Math.random() * 0.14,
+        active: false, activeT: 0,
+        curve: null, axonMat: null, termMat: null,
       });
     }
+  }
+});
+
+// ══════════════════════════════════════════════════════════
+// GEOMETRY
+// ══════════════════════════════════════════════════════════
+const root = new THREE.Group();
+scene.add(root);
+
+// ── soma meshes ────────────────────────────────────────────
+const somaGroup  = new THREE.Group();
+const somaMeshes = [];
+root.add(somaGroup);
+
+neurons.forEach(n => {
+  // slightly organic sphere via vertex perturbation
+  const geo = new THREE.SphereGeometry(n.somaR, 22, 16);
+  const pa  = geo.attributes.position;
+  for (let v = 0; v < pa.count; v++) {
+    const jitter = 1 + (Math.random() - 0.5) * 0.09;
+    pa.setXYZ(v, pa.getX(v)*jitter, pa.getY(v)*jitter, pa.getZ(v)*jitter);
+  }
+  geo.computeVertexNormals();
+
+  const mat = new THREE.MeshPhongMaterial({
+    color:            n.col,
+    emissive:         n.col,
+    emissiveIntensity: 0.12,
+    shininess:        55,
+    transparent:      true,
+    opacity:          0.95,
   });
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.position.copy(n.pos);
+  somaGroup.add(mesh);
+  somaMeshes.push(mesh);
+
+  // nucleus hint
+  const nucGeo = new THREE.SphereGeometry(n.somaR * 0.4, 10, 10);
+  const nucMat = new THREE.MeshBasicMaterial({
+    color: PAL.pearl, transparent: true, opacity: 0.3,
+    blending: THREE.AdditiveBlending,
+  });
+  const nucMesh = new THREE.Mesh(nucGeo, nucMat);
+  nucMesh.position.copy(n.pos);
+  somaGroup.add(nucMesh);
+});
+
+// ── dendrites ─────────────────────────────────────────────
+const dendGroup = new THREE.Group();
+root.add(dendGroup);
+
+function catmullCurve(origin, dir, length, steps) {
+  const pts = [origin.clone()];
+  let cur = origin.clone();
+  let d   = dir.clone().normalize();
+  for (let s = 0; s < steps; s++) {
+    d.x += (Math.random()-0.5)*0.45;
+    d.y += (Math.random()-0.5)*0.45;
+    d.z += (Math.random()-0.5)*0.45;
+    d.normalize();
+    const sl = (length/steps) * (0.65 + Math.random()*0.7);
+    cur = cur.clone().addScaledVector(d, sl);
+    pts.push(cur.clone());
+  }
+  return new THREE.CatmullRomCurve3(pts);
 }
 
-// ---------- LATERAL (PEER) CONNECTIONS WITHIN EACH LAYER ----------
-for (let layerIndex = 0; layerIndex < LAYER_CONFIG.length; layerIndex++) {
-  const layerNodes = nodes.filter(n => n.layer === layerIndex);
-  if (layerNodes.length < 3) continue;
+neurons.forEach(n => {
+  const numD = 5 + Math.floor(Math.random() * 4); // 5-8 dendrites
+  for (let d = 0; d < numD; d++) {
+    const ang  = (d / numD) * Math.PI * 2 + (Math.random()-0.5)*0.5;
+    const elev = (Math.random()-0.5) * Math.PI * 0.75;
+    const dir  = new THREE.Vector3(
+      Math.cos(ang)*Math.cos(elev),
+      Math.sin(elev),
+      Math.sin(ang)*Math.cos(elev)
+    );
+    const len    = 0.55 + Math.random() * 1.1;
+    const curve  = catmullCurve(n.pos, dir, len, 5);
+    const radius = 0.013 + Math.random()*0.010;
 
-  layerNodes.forEach(node => {
-    const sorted = [...layerNodes]
-      .filter(n => n !== node)
-      .sort((a, b) => node.basePosition.distanceTo(a.basePosition) - node.basePosition.distanceTo(b.basePosition));
+    const geo = new THREE.TubeGeometry(curve, 12, radius, 5, false);
+    const mat = new THREE.MeshBasicMaterial({
+      color: n.col.clone().lerp(PAL.almond, 0.4),
+      transparent: true, opacity: 0.5,
+      blending: THREE.AdditiveBlending,
+    });
+    dendGroup.add(new THREE.Mesh(geo, mat));
 
-    const connCount = Math.min(sorted.length, 1 + (Math.random() > 0.5 ? 1 : 0));
-    for (let c = 0; c < connCount; c++) {
-      const target = sorted[c];
-      const exists = lateralEdges.some(e =>
-        (e.from === node && e.to === target) || (e.from === target && e.to === node)
-      );
-      if (!exists) {
-        lateralEdges.push({ from: node, to: target, pulsePhase: Math.random() * Math.PI * 2 });
+    // secondary branch (~50% chance)
+    if (Math.random() > 0.5) {
+      const branchOrigin = curve.getPoint(0.45 + Math.random()*0.3);
+      const bDir = dir.clone();
+      bDir.x += (Math.random()-0.5)*1.4;
+      bDir.y += (Math.random()-0.5)*1.4;
+      bDir.z += (Math.random()-0.5)*1.4;
+      bDir.normalize();
+      const bc  = catmullCurve(branchOrigin, bDir, len*0.48, 4);
+      const bGeo = new THREE.TubeGeometry(bc, 8, radius*0.6, 4, false);
+      dendGroup.add(new THREE.Mesh(bGeo, mat.clone()));
+
+      // tertiary (~25% chance)
+      if (Math.random() > 0.75) {
+        const tOrigin = bc.getPoint(0.4 + Math.random()*0.3);
+        const tDir = bDir.clone();
+        tDir.x += (Math.random()-0.5)*1.6;
+        tDir.y += (Math.random()-0.5)*1.6;
+        tDir.z += (Math.random()-0.5)*1.6;
+        tDir.normalize();
+        const tc  = catmullCurve(tOrigin, tDir, len*0.28, 3);
+        const tGeo = new THREE.TubeGeometry(tc, 6, radius*0.4, 4, false);
+        dendGroup.add(new THREE.Mesh(tGeo, mat.clone()));
       }
     }
+  }
+});
+
+// ── axons + myelin + terminals ────────────────────────────
+const axonGroup = new THREE.Group();
+root.add(axonGroup);
+
+synapses.forEach(syn => {
+  const a   = syn.from.pos;
+  const b   = syn.to.pos;
+  const mid = a.clone().lerp(b, 0.5);
+  const perp = new THREE.Vector3(
+    Math.random()-0.5, Math.random()-0.5, Math.random()-0.5
+  ).normalize().multiplyScalar(a.distanceTo(b) * (0.14 + Math.random()*0.18));
+  mid.add(perp);
+
+  const startPt = a.clone().addScaledVector(b.clone().sub(a).normalize(), syn.from.somaR + 0.06);
+  const endPt   = b.clone().addScaledVector(a.clone().sub(b).normalize(), syn.to.somaR   + 0.06);
+  const curve   = new THREE.CatmullRomCurve3([startPt, mid, endPt]);
+  syn.curve     = curve;
+
+  const r   = 0.016 + syn.strength * 0.014;
+  const col = syn.from.col.clone().lerp(PAL.almond, 0.35);
+
+  // axon tube
+  const axGeo = new THREE.TubeGeometry(curve, 22, r, 6, false);
+  const axMat = new THREE.MeshBasicMaterial({
+    color: col, transparent: true, opacity: 0.20,
+    blending: THREE.AdditiveBlending,
   });
-}
+  axonGroup.add(new THREE.Mesh(axGeo, axMat));
+  syn.axonMat = axMat;
 
-// =========================================================
-// RENDERING: NODES — core sphere + orbital ring + wireframe shell
-// =========================================================
-
-const nodeGeo = new THREE.SphereGeometry(1, 16, 16);
-const nodeMaterial = new THREE.MeshBasicMaterial({ toneMapped: false });
-const nodeMesh = new THREE.InstancedMesh(nodeGeo, nodeMaterial, nodes.length);
-nodeMesh.instanceColor = new THREE.InstancedBufferAttribute(new Float32Array(nodes.length * 3), 3);
-scene.add(nodeMesh);
-
-const shellGeo = new THREE.IcosahedronGeometry(1, 1);
-const shellEdgesGeo = new THREE.EdgesGeometry(shellGeo);
-
-// EdgesGeometry/LineSegments can't be instanced directly in r128, so we
-// approximate the "wireframe shell" look with a thin instanced
-// icosahedron mesh rendered with a wireframe material instead — same
-// visual result (faceted outline around each node), single draw call
-// for all 59 shells instead of 59 separate LineSegments objects.
-const shellMaterial = new THREE.MeshBasicMaterial({
-  color: 0xFFEEC7, wireframe: true, transparent: true,
-  opacity: 0.18, blending: THREE.AdditiveBlending, toneMapped: false
-});
-const shellMesh = new THREE.InstancedMesh(shellGeo, shellMaterial, nodes.length);
-scene.add(shellMesh);
-
-// orbital rings — instanced (only nodes in layer >= 1 get a ring; we
-// still allocate one instance per such node and hide unused ones by
-// scaling to zero if needed, but since every layer>=1 node gets a ring
-// here, no hiding is necessary)
-const ringNodes = nodes.filter(n => n.layer >= 1);
-const ringGeo = new THREE.TorusGeometry(1.5, 0.04, 6, 24);
-const ringMaterial = new THREE.MeshBasicMaterial({
-  color: 0xFFC67E, transparent: true, opacity: 0.35,
-  blending: THREE.AdditiveBlending, toneMapped: false
-});
-const ringMesh = new THREE.InstancedMesh(ringGeo, ringMaterial, ringNodes.length);
-ringMesh.instanceColor = new THREE.InstancedBufferAttribute(new Float32Array(ringNodes.length * 3), 3);
-scene.add(ringMesh);
-
-const ringSpins = ringNodes.map(() => (0.3 + Math.random() * 0.6) * (Math.random() > 0.5 ? 1 : -1));
-const ringBaseRotX = ringNodes.map(() => Math.random() * Math.PI);
-const ringBaseRotY = ringNodes.map(() => Math.random() * Math.PI);
-
-// ---------- GLOW SPRITES ----------
-function createGlowTexture() {
-  const size = 128;
-  const canvas = document.createElement('canvas');
-  canvas.width = size; canvas.height = size;
-  const ctx = canvas.getContext('2d');
-  const gradient = ctx.createRadialGradient(size/2, size/2, 0, size/2, size/2, size/2);
-  gradient.addColorStop(0, 'rgba(255,255,255,0.9)');
-  gradient.addColorStop(0.35, 'rgba(255,255,255,0.35)');
-  gradient.addColorStop(1, 'rgba(255,255,255,0)');
-  ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, size, size);
-  const texture = new THREE.Texture(canvas);
-  texture.needsUpdate = true;
-  return texture;
-}
-const glowTexture = createGlowTexture();
-
-const glowGeo = new THREE.BufferGeometry();
-const glowPositions = new Float32Array(nodes.length * 3);
-const glowColors = new Float32Array(nodes.length * 3);
-const glowSizes = new Float32Array(nodes.length);
-
-nodes.forEach((node, i) => {
-  glowPositions[i*3] = node.position.x;
-  glowPositions[i*3+1] = node.position.y;
-  glowPositions[i*3+2] = node.position.z;
-  glowColors[i*3] = node.color.r; glowColors[i*3+1] = node.color.g; glowColors[i*3+2] = node.color.b;
-  glowSizes[i] = node.size * (node.layer === 3 ? 16 : 9);
-});
-
-glowGeo.setAttribute('position', new THREE.BufferAttribute(glowPositions, 3));
-glowGeo.setAttribute('color', new THREE.BufferAttribute(glowColors, 3));
-glowGeo.setAttribute('size', new THREE.BufferAttribute(glowSizes, 1));
-
-const glowMaterial = new THREE.ShaderMaterial({
-  uniforms: { pointTexture: { value: glowTexture } },
-  vertexShader: `
-    attribute float size;
-    varying vec3 vColor;
-    void main() {
-      vColor = color;
-      vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-      gl_PointSize = size * (300.0 / -mvPosition.z);
-      gl_Position = projectionMatrix * mvPosition;
-    }
-  `,
-  fragmentShader: `
-    uniform sampler2D pointTexture;
-    varying vec3 vColor;
-    void main() {
-      vec4 tex = texture2D(pointTexture, gl_PointCoord);
-      gl_FragColor = vec4(vColor, 1.0) * tex;
-    }
-  `,
-  vertexColors: true, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true
-});
-const glowPoints = new THREE.Points(glowGeo, glowMaterial);
-scene.add(glowPoints);
-
-// =========================================================
-// RENDERING: EDGES — thin instanced cylinders for real visible
-// thickness, repositioned via matrices each frame (cheap).
-// =========================================================
-
-const edgeCylGeo = new THREE.CylinderGeometry(1, 1, 1, 5, 1, true);
-const edgeMaterial = new THREE.MeshBasicMaterial({
-  color: 0xFFC67E, transparent: true, opacity: 0.22,
-  blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide
-});
-const edgeMesh = new THREE.InstancedMesh(edgeCylGeo, edgeMaterial, edges.length);
-edgeMesh.instanceColor = new THREE.InstancedBufferAttribute(new Float32Array(edges.length * 3), 3);
-scene.add(edgeMesh);
-
-const lateralMaterial = new THREE.MeshBasicMaterial({
-  color: 0xD98452, transparent: true, opacity: 0.1,
-  blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide
-});
-const lateralMesh = new THREE.InstancedMesh(edgeCylGeo, lateralMaterial, lateralEdges.length);
-scene.add(lateralMesh);
-
-const edgeDummy = new THREE.Object3D();
-
-function orientEdgeInstance(mesh, index, from, to, radius) {
-  const dir = new THREE.Vector3().subVectors(to, from);
-  const length = dir.length();
-  if (length < 0.001) return;
-  const mid = from.clone().add(to).multiplyScalar(0.5);
-  edgeDummy.position.copy(mid);
-  edgeDummy.scale.set(radius, length, radius);
-  const axis = new THREE.Vector3(0, 1, 0);
-  edgeDummy.quaternion.setFromUnitVectors(axis, dir.clone().normalize());
-  edgeDummy.updateMatrix();
-  mesh.setMatrixAt(index, edgeDummy.matrix);
-}
-
-// =========================================================
-// RENDERING: PULSES traveling along edges (1 per edge, looping)
-// =========================================================
-
-const pulseGeo = new THREE.BufferGeometry();
-const pulsePositions = new Float32Array(edges.length * 3);
-const pulseColors = new Float32Array(edges.length * 3);
-const pulseSizes = new Float32Array(edges.length);
-
-edges.forEach((edge, i) => {
-  const c = edge.to.color;
-  pulseColors[i*3] = c.r; pulseColors[i*3+1] = c.g; pulseColors[i*3+2] = c.b;
-  pulseSizes[i] = 5 + Math.random() * 4;
-});
-
-pulseGeo.setAttribute('position', new THREE.BufferAttribute(pulsePositions, 3));
-pulseGeo.setAttribute('color', new THREE.BufferAttribute(pulseColors, 3));
-pulseGeo.setAttribute('size', new THREE.BufferAttribute(pulseSizes, 1));
-
-const pulseMaterial = new THREE.ShaderMaterial({
-  uniforms: { pointTexture: { value: glowTexture } },
-  vertexShader: `
-    attribute float size;
-    varying vec3 vColor;
-    void main() {
-      vColor = color;
-      vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-      gl_PointSize = size * (300.0 / -mvPosition.z);
-      gl_Position = projectionMatrix * mvPosition;
-    }
-  `,
-  fragmentShader: `
-    uniform sampler2D pointTexture;
-    varying vec3 vColor;
-    void main() {
-      vec4 tex = texture2D(pointTexture, gl_PointCoord);
-      gl_FragColor = vec4(vColor, 1.0) * tex;
-    }
-  `,
-  vertexColors: true, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true
-});
-const pulsePoints = new THREE.Points(pulseGeo, pulseMaterial);
-scene.add(pulsePoints);
-
-// =========================================================
-// CASCADING SIGNAL PROPAGATION
-//
-// Periodically a "thought" originates at a random raw-data node
-// and cascades inward layer by layer, raising activation of
-// nodes along its path and fading as it passes — a coherent
-// signal flow rather than independent unrelated pulses.
-// =========================================================
-
-const cascades = [];
-let cascadeCount = 0;
-let lastCascadeTime = -10;
-const CASCADE_INTERVAL = 2.2;
-
-const nodesByLayer = LAYER_CONFIG.map((_, i) => nodes.filter(n => n.layer === i));
-
-function spawnCascade(elapsed) {
-  const origin = nodesByLayer[0][Math.floor(Math.random() * nodesByLayer[0].length)];
-  const path = [origin];
-
-  let current = origin;
-  for (let layerIndex = 0; layerIndex < LAYER_CONFIG.length - 1; layerIndex++) {
-    const outgoing = edges.filter(e => e.from === current);
-    if (outgoing.length === 0) break;
-    outgoing.sort((a, b) => b.strength - a.strength);
-    const chosen = outgoing[Math.random() < 0.7 ? 0 : Math.min(1, outgoing.length - 1)];
-    path.push(chosen.to);
-    current = chosen.to;
+  // myelin rings (nodes of Ranvier)
+  const mCount = 4 + Math.round(syn.strength * 3);
+  for (let m = 1; m < mCount; m++) {
+    const t    = m / mCount;
+    const pt   = curve.getPoint(t);
+    const tang = curve.getTangent(t).normalize();
+    const rGeo = new THREE.TorusGeometry(r * 3.2, r * 0.9, 5, 12);
+    const rMat = new THREE.MeshBasicMaterial({
+      color: PAL.coffee, transparent: true, opacity: 0.30,
+      blending: THREE.AdditiveBlending,
+    });
+    const ring = new THREE.Mesh(rGeo, rMat);
+    ring.position.copy(pt);
+    ring.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0), tang);
+    axonGroup.add(ring);
   }
 
-  cascades.push({ startTime: elapsed, path, duration: 2.6 });
-  cascadeCount++;
+  // synaptic terminal bulb
+  const termPt  = curve.getPoint(0.93);
+  const termGeo = new THREE.SphereGeometry(r * 4.2, 10, 10);
+  const termMat = new THREE.MeshBasicMaterial({
+    color: col, transparent: true, opacity: 0.45,
+    blending: THREE.AdditiveBlending,
+  });
+  const term = new THREE.Mesh(termGeo, termMat);
+  term.position.copy(termPt);
+  axonGroup.add(term);
+  syn.termMat  = termMat;
+  syn.termMesh = term;
+});
+
+// ── synaptic pulse sprites ─────────────────────────────────
+const nSyn    = synapses.length;
+const pulsePA = new Float32Array(nSyn * 3);
+const pulseCA = new Float32Array(nSyn * 3);
+const pulseSA = new Float32Array(nSyn);
+
+synapses.forEach((syn, i) => {
+  const c = syn.from.col.clone().lerp(PAL.pearl, 0.5);
+  pulseCA[i*3]   = c.r;
+  pulseCA[i*3+1] = c.g;
+  pulseCA[i*3+2] = c.b;
+  pulseSA[i]     = 0;
+});
+
+const pulseGeo = new THREE.BufferGeometry();
+pulseGeo.setAttribute('position', new THREE.BufferAttribute(pulsePA, 3));
+pulseGeo.setAttribute('color',    new THREE.BufferAttribute(pulseCA, 3));
+pulseGeo.setAttribute('size',     new THREE.BufferAttribute(pulseSA, 1));
+const pulsePts = new THREE.Points(pulseGeo, makeSpriteMat());
+scene.add(pulsePts);
+
+// ── soma glow sprites ──────────────────────────────────────
+const somaGlowPA = new Float32Array(N * 3);
+const somaGlowCA = new Float32Array(N * 3);
+const somaGlowSA = new Float32Array(N);
+neurons.forEach((n, i) => {
+  somaGlowPA[i*3]   = n.pos.x;
+  somaGlowPA[i*3+1] = n.pos.y;
+  somaGlowPA[i*3+2] = n.pos.z;
+  somaGlowCA[i*3]   = n.col.r;
+  somaGlowCA[i*3+1] = n.col.g;
+  somaGlowCA[i*3+2] = n.col.b;
+  somaGlowSA[i]     = n.somaR * 16;
+});
+const somaGlowGeo = new THREE.BufferGeometry();
+somaGlowGeo.setAttribute('position', new THREE.BufferAttribute(somaGlowPA, 3));
+somaGlowGeo.setAttribute('color',    new THREE.BufferAttribute(somaGlowCA, 3));
+somaGlowGeo.setAttribute('size',     new THREE.BufferAttribute(somaGlowSA, 1));
+const somaGlowPts = new THREE.Points(somaGlowGeo, makeSpriteMat());
+scene.add(somaGlowPts);
+
+// ── traveling point lights ─────────────────────────────────
+const fireLights = Array.from({length:5}, () => {
+  const l = new THREE.PointLight(0xFFC67E, 0, 10);
+  scene.add(l);
+  return { l, synIdx: -1, t: 0 };
+});
+let lightCursor = 0;
+
+// ══════════════════════════════════════════════════════════
+// FIRING SYSTEM
+// ══════════════════════════════════════════════════════════
+const firingQueue = [];
+let lastFire  = 0;
+let totalFire = 0;
+
+function queueFire(id, delay) {
+  firingQueue.push({ id, at: performance.now()/1000 + (delay||0) });
+}
+function spontFire() {
+  queueFire(Math.floor(Math.random()*N), 0);
+  totalFire++;
 }
 
-// =========================================================
-// BACKGROUND STARFIELD
-// =========================================================
-const STAR_COUNT = 1800;
-const starGeo = new THREE.BufferGeometry();
-const starPositions = new Float32Array(STAR_COUNT * 3);
-const starColors = new Float32Array(STAR_COUNT * 3);
-const starSizes = new Float32Array(STAR_COUNT);
-
-for (let i = 0; i < STAR_COUNT; i++) {
-  const radius = 25 + Math.random() * 50;
-  const theta = Math.random() * Math.PI * 2;
-  const phi = Math.acos((Math.random() * 2) - 1);
-  starPositions[i*3] = radius * Math.sin(phi) * Math.cos(theta);
-  starPositions[i*3+1] = radius * Math.cos(phi);
-  starPositions[i*3+2] = radius * Math.sin(phi) * Math.sin(theta);
-  const c = palette[Math.floor(Math.random() * palette.length)].clone();
-  c.multiplyScalar(0.2 + Math.random() * 0.5);
-  starColors[i*3] = c.r; starColors[i*3+1] = c.g; starColors[i*3+2] = c.b;
-  starSizes[i] = Math.random() * 1.2 + 0.3;
-}
-starGeo.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
-starGeo.setAttribute('color', new THREE.BufferAttribute(starColors, 3));
-starGeo.setAttribute('size', new THREE.BufferAttribute(starSizes, 1));
-
-const starMaterial = new THREE.ShaderMaterial({
-  uniforms: { pointTexture: { value: glowTexture } },
-  vertexShader: `
-    attribute float size;
-    varying vec3 vColor;
-    void main() {
-      vColor = color;
-      vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-      gl_PointSize = size * (150.0 / -mvPosition.z);
-      gl_Position = projectionMatrix * mvPosition;
-    }
-  `,
-  fragmentShader: `
-    uniform sampler2D pointTexture;
-    varying vec3 vColor;
-    void main() {
-      vec4 tex = texture2D(pointTexture, gl_PointCoord);
-      gl_FragColor = vec4(vColor, 0.7) * tex;
-    }
-  `,
-  vertexColors: true, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true
-});
-const stars = new THREE.Points(starGeo, starMaterial);
-scene.add(stars);
-
-// =========================================================
-// MOUSE / SCROLL INTERACTION
-// =========================================================
-let mouseX = 0, mouseY = 0, targetRotX = 0, targetRotY = 0;
-window.addEventListener('mousemove', (e) => {
-  mouseX = (e.clientX / window.innerWidth) * 2 - 1;
-  mouseY = (e.clientY / window.innerHeight) * 2 - 1;
-  targetRotY = mouseX * 0.3;
-  targetRotX = mouseY * 0.15;
-});
-let scrollY = 0;
-window.addEventListener('scroll', () => { scrollY = window.scrollY; });
-
-// =========================================================
-// HUD ELEMENTS
-// =========================================================
-const hudNodes = document.getElementById('hud-nodes');
-const hudEdges = document.getElementById('hud-edges');
-const hudCascades = document.getElementById('hud-cascades');
-const hudConfidence = document.getElementById('hud-confidence');
-const hudTime = document.getElementById('hud-time');
-
-hudNodes.textContent = nodes.length;
-hudEdges.textContent = edges.length + lateralEdges.length;
-
-// =========================================================
+// ══════════════════════════════════════════════════════════
 // ANIMATION LOOP
-// =========================================================
+// ══════════════════════════════════════════════════════════
 const clock = new THREE.Clock();
-const dummy = new THREE.Object3D();
-const colorObj = new THREE.Color();
+let mx = 0, my = 0;
+window.addEventListener('mousemove', e => {
+  mx = (e.clientX/window.innerWidth)*2 - 1;
+  my = (e.clientY/window.innerHeight)*2 - 1;
+});
 
-const networkGroup = new THREE.Group();
-networkGroup.add(nodeMesh, glowPoints, edgeMesh, lateralMesh, pulsePoints, shellMesh, ringMesh);
-scene.add(networkGroup);
-
-const coreNode = nodes.find(n => n.layer === 3);
+// cache HUD elements (they may be removed)
+const hudHN = document.getElementById('hn');
+const hudHS = document.getElementById('hs');
+const hudHF = document.getElementById('hf');
 
 function animate() {
   requestAnimationFrame(animate);
+  const dt      = Math.min(clock.getDelta(), 0.05);
   const elapsed = clock.getElapsedTime();
-  const dt = clock.getDelta();
+  const now     = performance.now() / 1000;
 
-  // ---------- SPAWN CASCADES PERIODICALLY ----------
-  if (elapsed - lastCascadeTime > CASCADE_INTERVAL) {
-    spawnCascade(elapsed);
-    lastCascadeTime = elapsed;
-    hudCascades.textContent = cascadeCount;
+  // spontaneous firing every 1.5-2.5s
+  if (elapsed - lastFire > 1.5 + Math.random()) {
+    spontFire();
+    lastFire = elapsed;
   }
 
-  // ---------- DECAY ALL TARGET ACTIVATIONS TOWARD BASELINE ----------
-  nodes.forEach(n => { n.targetActivation = 0.15; });
+  // process queue
+  for (let i = firingQueue.length-1; i >= 0; i--) {
+    const item = firingQueue[i];
+    if (now < item.at) continue;
+    const n = neurons[item.id];
+    n.targetAct = 1.0;
+    synapses.forEach(syn => {
+      if (syn.from !== n) return;
+      syn.active  = true;
+      syn.activeT = 0;
+      // assign traveling light
+      const lObj = fireLights[lightCursor % fireLights.length];
+      lObj.synIdx = synapses.indexOf(syn);
+      lObj.t = 0;
+      lightCursor++;
+      // cascade
+      queueFire(syn.to.id, 0.45 + (1-syn.strength)*0.7);
+      totalFire++;
+    });
+    firingQueue.splice(i, 1);
+  }
 
-  // ---------- APPLY ACTIVE CASCADES ----------
-  for (let i = cascades.length - 1; i >= 0; i--) {
-    const cascade = cascades[i];
-    const age = elapsed - cascade.startTime;
-    if (age > cascade.duration) {
-      cascades.splice(i, 1);
-      continue;
+  // ── update neurons ──────────────────────────────────────
+  neurons.forEach((n, i) => {
+    n.targetAct *= 0.93;
+    n.activation += (n.targetAct - n.activation) * Math.min(1, dt*5.5);
+
+    const breathe = 1 + Math.sin(elapsed*0.75 + n.restPhase)*0.035;
+    const fireS   = 1 + n.activation * 0.32;
+    somaMeshes[i].scale.setScalar(breathe * fireS);
+
+    const fc = n.col.clone().lerp(PAL.pearl, n.activation*0.8);
+    somaMeshes[i].material.color.copy(fc);
+    somaMeshes[i].material.emissive.copy(fc);
+    somaMeshes[i].material.emissiveIntensity = 0.10 + n.activation*0.75;
+
+    somaGlowSA[i]     = n.somaR * (13 + n.activation*30);
+    somaGlowCA[i*3]   = fc.r;
+    somaGlowCA[i*3+1] = fc.g;
+    somaGlowCA[i*3+2] = fc.b;
+  });
+  somaGlowGeo.attributes.size.needsUpdate  = true;
+  somaGlowGeo.attributes.color.needsUpdate = true;
+
+  // core light tracks average activation
+  const avgAct = neurons.reduce((s,n)=>s+n.activation,0)/N;
+  coreLight.intensity = 1.4 + avgAct * 5;
+
+  // ── update synapses + pulses ────────────────────────────
+  synapses.forEach((syn, i) => {
+    if (syn.active) {
+      syn.activeT += dt * syn.pulseSpd * 2.2;
+      if (syn.activeT >= 1) { syn.active=false; syn.activeT=0; }
+    } else {
+      // ambient drift
+      syn.pulseT = (syn.pulseT + dt * syn.pulseSpd * 0.25) % 1;
     }
 
-    const progress = age / cascade.duration;
-    const currentLayerFloat = progress * (cascade.path.length - 1);
+    const t    = syn.active ? syn.activeT : syn.pulseT;
+    // smooth step easing
+    const ease = t*t*(3-2*t);
+    const pt   = syn.curve.getPoint(Math.min(ease, 0.99));
+    pulsePA[i*3]   = pt.x;
+    pulsePA[i*3+1] = pt.y;
+    pulsePA[i*3+2] = pt.z;
 
-    cascade.path.forEach((node, idx) => {
-      const dist = Math.abs(currentLayerFloat - idx);
-      const activation = Math.max(0, 1 - dist * 1.4);
-      node.targetActivation = Math.max(node.targetActivation, activation);
-    });
-  }
+    const fade  = Math.sin(t * Math.PI);
+    const bright = syn.active ? 1.0 : 0.12;
+    pulseSA[i]  = fade * bright * (syn.active ? 11 : 4);
 
-  if (coreNode) {
-    coreLight.intensity = 1.5 + coreNode.activation * 4;
-  }
+    // axon opacity pulses with signal
+    syn.axonMat.opacity = syn.active
+      ? 0.45 + fade*0.45
+      : 0.16 + (syn.from.activation + syn.to.activation)*0.07;
 
-  // ---------- NODE DRIFT + ACTIVATION SMOOTHING + RENDER ----------
-  nodes.forEach((node, i) => {
-    const driftX = Math.sin(elapsed * 0.3 + node.driftSeed) * 0.08;
-    const driftY = Math.cos(elapsed * 0.25 + node.driftSeed * 1.3) * 0.08;
-    const driftZ = Math.sin(elapsed * 0.2 + node.driftSeed * 0.7) * 0.08;
-    node.position.set(
-      node.basePosition.x + driftX,
-      node.basePosition.y + driftY,
-      node.basePosition.z + driftZ
+    // terminal flash
+    const termFade = syn.active && t > 0.82 ? (t-0.82)/0.18 : 0;
+    syn.termMat.opacity = 0.35 + syn.from.activation*0.25 + termFade*0.6;
+    syn.termMat.color.copy(
+      syn.from.col.clone().lerp(PAL.pearl, termFade*0.85)
     );
-
-    node.activation += (node.targetActivation - node.activation) * Math.min(1, dt * 4);
-
-    const pulse = 1 + Math.sin(elapsed * 1.5 + node.pulsePhase) * 0.12;
-    const activationBoost = 1 + node.activation * 0.9;
-    const scale = node.size * pulse * activationBoost;
-
-    dummy.position.copy(node.position);
-    dummy.scale.set(scale, scale, scale);
-    dummy.updateMatrix();
-    nodeMesh.setMatrixAt(i, dummy.matrix);
-
-    colorObj.copy(node.color).multiplyScalar(0.7 + pulse * 0.2 + node.activation * 0.6);
-    nodeMesh.setColorAt(i, colorObj);
-
-    glowPositions[i*3] = node.position.x;
-    glowPositions[i*3+1] = node.position.y;
-    glowPositions[i*3+2] = node.position.z;
-    glowSizes[i] = node.size * (node.layer === 3 ? 16 : 9) * (1 + node.activation * 0.8);
-  });
-
-  nodeMesh.instanceMatrix.needsUpdate = true;
-  nodeMesh.instanceColor.needsUpdate = true;
-  glowPoints.geometry.attributes.position.needsUpdate = true;
-  glowPoints.geometry.attributes.size.needsUpdate = true;
-
-  // ---------- SHELLS (instanced wireframe icosahedra) ----------
-  nodes.forEach((node, i) => {
-    const shellScale = node.size * 1.5 * (1 + node.activation * 0.15);
-    dummy.position.copy(node.position);
-    dummy.scale.set(shellScale, shellScale, shellScale);
-    dummy.rotation.set(elapsed * 0.15 + node.driftSeed, elapsed * 0.22 + node.driftSeed, 0);
-    dummy.updateMatrix();
-    shellMesh.setMatrixAt(i, dummy.matrix);
-  });
-  shellMesh.instanceMatrix.needsUpdate = true;
-  shellMesh.material.opacity = 0.14 + (coreNode ? coreNode.activation * 0.1 : 0);
-
-  // ---------- ORBITAL RINGS (instanced) ----------
-  ringNodes.forEach((node, i) => {
-    const ringScale = node.size * 0.9 * (1 + node.activation * 0.5);
-    dummy.position.copy(node.position);
-    dummy.scale.set(ringScale, ringScale, ringScale);
-    dummy.rotation.set(
-      ringBaseRotX[i],
-      ringBaseRotY[i],
-      elapsed * ringSpins[i]
-    );
-    dummy.updateMatrix();
-    ringMesh.setMatrixAt(i, dummy.matrix);
-    colorObj.copy(node.color).multiplyScalar(0.6 + node.activation * 0.8);
-    ringMesh.setColorAt(i, colorObj);
-  });
-  ringMesh.instanceMatrix.needsUpdate = true;
-  ringMesh.instanceColor.needsUpdate = true;
-
-  // ---------- EDGES ----------
-  edges.forEach((edge, i) => {
-    const avgActivation = (edge.from.activation + edge.to.activation) / 2;
-    const radius = 0.012 + edge.strength * 0.012 + avgActivation * 0.025;
-    orientEdgeInstance(edgeMesh, i, edge.from.position, edge.to.position, radius);
-    colorObj.copy(edge.to.color).multiplyScalar(0.5 + avgActivation * 1.2);
-    edgeMesh.setColorAt(i, colorObj);
-  });
-  edgeMesh.instanceMatrix.needsUpdate = true;
-  edgeMesh.instanceColor.needsUpdate = true;
-
-  lateralEdges.forEach((edge, i) => {
-    orientEdgeInstance(lateralMesh, i, edge.from.position, edge.to.position, 0.006);
-  });
-  lateralMesh.instanceMatrix.needsUpdate = true;
-
-  // ---------- PULSES TRAVELING ALONG EDGES ----------
-  edges.forEach((edge, i) => {
-    const t = ((elapsed * edge.pulseSpeed) + edge.pulseOffset) % 1;
-    const eased = t * t * (3 - 2 * t);
-    pulsePositions[i*3]   = THREE.MathUtils.lerp(edge.from.position.x, edge.to.position.x, eased);
-    pulsePositions[i*3+1] = THREE.MathUtils.lerp(edge.from.position.y, edge.to.position.y, eased);
-    pulsePositions[i*3+2] = THREE.MathUtils.lerp(edge.from.position.z, edge.to.position.z, eased);
-    const fade = Math.sin(t * Math.PI);
-    const avgActivation = (edge.from.activation + edge.to.activation) / 2;
-    pulseSizes[i] = (4 + avgActivation * 6 + Math.sin(elapsed*3+i)*1.5) * (0.3 + fade * 0.9);
   });
   pulseGeo.attributes.position.needsUpdate = true;
-  pulseGeo.attributes.size.needsUpdate = true;
+  pulseGeo.attributes.size.needsUpdate     = true;
 
-  // ---------- WHOLE NETWORK SLOW ROTATION ----------
-  networkGroup.rotation.y = elapsed * 0.035;
-  networkGroup.rotation.x = Math.sin(elapsed * 0.07) * 0.05;
+  // ── traveling lights ────────────────────────────────────
+  fireLights.forEach(lObj => {
+    if (lObj.synIdx < 0) return;
+    lObj.t += dt * 1.6;
+    if (lObj.t >= 1) { lObj.l.intensity=0; lObj.synIdx=-1; return; }
+    const syn = synapses[lObj.synIdx];
+    lObj.l.position.copy(syn.curve.getPoint(Math.min(lObj.t, 0.99)));
+    lObj.l.intensity = Math.sin(lObj.t * Math.PI) * 4.0;
+    lObj.l.color.copy(PAL.apricot);
+  });
 
-  // ---------- STARFIELD ----------
-  stars.rotation.y = elapsed * 0.008;
+  // ── scene rotation ──────────────────────────────────────
+  root.rotation.y = elapsed * 0.016;
+  root.rotation.x = Math.sin(elapsed * 0.038) * 0.055;
 
-  // ---------- HUD UPDATES ----------
-  hudTime.textContent = elapsed.toFixed(1);
-  if (coreNode) {
-    hudConfidence.textContent = Math.round(15 + coreNode.activation * 85);
-  }
-
-  // ---------- CAMERA ----------
-  const scrollFactor = Math.min(scrollY / window.innerHeight, 1);
-  const targetX = targetRotY * 5;
-  const targetY = 1.5 + targetRotX * 2.5 + scrollFactor * 5;
-  const targetZ = 17 - scrollFactor * 6;
-  camera.position.x += (targetX - camera.position.x) * 0.02;
-  camera.position.y += (targetY - camera.position.y) * 0.02;
-  camera.position.z += (targetZ - camera.position.z) * 0.02;
+  // ── mouse parallax ──────────────────────────────────────
+  camera.position.x += (mx*5  - camera.position.x) * 0.010;
+  camera.position.y += (-my*3 - camera.position.y) * 0.010;
   camera.lookAt(0, 0, 0);
+
+  if (hudHN) hudHN.textContent = N;
+  if (hudHS) hudHS.textContent = synapses.length;
+  if (hudHF) hudHF.textContent = totalFire;
 
   renderer.render(scene, camera);
 }
 
-// =========================================================
-// RESIZE
-// =========================================================
+// hide loading overlay if present (keeps it if user removed overlay)
+const __loadingEl = document.getElementById('loading');
+if (__loadingEl) setTimeout(() => __loadingEl.classList.add('hidden'), 400);
+
+animate();
+
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
-});
-
-// =========================================================
-// START
-// =========================================================
-animate();
-
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    document.getElementById('loading').classList.add('hidden');
-  }, 400);
 });
