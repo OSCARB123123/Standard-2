@@ -1,15 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Sansation:wght@300;400;700&display=swap');
+
 body {
     margin: 0;
     min-height: 100vh;
     background: #09070D;
-    font-family: Arial, sans-serif;
+    font-family: "Sansation", Arial, sans-serif;
 }
 
-h1{
+h1 {
     color: rgb(255, 255, 255);
     text-align: center;
-    font-family: Arial, sans-serif;
+    font-family: "Sansation", Arial, sans-serif;
 }
+
+.sansation-light {
+  font-family: "Sansation", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.sansation-regular {
+  font-family: "Sansation", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.sansation-bold {
+  font-family: "Sansation", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.sansation-light-italic {
+  font-family: "Sansation", sans-serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.sansation-regular-italic {
+  font-family: "Sansation", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.sansation-bold-italic {
+  font-family: "Sansation", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
 
 div.CentralElement{
     color: #09070D;
@@ -21,14 +60,98 @@ div.CentralElement{
     margin-right: 20%;
     border-radius: 10px;
     padding: 30px 20px;
-    font-family: Arial, sans-serif;
+    font-family: "Sansation", sans-serif;
+    border: 5px solid #5a585c;
+    margin-top: 15vh;
+    letter-spacing: 5px;
+    
+}
+
+div.Welcome{
+  font-family: "Sansation", sans-serif;
+  color: #FFEEC7;
+  text-align: center;
+  font-size: 40px;
+  letter-spacing: 10px;
+  margin-top: 20vh;
+  font-weight: 50;
+
+}
+
+div.Explanation{
+  background: linear-gradient(135deg, #fff8e6 0%, #fefefe 100%);
+  color: #09070D;
+  font-family: "Sansation", Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+  text-align: left;
+  width: 80%;
+  max-width: 700px;
+  margin: 30px auto 0;
+  padding: 24px 28px;
+  border-radius: 14px;
+  border: 2px solid #d9c7a1;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+  box-sizing: border-box;
+}
+
+div.Explanation h2 {
+  margin: 0 0 10px 0;
+  font-size: 24px;
+  color: #5a585c;
+}
+
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #000000;
+  z-index: 9999;
+  animation: fade-out 1.2s ease forwards;
+  animation-delay: 1.2s;
+}
+
+.loader {
+  position: relative;
+  width: 33px;
+  height: 33px;
+  perspective: 67px;
+}
+
+.loader div {
+  width: 100%;
+  height: 100%;
+  background: #FFEEC7;
+  position: absolute;
+  left: 50%;
+  transform-origin: left;
+  animation: loader 2s infinite;
+}
+
+.loader div:nth-child(1) { animation-delay: 0.15s; }
+.loader div:nth-child(2) { animation-delay: 0.3s; }
+.loader div:nth-child(3) { animation-delay: 0.45s; }
+.loader div:nth-child(4) { animation-delay: 0.6s; }
+.loader div:nth-child(5) { animation-delay: 0.75s; }
+
+@keyframes loader {
+  0% { transform: rotateY(0deg); }
+  50%, 80% { transform: rotateY(-180deg); }
+  90%, 100% { opacity: 0; transform: rotateY(-180deg); }
+}
+
+@keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; visibility: hidden; }
 }
 
 .cta {
   border: none;
   background: none;
   cursor: pointer;
-  font-family: Arial, sans-serif;
+  font-family: "Sansation", Arial, sans-serif;
   display: block;
   margin: 20px auto 0;
 }
@@ -39,6 +162,7 @@ div.CentralElement{
   font-size: 14px;
   padding-right: 15px;
   text-transform: uppercase;
+  font-family: inherit;
 }
 
 .cta svg {
@@ -58,6 +182,7 @@ div.CentralElement{
   position: relative;
   color: black;
   padding-bottom: 20px;
+  font-family: inherit;
 }
 
 .hover-underline-animation:after {
