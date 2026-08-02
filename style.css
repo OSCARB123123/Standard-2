@@ -1,74 +1,72 @@
-@import url('https://fonts.googleapis.com/css2?family=Sansation:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;700&display=swap');
 
 body {
     margin: 0;
     min-height: 100vh;
     background: #09070D;
-    font-family: "Sansation", Arial, sans-serif;
+    font-family: "Urbanist", Arial, sans-serif;
 }
 
 h1 {
     color: rgb(255, 255, 255);
     text-align: center;
-    font-family: "Sansation", Arial, sans-serif;
+    font-family: "Urbanist", Arial, sans-serif;
 }
 
 .sansation-light {
-  font-family: "Sansation", sans-serif;
+  font-family: "Urbanist", sans-serif;
   font-weight: 300;
   font-style: normal;
 }
 
 .sansation-regular {
-  font-family: "Sansation", sans-serif;
+  font-family: "Urbanist", sans-serif;
   font-weight: 400;
   font-style: normal;
 }
 
 .sansation-bold {
-  font-family: "Sansation", sans-serif;
+  font-family: "Urbanist", sans-serif;
   font-weight: 700;
   font-style: normal;
 }
 
 .sansation-light-italic {
-  font-family: "Sansation", sans-serif;
+  font-family: "Urbanist", sans-serif;
   font-weight: 300;
   font-style: italic;
 }
 
 .sansation-regular-italic {
-  font-family: "Sansation", sans-serif;
+  font-family: "Urbanist", sans-serif;
   font-weight: 400;
   font-style: italic;
 }
 
 .sansation-bold-italic {
-  font-family: "Sansation", sans-serif;
+  font-family: "Urbanist", sans-serif;
   font-weight: 700;
   font-style: italic;
 }
 
 
 div.CentralElement{
-    color: #09070D;
+    color: #be1e84;
     text-align: center;
-    font-size: 30px;
-    margin-top: 20px;
-    background-color: #FFEEC7;
-    margin-left: 20%;
-    margin-right: 20%;
+    font-size: 7.5vw;
+    display: block;
+
+    margin: 10vh;
+    margin-bottom: 20vh;
     border-radius: 10px;
-    padding: 30px 20px;
-    font-family: "Sansation", sans-serif;
-    border: 5px solid #5a585c;
-    margin-top: 15vh;
+
+    font-family: "Urbanist", sans-serif;
     letter-spacing: 5px;
-    
+    box-sizing: border-box;
 }
 
 div.Welcome{
-  font-family: "Sansation", sans-serif;
+  font-family: "Urbanist", sans-serif;
   color: #FFEEC7;
   text-align: center;
   font-size: 40px;
@@ -78,16 +76,26 @@ div.Welcome{
 
 }
 
+div.ExplanationRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  gap: 24px;
+  width: min(1100px, 90%);
+  margin: 30px auto 0;
+}
+
 div.Explanation{
   background: linear-gradient(135deg, #fff8e6 0%, #fefefe 100%);
   color: #09070D;
-  font-family: "Sansation", Arial, sans-serif;
+  font-family: "Urbanist", Arial, sans-serif;
   font-size: 18px;
   line-height: 1.6;
   text-align: left;
-  width: 80%;
-  max-width: 700px;
-  margin: 30px auto 0;
+  flex: 1 1 320px;
+  max-width: 500px;
+  margin: 0;
   padding: 24px 28px;
   border-radius: 14px;
   border: 2px solid #d9c7a1;
@@ -95,10 +103,129 @@ div.Explanation{
   box-sizing: border-box;
 }
 
+div.Explanation2{
+  background: linear-gradient(135deg, #fff8e6 0%, #fefefe 100%);
+  color: #09070D;
+  font-family: "Urbanist", Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+  text-align: left;
+  flex: 1 1 320px;
+  max-width: 500px;
+  margin: 0;
+  padding: 24px 28px;
+  border-radius: 14px;
+  border: 2px solid #d9c7a1;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+  box-sizing: border-box;
+}
+
+/* From Uiverse.io by cssbuttons-io */ 
+button {
+ --glow-color: #f068b7;
+ --glow-spread-color: #be1e84;
+ --enhanced-glow-color: #c5acbc;
+ --btn-color: #b38fa6;
+ border: .25em solid var(--glow-color);
+ padding: 1.15em 2.4em;
+ color: #be1e84;
+ font-size: 16px;
+ font-weight: bold;
+ background-color: var(--btn-color);
+ border-radius: 1em;
+ outline: none;
+ box-shadow: 0 0 1em .25em var(--glow-color),
+        0 0 4em 1em var(--glow-spread-color),
+        inset 0 0 .75em .25em var(--glow-color);
+ text-shadow: 0 0 .5em var(--glow-color);
+ position: relative;
+ transition: all 0.3s;
+ display: block;
+ margin: 40px auto 0;
+}
+
+button::after {
+ pointer-events: none;
+ content: "";
+ position: absolute;
+ top: 120%;
+ left: 0;
+ height: 100%;
+ width: 100%;
+ background-color: var(--glow-spread-color);
+ filter: blur(2em);
+ opacity: .7;
+ transform: perspective(1.5em) rotateX(35deg) scale(1, .6);
+}
+
+button:hover {
+ color: black;
+ background-color: var();
+ box-shadow: 0 0 1em .25em var(--glow-color),
+        0 0 4em 2em var(--glow-spread-color),
+        inset 0 0 .75em .25em var(--glow-color);
+}
+
+button:active {
+ box-shadow: 0 0 0.6em .25em var(--glow-color),
+        0 0 2.5em 2em var(--glow-spread-color),
+        inset 0 0 .5em .25em var(--glow-color);
+}
+
+
+@media (max-width: 800px) {
+  div.ExplanationRow {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  div.Explanation,
+  div.Explanation2 {
+    width: 100%;
+    max-width: 500px;
+  }
+
+div.CentralElement{
+    font-size: 10vw;
+    width: min(92%, 700px);
+  }
+
+
+
+
+}
+
+
+@media (max-width: 400px) {
+
+div.CentralElement{
+    font-size: 17.5vw;
+    width: min(95%, 700px);
+  }
+
+
+}
+
+hr {
+
+  border: none;
+  border-top: 1px solid #050505;
+  margin: 10px 0;
+}
+
 div.Explanation h2 {
   margin: 0 0 10px 0;
   font-size: 24px;
-  color: #5a585c;
+  font-weight: 500;
+  color: #29272c;
+}
+
+
+div.Explanation2 h2 {
+  margin: 0 0 10px 0;
+  font-size: 24px;
+  font-weight: 500;
+  color: #29272c;
 }
 
 .loading-screen {
@@ -151,7 +278,7 @@ div.Explanation h2 {
   border: none;
   background: none;
   cursor: pointer;
-  font-family: "Sansation", Arial, sans-serif;
+  font-family: "Urbanist", Arial, sans-serif;
   display: block;
   margin: 20px auto 0;
 }
