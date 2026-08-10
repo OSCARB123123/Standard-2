@@ -8,10 +8,15 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="style.css">
+        <title>Welcome</title>
     </head>
     <body>
         <main class="home-shell">
-            <h1 class="Welcome">Welcome home</h1>
+            <h1 class="Welcome">Welcome</h1>
+
+            
+        <textarea id="Namebox" class="Namebox" placeholder="Enter your name here..."></textarea>
+        <button id="confirm-name" type="button">Confirm Name</button>
 
             <div id="loading-screen" class="loading-screen">
                 <div class="loader" aria-label="Loading">
@@ -37,11 +42,61 @@
                 </div>
             </div>
 
-            <textarea id="Namebox" class="Namebox" placeholder="Enter your name here..."></textarea>
+         
+            <div class="Stocklist">
 
+      
+
+
+                <ul class="features-list">
+                    <div class="Stock-header">
+                        <span>Stock</span>
+                        <span>Percentage</span>
+                        <span>Price</span>
+                    </div>
+                    <li>
+                        <strong>NVDA</strong>
+                        <span class="percentage">+2.5%</span>
+                        <span class="price">$250</span>
+                    </li>
+                     <li>
+                        <strong>AAPL</strong>
+                        <span class="percentage">+2.5%</span>
+                        <span class="price">$250</span>
+                    </li>
+                     <li>
+                        <strong>MSFT</strong>
+                        <span class="percentage">+2.5%</span>
+                        <span class="price">$250</span>
+                    </li>
+                     <li>
+                        <strong>GOOGL</strong>
+                        <span class="percentage">+2.5%</span>
+                        <span class="price">$250</span>
+                    </li>
+
+                </ul>
+            
+            </div>
 
         </main>
 
-        <script src="" async defer></script>
+        <script>
+            const nameBox = document.getElementById("Namebox");
+            const confirmButton = document.getElementById("confirm-name");
+            const welcomeHeading = document.querySelector(".Welcome");
+
+            confirmButton.addEventListener("click", () => {
+                const name = nameBox.value.trim();
+                const displayName = name ? ` ${name}` : "";
+                welcomeHeading.textContent = `Welcome${displayName}`;
+                document.title = `Welcome${displayName}`;
+
+                if (name) { 
+                    nameBox.style.display = "none";
+                    confirmButton.style.display = "none";
+                }
+            });
+        </script>
     </body>
 </html>
