@@ -5,6 +5,17 @@ body {
     min-height: 100vh;
     background: #09070D;
     font-family: "Urbanist", Arial, sans-serif;
+    position: relative;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: -18%;
+    pointer-events: none;
+    background: radial-gradient(circle, rgba(255,198,126,0.34) 0%, rgba(217,132,82,0.2) 34%, transparent 62%);
+    filter: blur(30px);
+    z-index: -1;
 }
 
 .features-list{
@@ -15,11 +26,14 @@ body {
   font-family: "Urbanist", Arial, sans-serif;
   font-size: 18px;
 
-  width: 100%;
+  width: 50vw;
   max-width: 1000px;
 
-  margin: 20 0 0;
+  margin-top: 25px;
   padding: 20px 25px;
+
+ 
+  align-items: center;
 
   border-radius: 14px;
   border: 1px solid rgba(255, 244, 218, 0.10);
@@ -92,7 +106,7 @@ body {
 h1 {
     
     color: #F7EEDC;
-    text-align: center;
+    text-align: left;
     font-family: "Urbanist", Arial, sans-serif;
 }
 
@@ -150,25 +164,169 @@ div.CentralElement{
     box-sizing: border-box;
 }
 
-div.Welcome{
+h1.Welcome,
+.Welcome {
   font-family: "Urbanist", sans-serif;
- 
+  color: #FFC67E;
+  text-align: left;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  letter-spacing: 0.16em;
+  margin-left: 1vw;
+  margin-top: 1vh;
+  font-weight: 600;
+  
+}
+
+/* Home screen dashboard styling */
+.dashboard-home {
+  min-height: 100vh;
+  width: 100%;
+  padding: 2rem 1.5rem 3rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.dashboard-title {
+  font-family: "Urbanist", sans-serif;
   color: #F7EEDC;
-  text-align: center;
+  text-align: left;
   font-size: clamp(2rem, 4vw, 3.2rem);
   letter-spacing: 0.16em;
   margin: 0;
   font-weight: 700;
+  line-height: 1;
 }
 
-.home-shell {
-  min-height: 100vh;
-  padding: 4rem 1.5rem 3rem;
-  box-sizing: border-box;
+.dashboard-widgets {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+
+
+.dashboard-account-value,
+.dashboard-stocks-tracked,
+.dashboard-theses-review,
+.dashboard-confidence {
+  flex: 0 0 auto;
+  font-family: "Urbanist", Arial, sans-serif;
+  font-size: 20px;
+  text-align: left;
+  width: min(250px, calc(100vw - 3rem));
+  margin: 20px 20px 0 0;
+  padding: 28px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 238, 199, 0.16);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+}
+
+.nav-shell {
+  width: max-content;
+  max-width: 100%;
+  margin: 20px auto;
+  padding: 6px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #FFC67E, #7B5132);
+  border: 2px solid #FFC67E;
+  box-shadow: 0 0 1em .25em #FFC67E,
+              0 0 4em 1em #D98452,
+              inset 0 0 .75em .25em #FFEEC7;
+}
+
+.nav-panel {
+  display: flex;
   align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: auto;
+  margin: 0;
+}
+
+.dashboard-account-value,
+.dashboard-stocks-tracked,
+.dashboard-theses-review,
+.dashboard-confidence,
+.dashboard-account-value span,
+.dashboard-stocks-tracked span,
+.dashboard-theses-review span,
+.dashboard-confidence span {
+  display: block;
+}
+
+.dashboard-account-value {
+  background: #FFEEC7;
+  color: #09070D;
+}
+
+.dashboard-stocks-tracked {
+  background: #FFC67E;
+  color: #09070D;
+}
+
+.dashboard-theses-review {
+  background: #D98452;
+  color: #FFEEC7;
+}
+
+.dashboard-confidence {
+  background: #7B5132;
+  color: #FFEEC7;
+}
+
+.dashboard-stocklist {
+  width: min(500px, calc(100vw - 3rem));
+  margin-top: 30px;
+}
+
+.dashboard-features-list {
+  width: 100%;
+  margin: 0;
+}
+
+.dashboard-stock-header {
+  display: grid;
+  grid-template-columns: 1fr 100px 90px;
+  padding: 0 40px 10px;
+  color: rgba(255, 244, 218, 0.45);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.dashboard-header-stock,
+.dashboard-header-percentage,
+.dashboard-header-price {
+  font-family: "Urbanist", Arial, sans-serif;
+}
+
+.dashboard-header-percentage,
+.dashboard-header-price {
+  text-align: right;
+}
+
+.dashboard-stock-row {
+  min-height: 55px;
+  display: flex;
+  align-items: center;
+}
+
+.dashboard-stock-name {
+  color: #F7EEDC;
+}
+
+.dashboard-stock-percentage {
+  margin-left: auto;
+}
+
+.dashboard-stock-price {
+  width: 90px;
+  text-align: right;
+  margin-left: 30px;
 }
 
 
@@ -190,7 +348,7 @@ div.ExplanationRow {
   justify-content: center;
   align-items: stretch;
   gap: 24px;
-  width: min(1100px, 90%);
+  width: min(1500px, 90%);
   margin: 30px auto 0;
 }
 
@@ -201,8 +359,8 @@ div.Explanation{
   font-size: 18px;
   line-height: 1.6;
   text-align: left;
-  flex: 1 1 320px;
-  max-width: 500px;
+  flex: 1 1 440px;
+  max-width: 900px;
   margin: 0;
   padding: 24px 28px;
   border-radius: 14px;
@@ -219,8 +377,8 @@ div.Explanation2{
   font-size: 18px;
   line-height: 1.6;
   text-align: left;
-  flex: 1 1 320px;
-  max-width: 500px;
+  flex: 1 1 440px;
+  max-width: 900px;
   margin: 0;
   padding: 24px 28px;
   border-radius: 14px;
@@ -228,6 +386,8 @@ div.Explanation2{
   box-shadow: 0 10px 26px rgba(0, 0, 0, 0.18);
   box-sizing: border-box;
 }
+
+
 
 /* From Uiverse.io by cssbuttons-io */ 
 button {
@@ -281,8 +441,80 @@ button:active {
         inset 0 0 .5em .25em var(--glow-color);
 }
 
+button.nav-button,
+button.nav-button:hover,
+button.nav-button:focus,
+button.nav-button:active {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  text-shadow: none;
+  background: #e9e1d2 !important;
+  color: #587984 !important;
+  padding: 0 !important;
+  margin: 0 4px !important;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  position: relative;
+}
 
+button.nav-button::after {
+  content: none;
+  display: none;
+}
 
+button.nav-button:hover,
+button.nav-button:focus {
+  background: #f8e7cc !important;
+  color: #000000 !important;
+}
+
+button.nav-button:active {
+  background: #ded2bd !important;
+}
+
+button.nav-button svg,
+button.nav-button .nav-icon {
+  width: 22px;
+  height: 22px;
+}
+
+button.regular-button,
+button.regular-button:hover,
+button.regular-button:focus,
+button.regular-button:active {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  background: #e9e1d2 !important;
+  color: #09070D !important;
+  padding: 12px 22px !important;
+  margin: 0 !important;
+  border-radius: 12px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button.regular-button::after {
+  content: none;
+  display: none;
+}
+
+button.regular-button:hover,
+button.regular-button:focus {
+  background: #f8e7cc !important;
+}
+
+button.regular-button:active {
+  background: #ded2bd !important;
+}
 
 @media (max-width: 800px) {
   div.ExplanationRow {
@@ -292,12 +524,12 @@ button:active {
 
   div.Explanation{
     width: 100%;
-    max-width: 500px;
+    max-width: 900px;
   }
 
   div.Explanation2 {
     width: 100%;
-    max-width: 500px;
+    max-width: 900px;
    background: linear-gradient(135deg, rgba(127, 116, 102, 0.9) 0%, rgba(98, 87, 76, 0.95) 100%);
   }
 
@@ -305,6 +537,16 @@ button:active {
     font-size: 10vw;
     width: min(92vw, 700px);
     margin: 10vh auto 20vh;
+  }
+
+
+}
+
+@media (max-width: 650px) {
+.dashboard-widgets {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
   }
 }
 

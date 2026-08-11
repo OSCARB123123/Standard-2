@@ -9,15 +9,27 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="style.css">
         <title>Welcome</title>
+        <style>
+    
+        </style>
     </head>
     <body>
-        <main class="home-shell">
-            <h1 class="Welcome">Welcome</h1>
 
-            
-        <textarea id="Namebox" class="Namebox" placeholder="Enter your name here..."></textarea>
-        <button id="confirm-name" type="button">Confirm Name</button>
+        <div class="nav-shell">
+            <div class="nav-panel">
+                        <button class="regular-button" onclick="window.location.href='JournalHome.html'" > Home
+                        </button>
+                        <button class="regular-button" onclick="window.location.href='JournalHome.html'" > Search
+                        </button>
+            </div>
+        </div>
+    
+        <main class="home-shell dashboard-home">
+            <h1 class="Welcome dashboard-title">Dashboard</h1>
 
+
+
+       
             <div id="loading-screen" class="loading-screen">
                 <div class="loader" aria-label="Loading">
                     <div></div>
@@ -28,75 +40,60 @@
                 </div>
             </div>
 
-            <div class="ExplanationRow">
-                <div class="Explanation">
-                    <h2>Our Mission</h2>
-                    <hr>
-                    <p>We strive to provide a user-friendly interface that helps investors at every stage of their journey track their stock theses clearly.</p>
-                </div>
+        <div class="dashboard-widgets">
+   
+        
+            <div class="dashboard-account-value">
+                <span class="dashboard-account-value-label">Real Holdings Value:</span>
+                <span class="dashboard-account-value-amount">$10,000</span>
+            </div>  
 
-                <div class="Explanation2">
-                    <h2>Why Choose Us?</h2>
-                    <hr>
-                    <p>Our interface includes unique features like reminder prompts, a bear-and-bull case tracker, and confidence monitoring for each idea.</p>
-                </div>
+            <div class="dashboard-stocks-tracked">
+                <span class="dashboard-stocks-tracked-label">Stocks Tracked:</span>
+                <span class="dashboard-stocks-tracked-amount">4</span>  
             </div>
 
-         
-            <div class="Stocklist">
+            <div class="dashboard-theses-review">
+                <span class="dashboard-theses-review-label">Theses Needing Review:</span>
+                <span class="dashboard-theses-review-amount">2</span>
+            </div>
 
-      
+            <div class="dashboard-confidence">
+                <span class="dashboard-confidence-label">Total Confidence Percentage:</span>
+                <span class="dashboard-confidence-amount">87%</span>
+            </div>
 
+       
+        </div>
 
-                <ul class="features-list">
-                    <div class="Stock-header">
-                        <span>Stock</span>
-                        <span>Percentage</span>
-                        <span>Price</span>
+            <div class="Stocklist dashboard-stocklist">
+                <ul class="features-list dashboard-features-list">
+                    <div class="Stock-header dashboard-stock-header">
+                        <span class="dashboard-header-stock">Acess existing logged Theses:</span>
+                 
                     </div>
-                    <li>
-                        <strong>NVDA</strong>
-                        <span class="percentage">+2.5%</span>
-                        <span class="price">$250</span>
+                    <li class="dashboard-stock-row">
+                        <strong class="dashboard-stock-name">NVDA</strong>
+                    
                     </li>
-                     <li>
-                        <strong>AAPL</strong>
-                        <span class="percentage">+2.5%</span>
-                        <span class="price">$250</span>
+                     <li class="dashboard-stock-row">
+                        <strong class="dashboard-stock-name">AAPL</strong>
+                   
                     </li>
-                     <li>
-                        <strong>MSFT</strong>
-                        <span class="percentage">+2.5%</span>
-                        <span class="price">$250</span>
+                     <li class="dashboard-stock-row">
+                        <strong class="dashboard-stock-name">MSFT</strong>
+                    
                     </li>
-                     <li>
-                        <strong>GOOGL</strong>
-                        <span class="percentage">+2.5%</span>
-                        <span class="price">$250</span>
+                     <li class="dashboard-stock-row">
+                        <strong class="dashboard-stock-name">GOOGL</strong>
+                    
                     </li>
 
                 </ul>
-            
             </div>
 
         </main>
 
-        <script>
-            const nameBox = document.getElementById("Namebox");
-            const confirmButton = document.getElementById("confirm-name");
-            const welcomeHeading = document.querySelector(".Welcome");
-
-            confirmButton.addEventListener("click", () => {
-                const name = nameBox.value.trim();
-                const displayName = name ? ` ${name}` : "";
-                welcomeHeading.textContent = `Welcome${displayName}`;
-                document.title = `Welcome${displayName}`;
-
-                if (name) { 
-                    nameBox.style.display = "none";
-                    confirmButton.style.display = "none";
-                }
-            });
-        </script>
-    </body>
+        
+    
 </html>
