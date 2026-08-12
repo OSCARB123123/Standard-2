@@ -18,6 +18,25 @@ body::before {
     z-index: -1;
 }
 
+.form-shell {
+  background: linear-gradient(135deg, rgba(111, 91, 77, 0.92) 0%, rgba(78, 64, 54, 0.98) 100%);
+  color: #FFF4DA;
+  font-family: "Urbanist", Arial, sans-serif;
+  font-size: 18px;
+
+  width: min(600px, calc(100vw - 3rem));
+  margin: 20px auto;
+  padding: 20px;
+
+ 
+  align-items: center;
+
+  border-radius: 14px;
+  border: 1px solid rgba(255, 244, 218, 0.10);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.2);
+
+}
+
 .features-list{
   background: linear-gradient(135deg, rgba(111, 91, 77, 0.92) 0%, rgba(78, 64, 54, 0.98) 100%);
 
