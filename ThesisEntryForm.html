@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="style.css">
+        <title>Log New Thesis</title>
+        <style>
+    
+        </style>
+    </head>
+    <body>
+
+        <div class="nav-shell">
+            <div class="nav-panel">
+                        <button class="regular-button" onclick="window.location.href='JournalHome.html'" > Home
+                        </button>
+            </div>
+        </div>
+
+
+                <div class="form-shell">
+         
+                            <div class="Stock-Details">
+                                <label for="Stock-Name-Search">Stock Name:</label>
+                                <input type="text" id="Stock-Name-Search" name="Stock-Name-Search" placeholder="Enter Stock Name">
+
+                                <label for="Stock-Ticker">Ticker Symbol:</label>
+                                <input type="text" id="Stock-Ticker" name="Stock-Ticker" placeholder="e.g. AAPL">
+
+                                <label for="Stock-Exchange">Exchange:</label>
+                                <input type="text" id="Stock-Exchange" name="Stock-Exchange" placeholder="e.g. NASDAQ">
+
+                                <label for="Stock-Sector">Sector:</label>
+                                <input type="text" id="Stock-Sector" name="Stock-Sector" placeholder="e.g. Technology">
+
+                                <label for="Entry-Price">Entry Price:</label>
+                                <input type="number" step="0.01" id="Entry-Price" name="Entry-Price" placeholder="Enter Entry Price">
+
+                                <label for="Target-Price">Target Price:</label>
+                                <input type="number" step="0.01" id="Target-Price" name="Target-Price" placeholder="Enter Target Price">
+
+                                <label for="Stop-Loss">Stop Loss:</label>
+                                <input type="number" step="0.01" id="Stop-Loss" name="Stop-Loss" placeholder="Enter Stop Loss">
+
+                                <label for="Position-Size">Position Size (shares):</label>
+                                <input type="number" id="Position-Size" name="Position-Size" placeholder="Enter number of shares">
+
+                                <label for="Thesis-Date">Date:</label>
+                                <input type="date" id="Thesis-Date" name="Thesis-Date">
+                            </div>
+              
+        
+
+              <div class="Bull-Case">
+                                <label for="Bull-Case-Reasoning">Bull Case:</label>
+                                <textarea id="Bull-Case-Reasoning" name="Bull-Case-Reasoning" placeholder="Enter the bullish thesis" rows="5"></textarea>
+              </div>
+
+              <div class="Bear-Case">
+                                <label for="Bear-Case-Reasoning">Bear Case:</label>
+                                <textarea id="Bear-Case-Reasoning" name="Bear-Case-Reasoning" placeholder="Enter the bearish thesis" rows="5"></textarea>
+              </div>
+
+              <div class="Confidence-Level">
+                                <label for="Confidence-Level">Confidence Level:</label>
+                                <input type="range" id="Confidence-Level" name="Confidence-Level" min="0" max="100" step="1" value="50">
+                                <span id="Confidence-Value">50%</span>
+              </div>
+
+              <div class="Confidence-Level">
+                                <label for="Thesis-Notes">Additional Notes:</label>
+                                <textarea id="Thesis-Notes" name="Thesis-Notes" placeholder="Enter any additional notes" rows="4"></textarea>
+              </div>
+            
+            
+            
+            
+            <button class="regular-button" onclick="window.location.href='JournalHome.html'" > Save Thesis
+            </button>
+
+            <script>
+                const confidenceSlider = document.getElementById('Confidence-Level');
+                const confidenceValue = document.getElementById('Confidence-Value');
+
+                function updateConfidenceValue() {
+                    confidenceValue.textContent = `${confidenceSlider.value}%`;
+                }
+
+                confidenceSlider.addEventListener('input', updateConfidenceValue);
+                updateConfidenceValue();
+            </script>
+    
+    
+
+
+        
+            <div id="loading-screen" class="loading-screen">
+                <div class="loader" aria-label="Loading">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+
+      
+    
+        
+    
+</html>
