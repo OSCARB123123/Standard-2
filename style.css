@@ -18,22 +18,152 @@ body::before {
     z-index: -1;
 }
 
-.form-shell {
-  background: linear-gradient(135deg, rgba(111, 91, 77, 0.92) 0%, rgba(78, 64, 54, 0.98) 100%);
+.Disclaimer {
+  background: #09070d;
+  color: #FFF4DA;
+  font-family: "Urbanist", Arial, sans-serif;
+  font-size: 14px;
+
+  width: min(600px, calc(100vw - 3rem));
+  margin: 20px auto;
+  padding: 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+
+  border-radius: 14px;
+  border: 1px solid rgba(255, 244, 218, 0.10);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.2);
+}
+
+.Disclaimer-Close {
+  
+  background: none;
+  border: none;
+  color: #FFF4DA;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: none
+
+}
+
+.Disclaimer-Close:hover {
+  background: none;
+  border: none;
+  color: #FFF4DA;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: none
+}
+
+
+
+.Form-Shell {
+  background: #09070d;
   color: #FFF4DA;
   font-family: "Urbanist", Arial, sans-serif;
   font-size: 18px;
 
   width: min(600px, calc(100vw - 3rem));
   margin: 20px auto;
-  padding: 20px;
+  padding: 50px;
 
- 
-  align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
 
   border-radius: 14px;
   border: 1px solid rgba(255, 244, 218, 0.10);
   box-shadow: 0 10px 26px rgba(0, 0, 0, 0.2);
+
+}
+
+.Thesis-Date {
+  width: 100%;
+}
+
+.Thesis-Date input {
+  width: 25%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  font-family: "Urbanist", Arial, sans-serif;
+  color: #F7EEDC;
+  background: linear-gradient(135deg, rgba(111, 91, 77, 0.92) 0%, rgba(78, 64, 54, 0.98) 100%);
+  border: 1px solid rgba(255,244,218,0.06);
+  border-radius: 10px;
+}
+
+.Thesis-Form-Title {
+  font-size: 40px;
+  font-weight: 700;
+   color: #FFF4DA;
+}
+
+
+.Stock-Details label {
+  display: block;
+  margin-top: 20px;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.Bull-Case label, .Bear-Case label, .Additional-Notes label, .Confidence-Level label {
+  display: block;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-weight: 600;
+  background: rgb(48, 48, 48);
+  padding: 5px 10px;
+  border-radius: 8px;
+
+} 
+
+.Confidence-Level span {
+  margin-left: 70px;
+}
+.Confidence-Level input[type="range"] {
+  width: 70%;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+#Confidence-Level::-webkit-slider-runnable-track {
+    height: 6px;
+    background: rgb(97, 97, 97);
+    border-radius: 5px;
+}
+
+#Confidence-Level::-webkit-slider-thumb {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-top: -6px;
+}
+
+
+.Additional-Notes textarea{
+  margin-bottom: 100px;
+}
+
+.Thesis-Form-Subtitle{
+
+  font-size: 25px;
+  font-weight: 600;
+  margin-top: 70px;
+  margin-bottom: 30px;
+   color: #FFF4DA;
+}
+
+.Thesis-Components label {
+  width: 100%;
+}
+
+
+.Target-Price {
+  margin-top: 20px;
 
 }
 
@@ -95,6 +225,17 @@ body::before {
 
 .percentage.negative {
   color: #FF8A8A;
+}
+
+.Stock-Details {
+  padding-top : 20px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  grid-template-columns: 1fr 100px 90px;
+ 
+  color: rgba(255, 244, 218, 0.75);
+  font-size: 16px;
 }
 
 .price {
@@ -699,4 +840,28 @@ div.Explanation2 h2 {
 .cta:hover .hover-underline-animation:after {
   transform: scaleX(1);
   transform-origin: bottom left;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+textarea,
+select,
+.Namebox,
+.textbox {
+  box-sizing: border-box;
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  font-family: "Urbanist", Arial, sans-serif;
+  color: #F7EEDC;
+  background: linear-gradient(135deg, rgba(111, 91, 77, 0.92) 0%, rgba(78, 64, 54, 0.98) 100%);
+  border: 1px solid rgba(255,244,218,0.06);
+  border-radius: 8px;
+}
+
+/* Small screens: keep inputs full width with comfortable spacing */
+@media (max-width: 650px) {
+  input[type="text"], textarea, select, .Namebox, .textbox { width: 100%; }
 }
