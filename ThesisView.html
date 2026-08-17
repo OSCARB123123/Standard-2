@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="style.css">
+        <title>Thesis View</title>
+        <style>
+            .thesis-view-container {
+                max-width: 900px;
+                margin: 0 auto;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            }
+            .thesis-view-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 2px solid #FFF4DA;
+                padding-bottom: 15px;
+                margin-bottom: 20px;
+            }
+            .thesis-view-title {
+                font-size: 28px;
+                font-weight: bold;
+                margin: 0;
+                color: #FFC67E;
+            }
+            .thesis-view-subtitle {
+                font-size: 16px;
+                color:#FFF4DA;
+                margin: 5px 0 0 0;
+            }
+            .thesis-section {
+                margin-bottom: 30px;
+                padding: 15px;
+                background-color: #FFF4DA;
+                
+                border-radius: 8px;
+            }
+            .thesis-section-title {
+                font-size: 18px;
+                font-weight: bold;
+                margin-bottom: 10px;
+                color: #333;
+            }
+            .thesis-details-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 15px;
+            }
+            .detail-item {
+                padding: 10px;
+                background-color: #FFF4DA;
+                border-radius: 4px;
+
+            }
+            .detail-label {
+                font-weight: bold;
+                color: #555;
+                font-size: 12px;
+                text-transform: uppercase;
+                margin-bottom: 5px;
+            }
+            .detail-value {
+                font-size: 16px;
+                color: #333;
+            }
+            .thesis-text-section {
+                margin-bottom: 20px;
+            }
+            .thesis-text-section p {
+                line-height: 1.6;
+                color: #444;
+                margin: 0;
+                white-space: pre-wrap;
+            }
+    
+            .back-button:hover {
+                background-color: #5a6268;
+            }
+
+        </style>
+    </head>
+    <body>
+
+        <div class="nav-shell">
+            <div class="nav-panel">
+                        <button class="regular-button" onclick="window.location.href='JournalHome.html'" > Home
+                        </button>
+                        <button class="regular-button" onclick="window.location.href='ThesisEntryForm.html'" > Log Thesis
+                        </button>
+            </div>
+        </div>
+
+        <div class="thesis-view-container">
+            <div class="thesis-view-header">
+                <div>
+                    <h1 class="thesis-view-title" id="ticker-display">--</h1>
+                    <p class="thesis-view-subtitle" id="stock-name-display">--</p>
+                </div>
+            </div>
+
+            <!-- Stock Details Section -->
+            <div class="thesis-section">
+                <div class="thesis-section-title">Stock Details</div>
+                <div class="thesis-details-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">Stock Name</div>
+                        <div class="detail-value" id="detail-stock-name">--</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Ticker</div>
+                        <div class="detail-value" id="detail-ticker">--</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Exchange</div>
+                        <div class="detail-value" id="detail-exchange">--</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Sector</div>
+                        <div class="detail-value" id="detail-sector">--</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Investment Details Section -->
+            <div class="thesis-section">
+                <div class="thesis-section-title">Investment Details</div>
+                <div class="thesis-details-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">Entry Price</div>
+                        <div class="detail-value" id="detail-entry-price">--</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Target Price</div>
+                        <div class="detail-value" id="detail-target-price">--</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Stop Loss</div>
+                        <div class="detail-value" id="detail-stop-loss">--</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Position Size</div>
+                        <div class="detail-value" id="detail-position-size">--</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thesis Analysis Section -->
+            <div class="thesis-section">
+                <div class="thesis-section-title">Thesis Analysis</div>
+                
+                <div class="thesis-text-section">
+                    <div class="detail-label">Bull Case</div>
+                    <p id="detail-bull-case">--</p>
+                </div>
+
+                <div class="thesis-text-section">
+                    <div class="detail-label">Bear Case</div>
+                    <p id="detail-bear-case">--</p>
+                </div>
+            </div>
+
+            <!-- Confidence & Notes Section -->
+            <div class="thesis-section">
+                <div class="thesis-section-title">Confidence & Notes</div>
+                <div class="thesis-details-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">Confidence Level</div>
+                        <div class="detail-value" id="detail-confidence">--</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Date Added</div>
+                        <div class="detail-value" id="detail-date">--</div>
+                    </div>
+                </div>
+                
+                <div class="thesis-text-section" style="margin-top: 20px;">
+                    <div class="detail-label">Additional Notes</div>
+                    <p id="detail-notes">--</p>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // Get thesis ID from URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const thesisId = parseInt(urlParams.get('id'));
+
+            // Load and display the thesis
+            function loadThesis() {
+                const theses = JSON.parse(localStorage.getItem('theses')) || [];
+                
+                if (thesisId < 0 || thesisId >= theses.length) {
+                    document.body.innerHTML = '<p>Thesis not found. <a href="JournalHome.html">Back to home</a></p>';
+                    return;
+                }
+
+                const thesis = theses[thesisId];
+
+                // Populate header
+                document.getElementById('ticker-display').textContent = thesis.ticker;
+                document.getElementById('stock-name-display').textContent = thesis.stockName;
+
+                // Populate stock details
+                document.getElementById('detail-stock-name').textContent = thesis.stockName;
+                document.getElementById('detail-ticker').textContent = thesis.ticker;
+                document.getElementById('detail-exchange').textContent = thesis.exchange;
+                document.getElementById('detail-sector').textContent = thesis.sector;
+
+                // Populate investment details
+                document.getElementById('detail-entry-price').textContent = `$${thesis.entryPrice}`;
+                document.getElementById('detail-target-price').textContent = `$${thesis.targetPrice}`;
+                document.getElementById('detail-stop-loss').textContent = `$${thesis.stopLoss}`;
+                document.getElementById('detail-position-size').textContent = `${thesis.positionSize} shares`;
+
+                // Populate thesis analysis
+                document.getElementById('detail-bull-case').textContent = thesis.bullCase;
+                document.getElementById('detail-bear-case').textContent = thesis.bearCase;
+
+                // Populate confidence and notes
+                document.getElementById('detail-confidence').textContent = `${thesis.confidence}%`;
+                document.getElementById('detail-date').textContent = thesis.date;
+                document.getElementById('detail-notes').textContent = thesis.notes || 'No additional notes';
+            }
+
+            // Load thesis when page loads
+            document.addEventListener('DOMContentLoaded', loadThesis);
+        </script>
+
+    </body>
+</html>

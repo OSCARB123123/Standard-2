@@ -99,7 +99,7 @@
                                             <label for="Thesis-Notes">Additional Notes:</label>
                                             <textarea id="Thesis-Notes" name="Thesis-Notes" placeholder="Enter any additional notes" rows="4"></textarea>
                         </div>
-                        <button class="regular-button" onclick="window.location.href='JournalHome.html'" > Save Thesis
+                        <button class="regular-button" onclick="saveThesis()" > Save Thesis
                         </button>
                 </div>
                         
@@ -109,7 +109,12 @@
 
             <script>
                 function closeDisclaimer() {
-                    document.getElementById("Disclaimer").style.display = "none";
+                    const disclaimerOverlay = document.getElementById("Disclaimer-Overlay");
+                    const disclaimer = document.getElementById("Disclaimer");
+                    disclaimerOverlay.style.display = "none";
+                    disclaimer.style.display = "none";
+
+                    
                 }
                 const confidenceSlider = document.getElementById('Confidence-Level');
                 const confidenceValue = document.getElementById('Confidence-Value');
@@ -120,6 +125,48 @@
 
                 confidenceSlider.addEventListener('input', updateConfidenceValue);
                 updateConfidenceValue();
+
+                // Function to save thesis to localStorage
+                function saveThesis() {
+                    const thesis = {
+                        date: document.getElementById('Thesis-Date').value,
+                        stockName: document.getElementById('Stock-Name-Search').value,
+                        ticker: document.getElementById('Stock-Ticker').value,
+                        exchange: document.getElementById('Stock-Exchange').value,
+                        sector: document.getElementById('Stock-Sector').value,
+                        entryPrice: document.getElementById('Entry-Price').value,
+                        targetPrice: document.getElementById('Target-Price').value,
+                        stopLoss: document.getElementById('Stop-Loss').value,
+                        positionSize: document.getElementById('Position-Size').value,
+                        bullCase: document.getElementById('Bull-Case-Reasoning').value,
+                        bearCase: document.getElementById('Bear-Case-Reasoning').value,
+                        confidence: document.getElementById('Confidence-Level').value,
+                        notes: document.getElementById('Thesis-Notes').value
+                    };
+
+                    // Validate that required fields are filled
+                    if (!thesis.ticker || !thesis.stockName) {
+                        alert('Please fill in Stock Name and Ticker Symbol');
+                        return;
+                    }
+
+                    // Get existing theses from localStorage
+                    let theses = JSON.parse(localStorage.getItem('theses')) || [];
+
+                    // Add new thesis
+                    theses.push(thesis);
+
+                    // Save back to localStorage
+                    localStorage.setItem('theses', JSON.stringify(theses));
+
+                    // Show confirmation and redirect
+                    alert('Thesis saved successfully!');
+                    window.location.href = 'JournalHome.html';
+                }
+
+        
+
+
             </script>
     
     
