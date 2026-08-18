@@ -1,49 +1,43 @@
 <!DOCTYPE html>
-
 <html>
-        <head>
-                <meta charset="utf-8">
-                <meta http-equiv="X-UA-Compatible" content="IE=edge">
-                <title>Deep Value Journal</title>
-                <meta name="description" content="Investment Journal">
-                <meta name="viewport" content="width=device-width, initial-scale=1">
-                <link rel="stylesheet" href="style.css">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
+        <title>Deep Value Journal</title>
+        <meta name="description" content="Investment Journal">
 
-                <link rel="preconnect" href="https://fonts.googleapis.com">
-                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-                <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-        <!-- <link rel="stylesheet" href="Animation/animation.css"> -->
-        </head>
-        <body>
+        <link rel="stylesheet" href="style.css">
 
-      
-            
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    </head>
 
-            <div id="canvas-container"><canvas id="c"></canvas></div>
-            <div class="vignette"></div>
-        <div class="CentralElement">
-         Deep Value.
+    <body class="landing-page">
 
-
-
+        <div id="canvas-container">
+            <canvas id="c"></canvas>
         </div>
 
+        <div class="vignette"></div>
 
-                    <!-- From Uiverse.io by cssbuttons-io --> 
-        
-        <button onclick="window.location.href='JournalHome.html'" > Enter Journal
-        </button>
+        <main class="landing-content">
 
-            
-                
+            <div class="landing-title">
+                <h1>Deep Value.</h1>
+                <p>Investment Journal</p>
+            </div>
 
+            <button
+                class="landing-button"
+                onclick="window.location.href='JournalHome.html'">
+                Enter Journal
+            </button>
 
+        </main>
 
-            
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-            <!-- Three.js from CDN -->
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-        <!--  <script src="Animation/main.js"></script> -->  
-        </body>
+    </body>
 </html>

@@ -4,42 +4,40 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
+        <title>Dashboard</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="style.css">
-        <title>Welcome</title>
-        <style>
-    
-        </style>
     </head>
+
     <body>
 
         <div class="nav-shell">
+             
             <div class="nav-panel">
-                        <button class="regular-button" onclick="window.location.href='JournalHome.html'" > Home
-                        </button>
-                        <button class="regular-button" onclick="window.location.href='ThesisEntryForm.html'" > Log Thesis
-                        </button>
+                <div class="nav-brand">
+                Deep Value Journal
+                </div>
+                <button class="regular-button" onclick="window.location.href='JournalHome.html'">
+                    Home
+                </button>
             </div>
         </div>
-    
+
         <main class="home-shell dashboard-home">
-            
 
             <section class="dashboard-heading">
                 <div>
                     <h1 class="Welcome dashboard-title">Dashboard</h1>
-                    <p> Track your investment ideas and conviction</p>
-
+                    <p>Track your investment ideas and conviction</p>
                 </div>
+
                 <a href="ThesisEntryForm.html" class="dashboard-newthesis">
-                    + add New Thesis 
+                    + add New Thesis
                 </a>
             </section>
 
 
-       
             <div id="loading-screen" class="loading-screen">
                 <div class="loader" aria-label="Loading">
                     <div></div>
@@ -50,143 +48,396 @@
                 </div>
             </div>
 
-        <div class="dashboard-widgets">
-   
-        
-            <div class="dashboard-account-value">
-                <span class="dashboard-widget-label">Real Holdings Value:</span>
-                <span class="dashboard-widget-amount">$10,000</span>
-            </div>  
 
+            <div class="dashboard-widgets">
 
-            <div class="dashboard-stocks-tracked">
-                <span class="dashboard-widget-label">Stocks Tracked:</span>
-                <span class="dashboard-widget-amount" id="stocks-tracked-amount">0</span>  
-            </div>
+                <div class="dashboard-account-value">
+                    <span class="dashboard-widget-label">Real Holdings Value:</span>
+                    <span class="dashboard-widget-amount">$10,000</span>
+                </div>
 
-            <div class="dashboard-theses-review">
-                <span class="dashboard-widget-label">Theses Needing Review:</span>
-                <span class="dashboard-widget-amount" id="theses-review-amount">0</span>
-            </div>
+                <div class="dashboard-stocks-tracked">
+                    <span class="dashboard-widget-label">Stocks Tracked:</span>
+                    <span class="dashboard-widget-amount" id="stocks-tracked-amount">0</span>
+                </div>
 
-            <div class="dashboard-confidence">
-                <span class="dashboard-widget-label">Total Confidence Percentage:</span>
-                <span class="dashboard-widget-amount" id="confidence-amount">0%</span>
-            </div>
+                <div class="dashboard-theses-review">
+                    <span class="dashboard-widget-label">Theses Needing Review:</span>
+                    <span class="dashboard-widget-amount" id="theses-review-amount">0</span>
+                </div>
 
-        </div>
-
-        <div class="dashboard-review-section">
-            <div class="dashboard-review-header">
-                <div>
-                    <h2>Theses Needing Review</h2>
-                    <p>Investment ideas that may need reassessing.</p>
+                <div class="dashboard-confidence">
+                    <span class="dashboard-widget-label">Average Confidence:</span>
+                    <span class="dashboard-widget-amount" id="confidence-amount">0%</span>
                 </div>
 
             </div>
 
-            <ul id="review-container">
+        <div class="dashboard-middle-row">
+            <!-- Confidence Distribution Chart -->
+
+            <div class="dashboard-confidence-chart">
+
+                <div class="dashboard-review-header">
+                    <div>
+                        <h2>Confidence Distribution</h2>
+                        <p>Number of theses within each confidence bracket.</p>
+                    </div>
+                </div>
+
+                <div id="confidence-chart" class="confidence-chart">
+                    <!-- Chart will be generated here -->
+                </div>
+
+            </div>
 
 
-            </ul>
+            <!-- Theses Needing Review -->
+
+            <div class="dashboard-review-section">
+
+                <div class="dashboard-review-header">
+                    <div>
+                        <h2>Theses Needing Review</h2>
+                        <p>Investment ideas that may need reassessing.</p>
+                    </div>
+                </div>
+
+                <ul id="review-container">
+                </ul>
+
+            </div>
         </div>
 
+
+            <!-- My Theses -->
+
             <div class="Stocklist dashboard-stocklist">
+
                 <ul class="features-list dashboard-features-list">
+
                     <div class="Stock-header dashboard-stock-header">
                         <span class="dashboard-header-stock">My Theses:</span>
-                 
                     </div>
+
                     <div id="theses-container">
                         <!-- Theses will be loaded here dynamically -->
                     </div>
 
                 </ul>
+
             </div>
 
         </main>
 
+
         <script>
+
             // Load theses from localStorage and display them
             function loadTheses() {
+
                 const container = document.getElementById('theses-container');
                 const reviewContainer = document.getElementById('review-container');
+
                 const theses = JSON.parse(localStorage.getItem('theses')) || [];
 
-                // Update dashboard widgets with dynamic data
+
+                // Update dashboard widgets
                 updateDashboardWidgets(theses);
 
+
+                // Load confidence distribution chart
+                loadConfidenceChart(theses);
+
+
                 if (theses.length === 0) {
-                    container.innerHTML = '<li class="dashboard-stock-row"><p>No theses saved yet. <a href="ThesisEntryForm.html">Create one now</a>.</p></li>';
-                    reviewContainer.innerHTML = '<li class="dashboard-stock-row"><p>No theses needing review yet.</p></li>';
+
+                    container.innerHTML =
+                        '<li class="dashboard-stock-row"><p>No theses saved yet. <a href="ThesisEntryForm.html">Create one now</a>.</p></li>';
+
+                    reviewContainer.innerHTML =
+                        '<li class="dashboard-stock-row"><p>No theses needing review yet.</p></li>';
+
                     return;
                 }
+
 
                 // Load main theses list
                 container.innerHTML = '';
+
                 theses.forEach((thesis, index) => {
+
                     const thesisElement = document.createElement('li');
+
                     thesisElement.className = 'dashboard-stock-row';
+
                     thesisElement.innerHTML = `
-                        <a href="ThesisView.html?id=${index}" style="text-decoration: none; color: inherit;">
-                            <strong class="dashboard-stock-name">${thesis.ticker}</strong>
+                        <a href="ThesisView.html?id=${index}"
+                           style="text-decoration: none; color: inherit;">
+
+                            <strong class="dashboard-stock-name">
+                                ${thesis.ticker}
+                            </strong>
+
                         </a>
                     `;
+
                     container.appendChild(thesisElement);
+
                 });
 
-                // Load theses needing review (all theses sorted by date)
+
+                // Load theses needing review
                 loadThesesNeedingReview(theses, reviewContainer);
+
             }
 
-            function updateDashboardWidgets(theses) {
-                // Count unique stocks
-                const uniqueTickers = new Set(theses.map(t => t.ticker));
-                document.getElementById('stocks-tracked-amount').textContent = uniqueTickers.size;
 
-                // Count theses needing review (all theses for now)
-                document.getElementById('theses-review-amount').textContent = theses.length;
+            // Update dashboard widgets
+            function updateDashboardWidgets(theses) {
+
+                // Count unique stocks
+                const uniqueTickers = new Set(
+                    theses.map(t => t.ticker)
+                );
+
+                document.getElementById('stocks-tracked-amount').textContent =
+                    uniqueTickers.size;
+
+
+                // Count theses needing review
+                document.getElementById('theses-review-amount').textContent =
+                    theses.length;
+
 
                 // Calculate average confidence
                 if (theses.length > 0) {
-                    const totalConfidence = theses.reduce((sum, t) => sum + parseInt(t.confidence || 0), 0);
-                    const avgConfidence = Math.round(totalConfidence / theses.length);
-                    document.getElementById('confidence-amount').textContent = avgConfidence + '%';
+
+                    const totalConfidence = theses.reduce(
+                        (sum, t) => sum + parseInt(t.confidence || 0),
+                        0
+                    );
+
+                    const avgConfidence = Math.round(
+                        totalConfidence / theses.length
+                    );
+
+                    document.getElementById('confidence-amount').textContent =
+                        avgConfidence + '%';
+
                 }
+
             }
 
-            function loadThesesNeedingReview(theses, container) {
+
+            // Create confidence distribution chart
+            function loadConfidenceChart(theses) {
+
+                const chart = document.getElementById('confidence-chart');
+
+
+                // Create the confidence brackets
+                const brackets = {
+
+                    "0–20%": 0,
+                    "21–40%": 0,
+                    "41–60%": 0,
+                    "61–80%": 0,
+                    "81–100%": 0
+
+                };
+
+
+                // Count how many theses are in each bracket
+                theses.forEach(thesis => {
+
+                    const confidence =
+                        parseInt(thesis.confidence || 0);
+
+
+                    if (confidence <= 20) {
+
+                        brackets["0–20%"]++;
+
+                    } else if (confidence <= 40) {
+
+                        brackets["21–40%"]++;
+
+                    } else if (confidence <= 60) {
+
+                        brackets["41–60%"]++;
+
+                    } else if (confidence <= 80) {
+
+                        brackets["61–80%"]++;
+
+                    } else {
+
+                        brackets["81–100%"]++;
+
+                    }
+
+                });
+
+
+                // Find the largest bracket
+                const maxCount =
+                    Math.max(...Object.values(brackets), 1);
+
+
+                // Clear existing chart
+                chart.innerHTML = '';
+
+
+                // Create each bar
+                Object.entries(brackets).forEach(
+                    ([bracket, count]) => {
+
+                    const row =
+                        document.createElement('div');
+
+                    row.className =
+                        'confidence-chart-row';
+
+
+                    // Bracket label
+                    const label =
+                        document.createElement('span');
+
+                    label.className =
+                        'confidence-chart-label';
+
+                    label.textContent =
+                        bracket;
+
+
+                    // Bar container
+                    const barContainer =
+                        document.createElement('div');
+
+                    barContainer.className =
+                        'confidence-bar-container';
+
+
+                    // Bar
+                    const bar =
+                        document.createElement('div');
+
+                    bar.className =
+                        'confidence-bar';
+
+
+                    // Set bar width
+                    bar.style.width =
+                        `${(count / maxCount) * 100}%`;
+
+
+                    // Number of theses
+                    const number =
+                        document.createElement('span');
+
+                    number.className =
+                        'confidence-chart-number';
+
+                    number.textContent =
+                        count;
+
+
+                    // Put everything together
+                    barContainer.appendChild(bar);
+
+                    barContainer.appendChild(number);
+
+                    row.appendChild(label);
+
+                    row.appendChild(barContainer);
+
+                    chart.appendChild(row);
+
+                });
+
+            }
+
+
+            // Load theses needing review
+            function loadThesesNeedingReview(
+                theses,
+                container
+            ) {
+
                 if (theses.length === 0) {
-                    container.innerHTML = '<li class="dashboard-stock-row"><p>No theses needing review yet.</p></li>';
+
+                    container.innerHTML =
+                        '<li class="dashboard-stock-row"><p>No theses needing review yet.</p></li>';
+
                     return;
                 }
 
-                // Sort theses by date (oldest first)
-                const sortedTheses = [...theses].sort((a, b) => {
-                    return new Date(a.date) - new Date(b.date);
-                });
+
+                // Sort theses by date
+                const sortedTheses =
+                    [...theses].sort((a, b) => {
+
+                        return new Date(a.date) -
+                               new Date(b.date);
+
+                    });
+
 
                 container.innerHTML = '';
-                sortedTheses.forEach((thesis, index) => {
-                    // Find the original index in theses array
-                    const originalIndex = theses.findIndex(t => t.date === thesis.date && t.ticker === thesis.ticker);
-                    
-                    const reviewElement = document.createElement('li');
-                    reviewElement.className = 'dashboard-stock-row';
+
+
+                sortedTheses.forEach(thesis => {
+
+                    // Find original index
+                    const originalIndex =
+                        theses.findIndex(
+                            t =>
+                                t.date === thesis.date &&
+                                t.ticker === thesis.ticker
+                        );
+
+
+                    const reviewElement =
+                        document.createElement('li');
+
+                    reviewElement.className =
+                        'dashboard-stock-row';
+
+
                     reviewElement.innerHTML = `
-                        <a href="ThesisView.html?id=${originalIndex}" style="text-decoration: none; color: inherit;">
-                            <strong class="dashboard-stock-name">${thesis.ticker}</strong>
-                            <span class="dashboard-review-date">${new Date(thesis.date).toLocaleDateString()}</span>
+
+                        <a href="ThesisView.html?id=${originalIndex}"
+                           style="text-decoration: none; color: inherit;">
+
+                            <strong class="dashboard-stock-name">
+                                ${thesis.ticker}
+                            </strong>
+
+                            <span class="dashboard-review-date">
+                                ${new Date(thesis.date).toLocaleDateString()}
+                            </span>
+
                         </a>
+
                     `;
+
+
                     container.appendChild(reviewElement);
+
                 });
+
             }
 
+
             // Load theses when page loads
-            document.addEventListener('DOMContentLoaded', loadTheses);
+            document.addEventListener(
+                'DOMContentLoaded',
+                loadTheses
+            );
+
         </script>
 
-        
-    
+    </body>
+
 </html>
