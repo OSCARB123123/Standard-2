@@ -7,6 +7,7 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="style.css">
+        <script type="module" src="Journal.js"></script>
         <title>Thesis View</title>
         <style>
             .thesis-view-container {
@@ -188,49 +189,7 @@
         </div>
 
         <script>
-            // Get thesis ID from URL parameter
-            const urlParams = new URLSearchParams(window.location.search);
-            const thesisId = parseInt(urlParams.get('id'));
-
-            // Load and display the thesis
-            function loadThesis() {
-                const theses = JSON.parse(localStorage.getItem('theses')) || [];
-                
-                if (thesisId < 0 || thesisId >= theses.length) {
-                    document.body.innerHTML = '<p>Thesis not found. <a href="JournalHome.html">Back to home</a></p>';
-                    return;
-                }
-
-                const thesis = theses[thesisId];
-
-                // Populate header
-                document.getElementById('ticker-display').textContent = thesis.ticker;
-                document.getElementById('stock-name-display').textContent = thesis.stockName;
-
-                // Populate stock details
-                document.getElementById('detail-stock-name').textContent = thesis.stockName;
-                document.getElementById('detail-ticker').textContent = thesis.ticker;
-                document.getElementById('detail-exchange').textContent = thesis.exchange;
-                document.getElementById('detail-sector').textContent = thesis.sector;
-
-                // Populate investment details
-                document.getElementById('detail-entry-price').textContent = `$${thesis.entryPrice}`;
-                document.getElementById('detail-target-price').textContent = `$${thesis.targetPrice}`;
-                document.getElementById('detail-stop-loss').textContent = `$${thesis.stopLoss}`;
-                document.getElementById('detail-position-size').textContent = `${thesis.positionSize} shares`;
-
-                // Populate thesis analysis
-                document.getElementById('detail-bull-case').textContent = thesis.bullCase;
-                document.getElementById('detail-bear-case').textContent = thesis.bearCase;
-
-                // Populate confidence and notes
-                document.getElementById('detail-confidence').textContent = `${thesis.confidence}%`;
-                document.getElementById('detail-date').textContent = thesis.date;
-                document.getElementById('detail-notes').textContent = thesis.notes || 'No additional notes';
-            }
-
-            // Load thesis when page loads
-            document.addEventListener('DOMContentLoaded', loadThesis);
+          
         </script>
 
     </body>

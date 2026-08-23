@@ -17,6 +17,7 @@
     >
 
     <link rel="stylesheet" href="style.css">
+    <script type="module" src="Journal.js"></script>
 
     <title>Log New Thesis</title>
 </head>
@@ -90,7 +91,7 @@
                 <button
                     type="button"
                     class="Disclaimer-Button Disclaimer-Button--primary"
-                    onclick="closeDisclaimer()"
+                    id="Continue-Button"
                 >
                     Continue
                 </button>
@@ -362,144 +363,6 @@
 
 
     <script>
-
-        // Close the disclaimer
-        function closeDisclaimer() {
-
-            const disclaimerOverlay =
-                document.getElementById("Disclaimer-Overlay");
-
-            const disclaimer =
-                document.getElementById("Disclaimer");
-
-            disclaimerOverlay.style.display = "none";
-            disclaimer.style.display = "none";
-
-        }
-
-
-
-        // Confidence slider
-        const confidenceSlider =
-            document.getElementById("Confidence-Level");
-
-        const confidenceValue =
-            document.getElementById("Confidence-Value");
-
-
-        function updateConfidenceValue() {
-
-            confidenceValue.textContent =
-                `${confidenceSlider.value}%`;
-
-        }
-
-
-        confidenceSlider.addEventListener(
-            "input",
-            updateConfidenceValue
-        );
-
-        updateConfidenceValue();
-
-
-
-        // Save thesis to localStorage
-        function saveThesis(event) {
-
-            event.preventDefault();
-
-
-            const thesis = {
-
-                date:
-                    document.getElementById("Thesis-Date").value,
-
-                stockName:
-                    document.getElementById("Stock-Name-Search").value,
-
-                ticker:
-                    document.getElementById("Stock-Ticker").value,
-
-                exchange:
-                    document.getElementById("Stock-Exchange").value,
-
-                sector:
-                    document.getElementById("Stock-Sector").value,
-
-                entryPrice:
-                    document.getElementById("Entry-Price").value,
-
-                targetPrice:
-                    document.getElementById("Target-Price").value,
-
-                stopLoss:
-                    document.getElementById("Stop-Loss").value,
-
-                positionSize:
-                    document.getElementById("Position-Size").value,
-
-                bullCase:
-                    document.getElementById("Bull-Case-Reasoning").value,
-
-                bearCase:
-                    document.getElementById("Bear-Case-Reasoning").value,
-
-                confidence:
-                    document.getElementById("Confidence-Level").value,
-
-                notes:
-                    document.getElementById("Thesis-Notes").value
-
-            };
-
-
-            // Validate required fields
-            if (!thesis.ticker || !thesis.stockName) {
-
-                alert(
-                    "Please fill in Stock Name and Ticker Symbol"
-                );
-
-                return;
-
-            }
-
-          if (!thesis.date) {
-
-                alert("Please add a Date");
-
-                return;
-            }
-
-
-            // Get existing theses
-            let theses =
-                JSON.parse(
-                    localStorage.getItem("theses")
-                ) || [];
-
-
-            // Add new thesis
-            theses.push(thesis);
-
-
-            // Save to localStorage
-            localStorage.setItem(
-                "theses",
-                JSON.stringify(theses)
-            );
-
-
-            // Confirmation
-            alert("Thesis saved successfully!");
-
-
-            // Return to dashboard
-            window.location.href =
-                "JournalHome.html";
-
-        }
 
     </script>
 
