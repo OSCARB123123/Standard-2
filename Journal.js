@@ -3,21 +3,26 @@ const getTheses = () =>
     JSON.parse(localStorage.getItem("theses")) || [];
 
 
-// ==========================
-// Dashboard
-// ==========================
 
 function initDashboard() {
-
     const thesesContainer = document.getElementById("theses-container");
     const reviewContainer = document.getElementById("review-container");
-
     if (!thesesContainer || !reviewContainer) return;
 
     const theses = getTheses();
 
+    // Theses needing review
+    const threeMonthsAgo = new Date();
+    threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+
+    const thesesNeedingReview = theses.filter(t => {
+        const lastReviewed = t.lastReviewed || t.date;
+        return new Date(lastReviewed) <= threeMonthsAgo;
+    });
+
     // Dashboard statistics
     const stocks = new Set(theses.map(t => t.ticker));
+
     const average = theses.length
         ? Math.round(
             theses.reduce((sum, t) => sum + Number(t.confidence || 0), 0)
@@ -26,7 +31,7 @@ function initDashboard() {
         : 0;
 
     document.getElementById("stocks-tracked-amount").textContent = stocks.size;
-    document.getElementById("theses-review-amount").textContent = theses.length;
+    document.getElementById("theses-review-amount").textContent = thesesNeedingReview.length;
     document.getElementById("confidence-amount").textContent = `${average}%`;
 
     // Thesis list
@@ -49,8 +54,10 @@ function initDashboard() {
         `;
 
     // Review list
-    const sorted = [...theses].sort(
-        (a, b) => new Date(a.date) - new Date(b.date)
+    const sorted = [...thesesNeedingReview].sort(
+        (a, b) =>
+            new Date(a.lastReviewed || a.date) -
+            new Date(b.lastReviewed || b.date)
     );
 
     reviewContainer.innerHTML = sorted.length
@@ -65,7 +72,7 @@ function initDashboard() {
                             ${t.ticker}
                         </strong>
                         <span class="dashboard-review-date">
-                            ${new Date(t.date).toLocaleDateString()}
+                            ${new Date(t.lastReviewed || t.date).toLocaleDateString()}
                         </span>
                     </a>
                 </li>
@@ -81,7 +88,6 @@ function initDashboard() {
     const chart = document.getElementById("confidence-chart");
 
     if (chart) {
-
         const brackets = [0, 0, 0, 0, 0];
 
         theses.forEach(t => {
@@ -119,14 +125,8 @@ function initDashboard() {
 }
 
 
-// ==========================
-// Thesis Entry Form
-// ==========================
-
 function initThesisForm() {
-
     const form = document.getElementById("Thesis-Form");
-
     if (!form) return;
 
     // Disclaimer
@@ -144,7 +144,6 @@ function initThesisForm() {
     const value = document.getElementById("Confidence-Value");
 
     if (slider && value) {
-
         const update = () => {
             value.textContent = `${slider.value}%`;
         };
@@ -159,7 +158,6 @@ function initThesisForm() {
 
 
 function saveThesis(event) {
-
     event.preventDefault();
 
     const fields = {
@@ -195,17 +193,19 @@ function saveThesis(event) {
         return;
     }
 
-
     if (!/^[A-Za-z0-9 .&'-]+$/.test(thesis.stockName)) {
-    alert("Stock Name contains invalid characters.");
-    return;
+        alert("Stock Name contains invalid characters.");
+        return;
     }
 
     if (!/^[A-Za-z0-9.-]+$/.test(thesis.ticker)) {
         alert("Ticker Symbol contains invalid characters.");
         return;
-    
     }
+
+    // Creation date is the initial review date
+    thesis.lastReviewed = thesis.date;
+
     // Save
     const theses = getTheses();
 
@@ -219,12 +219,8 @@ function saveThesis(event) {
 }
 
 
-// ==========================
-// Thesis View
-// ==========================
 
 function initThesisView() {
-
     if (!document.getElementById("ticker-display")) return;
 
     const id = Number(
@@ -234,14 +230,12 @@ function initThesisView() {
     const theses = getTheses();
 
     if (!Number.isInteger(id) || id < 0 || id >= theses.length) {
-
         document.body.innerHTML = `
             <p>
                 Thesis not found.
                 <a href="JournalHome.html">Back to home</a>
             </p>
         `;
-
         return;
     }
 
@@ -266,29 +260,23 @@ function initThesisView() {
     };
 
     Object.entries(fields).forEach(([id, property]) => {
-
         const element = document.getElementById(id);
 
         if (!element) return;
 
         let value = thesis[property];
 
-        if (id === "detail-entry-price" ||
+        if (
+            id === "detail-entry-price" ||
             id === "detail-target-price" ||
-            id === "detail-stop-loss") {
-
+            id === "detail-stop-loss"
+        ) {
             value = `$${value}`;
-
         } else if (id === "detail-position-size") {
-
             value = `${value} shares`;
-
         } else if (id === "detail-confidence") {
-
             value = `${value}%`;
-
         } else if (id === "detail-notes") {
-
             value = value || "No additional notes";
         }
 
@@ -297,14 +285,30 @@ function initThesisView() {
 }
 
 
-// ==========================
-// Start
-// ==========================
+
 
 document.addEventListener("DOMContentLoaded", () => {
-
     initDashboard();
     initThesisForm();
     initThesisView();
-
 });
+
+
+const accessibilityToggle = document.getElementById("accessibility-toggle");
+const accessibilityMenu = document.getElementById("accessibility-menu");
+const narratorToggle = document.getElementById("narrator-toggle");
+const stopNarratorButton = document.getElementById("stop-narrator");
+
+// Open / close accessibility menu
+if (accessibilityToggle && accessibilityMenu) {
+    accessibilityToggle.addEventListener("click", () => {
+        const isOpen = !accessibilityMenu.hidden;
+
+        accessibilityMenu.hidden = isOpen;
+
+        accessibilityToggle.setAttribute(
+            "aria-expanded",
+            String(!isOpen)
+        );
+    });
+}

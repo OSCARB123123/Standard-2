@@ -1,141 +1,322 @@
 <!DOCTYPE html>
 
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Dashboard</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="style.css">
-        <script type="module" src="Journal.js"></script>
-    </head>
+<html lang="en-NZ">
 
-    <body>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-        <div class="nav-shell">
-             
-            <div class="nav-panel">
-                <div class="nav-brand">
+    <title>Dashboard</title>
+
+    <meta
+        name="description"
+        content="Investment thesis dashboard"
+    >
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
+
+    <link rel="stylesheet" href="style.css">
+
+    <script
+        type="module"
+        src="Journal.js"
+    ></script>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+
+    <nav class="nav-shell" aria-label="Main navigation">
+
+        <div class="nav-panel">
+
+            <div class="nav-brand">
                 Deep Value Journal
-                </div>
-                <button class="regular-button" onclick="window.location.href='JournalHome.html'">
-                    Home
-                </button>
             </div>
+
+            <button
+                class="regular-button"
+                type="button"
+                onclick="window.location.href='JournalHome.html'"
+            >
+                Home
+            </button>
+
+            <button
+                id="accessibility-toggle"
+                class="regular-button"
+                type="button"
+                aria-expanded="false"
+                aria-controls="accessibility-menu"
+            >
+                <span aria-hidden="true"></span>
+                Accessibility Menu
+            </button>
+
+            <!-- Accessibility Menu -->
+
+            <div
+                id="accessibility-menu"
+                class="accessibility-menu"
+                hidden
+            >
+
+                <h2>
+                    Accessibility
+                </h2>
+
+            </div>
+
         </div>
 
-        <main class="home-shell dashboard-home">
-
-            <section class="dashboard-heading">
-                <div>
-                    <h1 class="Welcome dashboard-title">Dashboard</h1>
-                    <p>Track your investment ideas and conviction</p>
-                </div>
-
-                <a href="ThesisEntryForm.html" class="dashboard-newthesis">
-                    + add New Thesis
-                </a>
-            </section>
+    </nav>
 
 
-            <div id="loading-screen" class="loading-screen">
-                <div class="loader" aria-label="Loading">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
+    <!-- Dashboard -->
+
+    <main
+        class="home-shell dashboard-home"
+        id="dashboard-content"
+        aria-labelledby="dashboard-title"
+    >
+
+        <!-- Dashboard Heading -->
+
+        <section
+            class="dashboard-heading"
+            aria-labelledby="dashboard-title"
+        >
+
+            <div>
+
+                <h1
+                    class="Welcome dashboard-title"
+                    id="dashboard-title"
+                >
+                    Dashboard
+                </h1>
+
+                <p>
+                    Track your investment ideas and conviction
+                </p>
+
+            </div>
+
+            <a
+                href="ThesisEntryForm.html"
+                class="dashboard-newthesis"
+            >
+                + Add New Thesis
+            </a>
+
+        </section>
+
+
+        <!-- Loading Screen -->
+
+        <div
+            id="loading-screen"
+            class="loading-screen"
+            role="status"
+            aria-label="Loading dashboard"
+        >
+
+            <div
+                class="loader"
+                aria-hidden="true"
+            >
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+
+        </div>
+
+
+        <!-- Dashboard Summary Widgets -->
+
+        <section
+            class="dashboard-widgets"
+            aria-label="Dashboard summary"
+        >
+
+            <div
+                class="dashboard-account-value"
+            
+            >
+
+                <span class="dashboard-widget-label">
+                    Real Holdings Value:
+                </span>
+
+                <span class="dashboard-widget-amount">
+                    $10,000
+                </span>
+
             </div>
 
 
-            <div class="dashboard-widgets">
+            <div
+                class="dashboard-stocks-tracked"
+           
+            >
 
-                <div class="dashboard-account-value">
-                    <span class="dashboard-widget-label">Real Holdings Value:</span>
-                    <span class="dashboard-widget-amount">$10,000</span>
-                </div>
+                <span class="dashboard-widget-label">
+                    Stocks Tracked:
+                </span>
 
-                <div class="dashboard-stocks-tracked">
-                    <span class="dashboard-widget-label">Stocks Tracked:</span>
-                    <span class="dashboard-widget-amount" id="stocks-tracked-amount">0</span>
-                </div>
-
-                <div class="dashboard-theses-review">
-                    <span class="dashboard-widget-label">Theses Needing Review:</span>
-                    <span class="dashboard-widget-amount" id="theses-review-amount">0</span>
-                </div>
-
-                <div class="dashboard-confidence">
-                    <span class="dashboard-widget-label">Average Confidence:</span>
-                    <span class="dashboard-widget-amount" id="confidence-amount">0%</span>
-                </div>
+                <span
+                    class="dashboard-widget-amount"
+                    id="stocks-tracked-amount"
+                >
+                    0
+                </span>
 
             </div>
+
+
+            <div
+                class="dashboard-theses-review"
+              
+            >
+
+                <span class="dashboard-widget-label">
+                    Theses Needing Review:
+                </span>
+
+                <span
+                    class="dashboard-widget-amount"
+                    id="theses-review-amount"
+                >
+                    0
+                </span>
+
+            </div>
+
+
+            <div
+                class="dashboard-confidence"
+            >
+
+                <span class="dashboard-widget-label">
+                    Average Confidence:
+                </span>
+
+                <span
+                    class="dashboard-widget-amount"
+                    id="confidence-amount"
+                >
+                    0%
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- Middle Dashboard Row -->
 
         <div class="dashboard-middle-row">
+
             <!-- Confidence Distribution Chart -->
 
-            <div class="dashboard-confidence-chart">
+            <section
+                class="dashboard-confidence-chart"
+          
+            >
 
                 <div class="dashboard-review-header">
+
                     <div>
-                        <h2>Confidence Distribution</h2>
-                        <p>Number of theses within each confidence bracket.</p>
+
+                        <h2 id="confidence-title">
+                            Confidence Distribution
+                        </h2>
+
+                        <p>
+                            Number of theses within each confidence bracket.
+                        </p>
+
                     </div>
+
                 </div>
 
-                <div id="confidence-chart" class="confidence-chart">
+
+                <div
+                    id="confidence-chart"
+                    class="confidence-chart"
+                
+                >
                     <!-- Chart will be generated here -->
                 </div>
 
-            </div>
+            </section>
 
 
             <!-- Theses Needing Review -->
 
-            <div class="dashboard-review-section">
+            <section
+                class="dashboard-review-section"
+                aria-labelledby="review-title"
+            >
 
                 <div class="dashboard-review-header">
+
                     <div>
-                        <h2>Theses Needing Review</h2>
-                        <p>Investment ideas that may need reassessing.</p>
+
+                        <h2 id="review-title">
+                            Theses Needing Review
+                        </h2>
+
+                        <p>
+                            Investment ideas that may need reassessing.
+                        </p>
+
                     </div>
+
                 </div>
 
-                <ul id="review-container">
+
+                <ul
+                    id="review-container"
+                    aria-label="Theses needing review"
+                >
                 </ul>
 
-            </div>
+            </section>
+
         </div>
 
 
-            <!-- My Theses -->
+       
+        <section
+            class="Stocklist dashboard-stocklist"
+            aria-labelledby="my-theses-title"
+        >
+            <div
+                class="features-list dashboard-features-list"
+            >
+                <h2
+                    id="my-theses-title"
+                    class="dashboard-stock-header"
+                >
+                    My Theses
+                </h2>
 
-            <div class="Stocklist dashboard-stocklist">
-
-                <ul class="features-list dashboard-features-list">
-
-                    <div class="Stock-header dashboard-stock-header">
-                        <span class="dashboard-header-stock">My Theses:</span>
-                    </div>
-
-                    <div id="theses-container">
-                        <!-- Theses will be loaded here dynamically -->
-                    </div>
-
-                </ul>
-
+                <div id="theses-container">
+                    <!-- Theses will be loaded here dynamically -->
+                </div>
             </div>
+        </section>
 
-        </main>
+    </main>
 
-
-        <script>
-
-        </script>
-
-    </body>
+</body>
 
 </html>
