@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-
 <html lang="en-NZ">
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
     <title>Dashboard</title>
 
     <meta
@@ -30,7 +28,10 @@
 
     <!-- Navigation -->
 
-    <nav class="nav-shell" aria-label="Main navigation">
+    <nav
+        class="nav-shell"
+        aria-label="Main navigation"
+    >
 
         <div class="nav-panel">
 
@@ -39,41 +40,83 @@
             </div>
 
             <button
-                class="regular-button"
-                type="button"
-                onclick="window.location.href='JournalHome.html'"
-            >
-                Home
-            </button>
-
-            <button
                 id="accessibility-toggle"
                 class="regular-button"
                 type="button"
                 aria-expanded="false"
                 aria-controls="accessibility-menu"
             >
-                <span aria-hidden="true"></span>
                 Accessibility Menu
             </button>
 
-            <!-- Accessibility Menu -->
+        </div>
+        
+    <!-- Accessibility Menu -->
 
-            <div
-                id="accessibility-menu"
-                class="accessibility-menu"
-                hidden
-            >
+    <div
+        class="Accessibility-Overlay"
+        id="accessibility-overlay"
+        hidden
+    >
 
-                <h2>
-                    Accessibility
+        <div
+            class="Accessibility"
+            id="accessibility-menu"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="accessibility-title"
+        >
+
+            <div class="Accessibility-Header">
+
+            
+
+                <h2 id="accessibility-title">
+                    Accessibility Settings
                 </h2>
+
+            </div>
+
+            <div class="Accessibility-Content">
+
+                <label for="text-size-slider">
+                    Text Size:
+                </label>
+
+                <input
+                    type="range"
+                    id="text-size-slider"
+                    min="80"
+                    max="150"
+                    value="100"
+                    step="10"
+                    aria-describedby="text-size-value"
+                >
+
+                <span id="text-size-value">
+                    100%
+                </span>
+
+            </div>
+
+            <div class="Accessibility-Actions">
+
+                <button
+                    type="button"
+                    class="regular-button"
+                    id="accessibility-close"
+                >
+                    Close
+                </button>
 
             </div>
 
         </div>
 
+    </div>
     </nav>
+
+
 
 
     <!-- Dashboard -->
@@ -146,10 +189,7 @@
             aria-label="Dashboard summary"
         >
 
-            <div
-                class="dashboard-account-value"
-            
-            >
+            <div class="dashboard-account-value">
 
                 <span class="dashboard-widget-label">
                     Real Holdings Value:
@@ -162,10 +202,7 @@
             </div>
 
 
-            <div
-                class="dashboard-stocks-tracked"
-           
-            >
+            <div class="dashboard-stocks-tracked">
 
                 <span class="dashboard-widget-label">
                     Stocks Tracked:
@@ -181,10 +218,7 @@
             </div>
 
 
-            <div
-                class="dashboard-theses-review"
-              
-            >
+            <div class="dashboard-theses-review">
 
                 <span class="dashboard-widget-label">
                     Theses Needing Review:
@@ -200,9 +234,7 @@
             </div>
 
 
-            <div
-                class="dashboard-confidence"
-            >
+            <div class="dashboard-confidence">
 
                 <span class="dashboard-widget-label">
                     Average Confidence:
@@ -224,11 +256,11 @@
 
         <div class="dashboard-middle-row">
 
+
             <!-- Confidence Distribution Chart -->
 
             <section
                 class="dashboard-confidence-chart"
-          
             >
 
                 <div class="dashboard-review-header">
@@ -251,7 +283,6 @@
                 <div
                     id="confidence-chart"
                     class="confidence-chart"
-                
                 >
                     <!-- Chart will be generated here -->
                 </div>
@@ -294,14 +325,17 @@
         </div>
 
 
-       
+        <!-- My Theses -->
+
         <section
             class="Stocklist dashboard-stocklist"
             aria-labelledby="my-theses-title"
         >
+
             <div
                 class="features-list dashboard-features-list"
             >
+
                 <h2
                     id="my-theses-title"
                     class="dashboard-stock-header"
@@ -312,7 +346,9 @@
                 <div id="theses-container">
                     <!-- Theses will be loaded here dynamically -->
                 </div>
+
             </div>
+
         </section>
 
     </main>

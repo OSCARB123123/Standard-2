@@ -25,19 +25,98 @@
 
 <body>
 
-    <!-- Navigation -->
-  <div class="nav-shell">
-             
-            <div class="nav-panel">
-                <div class="nav-brand">
-                Deep Value Journal
-                </div>
-                <button class="regular-button" onclick="window.location.href='JournalHome.html'">
-                    Home
-                </button>
+ 
+    <nav
+        class="nav-shell"
+        aria-label="Main navigation"
+    >
+
+        <div class="nav-panel">
+
+            <button
+                class="regular-button"
+                type="button"
+                onclick="window.location.href='JournalHome.html'"
+            >
+                Dashboard
+            </button>
+
+            <button
+                id="accessibility-toggle"
+                class="regular-button"
+                type="button"
+                aria-expanded="false"
+                aria-controls="accessibility-menu"
+            >
+                Accessibility Menu
+            </button>
+
+        </div>
+        
+    <!-- Accessibility Menu -->
+
+    <div
+        class="Accessibility-Overlay"
+        id="accessibility-overlay"
+        hidden
+    >
+
+        <div
+            class="Accessibility"
+            id="accessibility-menu"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="accessibility-title"
+        >
+
+            <div class="Accessibility-Header">
+
+            
+
+                <h2 id="accessibility-title">
+                    Accessibility Settings
+                </h2>
+
             </div>
+
+            <div class="Accessibility-Content">
+
+                <label for="text-size-slider">
+                    Text Size:
+                </label>
+
+                <input
+                    type="range"
+                    id="text-size-slider"
+                    min="80"
+                    max="150"
+                    value="100"
+                    step="10"
+                    aria-describedby="text-size-value"
+                >
+
+                <span id="text-size-value">
+                    100%
+                </span>
+
+            </div>
+
+            <div class="Accessibility-Actions">
+
+                <button
+                    type="button"
+                    class="regular-button"
+                    id="accessibility-close"
+                >
+                    Close
+                </button>
+
+            </div>
+
         </div>
 
+    </div>
+    </nav>
 
     <!-- Data Disclaimer -->
     <div

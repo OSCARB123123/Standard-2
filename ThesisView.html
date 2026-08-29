@@ -10,93 +10,104 @@
         <script type="module" src="Journal.js"></script>
         <title>Thesis View</title>
         <style>
-            .thesis-view-container {
-                max-width: 900px;
-                margin: 0 auto;
-                padding: 20px;
-                border-radius: 8px;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            }
-            .thesis-view-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                border-bottom: 2px solid #FFF4DA;
-                padding-bottom: 15px;
-                margin-bottom: 20px;
-            }
-            .thesis-view-title {
-                font-size: 28px;
-                font-weight: bold;
-                margin: 0;
-                color: #FFC67E;
-            }
-            .thesis-view-subtitle {
-                font-size: 16px;
-                color:#FFF4DA;
-                margin: 5px 0 0 0;
-            }
-            .thesis-section {
-                margin-bottom: 30px;
-                padding: 15px;
-                background-color: #FFF4DA;
-                
-                border-radius: 8px;
-            }
-            .thesis-section-title {
-                font-size: 18px;
-                font-weight: bold;
-                margin-bottom: 10px;
-                color: #333;
-            }
-            .thesis-details-grid {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 15px;
-            }
-            .detail-item {
-                padding: 10px;
-                background-color: #FFF4DA;
-                border-radius: 4px;
-
-            }
-            .detail-label {
-                font-weight: bold;
-                color: #555;
-                font-size: 12px;
-                text-transform: uppercase;
-                margin-bottom: 5px;
-            }
-            .detail-value {
-                font-size: 16px;
-                color: #333;
-            }
-            .thesis-text-section {
-                margin-bottom: 20px;
-            }
-            .thesis-text-section p {
-                line-height: 1.6;
-                color: #444;
-                margin: 0;
-                white-space: pre-wrap;
-            }
-    
-            .back-button:hover {
-                background-color: #5a6268;
-            }
+           
 
         </style>
     </head>
     <body>
 
-        <div class="nav-shell">
-            <div class="nav-panel">
-                        <button class="regular-button" onclick="window.location.href='JournalHome.html'" > Home
-                        </button>
-                        <button class="regular-button" onclick="window.location.href='ThesisEntryForm.html'" > Log Thesis
-                        </button>
-            </div>
+      <nav
+        class="nav-shell"
+        aria-label="Main navigation"
+    >
+
+        <div class="nav-panel">
+
+            <button
+                class="regular-button"
+                type="button"
+                onclick="window.location.href='JournalHome.html'"
+            >
+                Dashboard
+            </button>
+
+            <button
+                id="accessibility-toggle"
+                class="regular-button"
+                type="button"
+                aria-expanded="false"
+                aria-controls="accessibility-menu"
+            >
+                Accessibility Menu
+            </button>
+
         </div>
+        
+    <!-- Accessibility Menu -->
+
+    <div
+        class="Accessibility-Overlay"
+        id="accessibility-overlay"
+        hidden
+    >
+
+        <div
+            class="Accessibility"
+            id="accessibility-menu"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="accessibility-title"
+        >
+
+            <div class="Accessibility-Header">
+
+            
+
+                <h2 id="accessibility-title">
+                    Accessibility Settings
+                </h2>
+
+            </div>
+
+            <div class="Accessibility-Content">
+
+                <label for="text-size-slider">
+                    Text Size:
+                </label>
+
+                <input
+                    type="range"
+                    id="text-size-slider"
+                    min="80"
+                    max="150"
+                    value="100"
+                    step="10"
+                    aria-describedby="text-size-value"
+                >
+
+                <span id="text-size-value">
+                    100%
+                </span>
+
+            </div>
+
+            <div class="Accessibility-Actions">
+
+                <button
+                    type="button"
+                    class="regular-button"
+                    id="accessibility-close"
+                >
+                    Close
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+    </nav>
+
 
         <div class="thesis-view-container">
             <div class="thesis-view-header">
@@ -104,6 +115,16 @@
                     <h1 class="thesis-view-title" id="ticker-display">--</h1>
                     <p class="thesis-view-subtitle" id="stock-name-display">--</p>
                 </div>
+
+                   <div class="thesis-actions">
+                        <button class="regular-button" id="edit-thesis">
+                            Edit Thesis
+                        </button>
+
+                        <button class="regular-button" id="save-thesis" style="display: none;">
+                            Save Changes
+                        </button>
+                    </div>
             </div>
 
             <!-- Stock Details Section -->
@@ -188,9 +209,6 @@
             </div>
         </div>
 
-        <script>
-          
-        </script>
-
+     
     </body>
 </html>
