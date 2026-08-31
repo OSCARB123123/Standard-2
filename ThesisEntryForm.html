@@ -188,7 +188,7 @@
         <form
             class="Form-Shell"
             id="Thesis-Form"
-            onsubmit="saveThesis(event)"
+
         >
 
             <h1 class="Thesis-Form-Title">
@@ -196,128 +196,106 @@
             </h1>
 
 
-            <!-- Stock Details -->
-            <fieldset class="Stock-Details">
+                    <!-- Stock Details -->
+                    <fieldset class="Stock-Details">
+            <legend class="Thesis-Form-Subtitle">
+                Stock Details
+            </legend>
 
-                <legend class="Thesis-Form-Subtitle">
-                    Stock Details
-                </legend>
-
-
+            <div class="Stock-Details-Grid">
                 <div class="Thesis-Date">
-
-                    <label for="Thesis-Date">
-                        Date:
-                    </label>
-
+                    <label for="Thesis-Date">Date:</label>
                     <input
                         type="date"
                         id="Thesis-Date"
                         name="Thesis-Date"
                     >
-
                 </div>
 
+                <div>
+                    <label for="Stock-Name-Search">Stock Name:</label>
+                    <input
+                        type="text"
+                        id="Stock-Name-Search"
+                        name="Stock-Name-Search"
+                        placeholder="Enter Stock Name"
+                    >
+                </div>
 
-                <label for="Stock-Name-Search">
-                    Stock Name:
-                </label>
+                <div>
+                    <label for="Stock-Ticker">Ticker Symbol:</label>
+                    <input
+                        type="text"
+                        id="Stock-Ticker"
+                        name="Stock-Ticker"
+                        placeholder="e.g. AAPL"
+                    >
+                </div>
 
-                <input
-                    type="text"
-                    id="Stock-Name-Search"
-                    name="Stock-Name-Search"
-                    placeholder="Enter Stock Name"
-                >
+                <div>
+                    <label for="Stock-Exchange">Exchange:</label>
+                    <input
+                        type="text"
+                        id="Stock-Exchange"
+                        name="Stock-Exchange"
+                        placeholder="e.g. NASDAQ"
+                    >
+                </div>
 
+                <div>
+                    <label for="Stock-Sector">Sector:</label>
+                    <input
+                        type="text"
+                        id="Stock-Sector"
+                        name="Stock-Sector"
+                        placeholder="e.g. Technology"
+                    >
+                </div>
 
-                <label for="Stock-Ticker">
-                    Ticker Symbol:
-                </label>
+                <div>
+                    <label for="Entry-Price">Entry Price:</label>
+                    <input
+                        type="number"
+                        step="0.01"
+                        id="Entry-Price"
+                        name="Entry-Price"
+                        placeholder="Enter Entry Price"
+                    >
+                </div>
 
-                <input
-                    type="text"
-                    id="Stock-Ticker"
-                    name="Stock-Ticker"
-                    placeholder="e.g. AAPL"
-                >
+                <div>
+                    <label for="Target-Price">Target Price:</label>
+                    <input
+                        type="number"
+                        step="0.01"
+                        id="Target-Price"
+                        name="Target-Price"
+                        placeholder="Enter Target Price"
+                    >
+                </div>
 
+                <div>
+                    <label for="Stop-Loss">Stop Loss:</label>
+                    <input
+                        type="number"
+                        step="0.01"
+                        id="Stop-Loss"
+                        name="Stop-Loss"
+                        placeholder="Enter Stop Loss"
+                    >
+                </div>
 
-                <label for="Stock-Exchange">
-                    Exchange:
-                </label>
-
-                <input
-                    type="text"
-                    id="Stock-Exchange"
-                    name="Stock-Exchange"
-                    placeholder="e.g. NASDAQ"
-                >
-
-
-                <label for="Stock-Sector">
-                    Sector:
-                </label>
-
-                <input
-                    type="text"
-                    id="Stock-Sector"
-                    name="Stock-Sector"
-                    placeholder="e.g. Technology"
-                >
-
-
-                <label for="Entry-Price">
-                    Entry Price:
-                </label>
-
-                <input
-                    type="number"
-                    step="0.01"
-                    id="Entry-Price"
-                    name="Entry-Price"
-                    placeholder="Enter Entry Price"
-                >
-
-
-                <label for="Target-Price">
-                    Target Price:
-                </label>
-
-                <input
-                    type="number"
-                    step="0.01"
-                    id="Target-Price"
-                    name="Target-Price"
-                    placeholder="Enter Target Price"
-                >
-
-
-                <label for="Stop-Loss">
-                    Stop Loss:
-                </label>
-
-                <input
-                    type="number"
-                    step="0.01"
-                    id="Stop-Loss"
-                    name="Stop-Loss"
-                    placeholder="Enter Stop Loss"
-                >
-
-
-                <label for="Position-Size">
-                    Position Size (shares):
-                </label>
-
-                <input
-                    type="number"
-                    id="Position-Size"
-                    name="Position-Size"
-                    placeholder="Enter number of shares"
-                >
-
-            </fieldset>
+                <div>
+                    <label for="Position-Size">Position Size (shares):</label>
+                    <input
+                        type="number"
+                        id="Position-Size"
+                        name="Position-Size"
+                        placeholder="Enter number of shares"
+                    >
+                </div>
+            </div>
+        </fieldset>
 
 
 

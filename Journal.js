@@ -1,5 +1,48 @@
+
+// gets all the existing theses saved in local storage
+// JSON.parse converts the JSON string back to a javascript array
+// if there are no logged theses, it returns an empty string 
+
 const getTheses = () =>
     JSON.parse(localStorage.getItem("theses")) || [];
+
+
+// saves information entered in the the thesis form
+// event.prevetDefault stops the browser from submitting the form
+// this allows the java time to process and store the data
+// after this the user is sent back to the dashboard page
+function saveThesis(event) {
+    event.preventDefault();
+
+    // creates an object with all the information listed in the thesis form
+    const thesis = {
+        date: document.getElementById("Thesis-Date").value,
+        stockName: document.getElementById("Stock-Name-Search").value,
+        ticker: document.getElementById("Stock-Ticker").value,
+        exchange: document.getElementById("Stock-Exchange").value,
+        sector: document.getElementById("Stock-Sector").value,
+        entryPrice: document.getElementById("Entry-Price").value,
+        targetPrice: document.getElementById("Target-Price").value,
+        stopLoss: document.getElementById("Stop-Loss").value,
+        positionSize: document.getElementById("Position-Size").value,
+        bullCase: document.getElementById("Bull-Case-Reasoning").value,
+        bearCase: document.getElementById("Bear-Case-Reasoning").value,
+        confidence: document.getElementById("Confidence-Level").value,
+        notes: document.getElementById("Thesis-Notes").value,
+        lastReviewed: document.getElementById("Thesis-Date").value
+    };
+    // adds new thesis to existing array before the data is saved
+    const theses = getTheses();
+
+    theses.push(thesis);
+
+    localStorage.setItem(
+        "theses",
+        JSON.stringify(theses)
+    );
+
+    window.location.href = "JournalHome.html";
+}
 
 function initDashboard() {
     const thesesContainer = document.getElementById("theses-container");
@@ -7,6 +50,7 @@ function initDashboard() {
     if (!thesesContainer || !reviewContainer) return;
 
     const theses = getTheses();
+    // finds all the theses that have a creation date older than three months
     const threeMonthsAgo = new Date();
     threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
 
@@ -15,6 +59,8 @@ function initDashboard() {
         return new Date(lastReviewed) <= threeMonthsAgo;
     });
 
+    // calculates the average confidence from the confidence percentage enetered
+    // in all the saved theses 
     const stocks = new Set(theses.map(t => t.ticker));
     const average = theses.length
         ? Math.round(
@@ -28,7 +74,9 @@ function initDashboard() {
     document.getElementById("stocks-tracked-amount").textContent = stocks.size;
     document.getElementById("theses-review-amount").textContent = thesesNeedingReview.length;
     document.getElementById("confidence-amount").textContent = `${average}%`;
+    
 
+    // creates links for each saved thesis 
     thesesContainer.innerHTML = theses.length
         ? theses.map((t, i) => `
             <li class="dashboard-stock-row">
@@ -45,7 +93,8 @@ function initDashboard() {
                 </p>
             </li>
         `;
-
+    // sorts the theses in theses up for review from from oldest to newest date
+    // this ensures the most urgent ones get reviewed first
     const sorted = [...thesesNeedingReview].sort(
         (a, b) =>
             new Date(a.lastReviewed || a.date) -
@@ -77,6 +126,8 @@ function initDashboard() {
     if (chart) {
         const brackets = [0, 0, 0, 0, 0];
 
+        // places each thesis into one of five confidence brackets
+        // these will be displayed in the confidence chart later
         theses.forEach(t => {
             const confidence = Number(t.confidence || 0);
             brackets[Math.min(Math.floor(confidence / 20), 4)]++;
@@ -92,6 +143,7 @@ function initDashboard() {
 
         const max = Math.max(...brackets, 1);
 
+        // scales each subsequent bar relative to the largest one
         chart.innerHTML = labels.map((label, i) => `
             <div class="confidence-chart-row">
                 <span class="confidence-chart-label">${label}</span>
@@ -123,6 +175,7 @@ function initThesisForm() {
         slider.addEventListener("input", update);
         update();
     }
+    // if the information that the user has entered has not been saved 
     let unsavedChanges = false;
     const dashboardButton = document.querySelector(
         'button[onclick*="JournalHome.html"]'
@@ -155,12 +208,14 @@ function initThesisForm() {
 function initThesisView() {
     if (!document.getElementById("ticker-display")) return;
 
+    // gets the thesis ID from the URL so that the correct saved thesis can be displayed
     const id = Number(
         new URLSearchParams(window.location.search).get("id")
     );
 
     const theses = getTheses();
-
+    
+    // validates the ID before accessing the thesis array
     if (
         !Number.isInteger(id) ||
         id < 0 ||
@@ -176,7 +231,7 @@ function initThesisView() {
     }
 
     const thesis = theses[id];
-
+     // maps HTML elements to corresponding properties in the thesis object
     const fields = {
         "ticker-display": "ticker",
         "stock-name-display": "stockName",
@@ -230,6 +285,7 @@ function initThesisView() {
         homeButton.removeAttribute("onclick");
     }
 
+    // replaces editable thesis elements with input sections
     editButton.addEventListener("click", () => {
         Object.entries(fields).forEach(([elementId, property]) => {
             if (
@@ -244,6 +300,7 @@ function initThesisView() {
             const element = document.getElementById(elementId);
             if (!element) return;
 
+            
             const input = document.createElement(
                 property === "bullCase" ||
                 property === "bearCase" ||
@@ -252,6 +309,9 @@ function initThesisView() {
                     : "input"
             );
 
+            // stop these specific categories from being able to be changed
+            // this ensures that users can't remove data that is 
+            // crucial to identifying the thesis entry in theses storage
             if (
                 property === "entryPrice" ||
                 property === "targetPrice" ||
@@ -288,6 +348,7 @@ function initThesisView() {
         saveButton.style.display = "block";
     });
 
+    // updates the thesis object and saved edited information to local storage
     saveButton.addEventListener("click", () => {
         Object.entries(fields).forEach(([elementId, property]) => {
             if (

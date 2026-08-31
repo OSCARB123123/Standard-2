@@ -3,6 +3,10 @@
 
 <head>
     <meta charset="utf-8">
+    <!--
+    allows the page to use the latest browser engine meaning that my interface
+     will be more compatible with different devices and interfaces
+    -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Dashboard</title>
 
@@ -26,7 +30,7 @@
 
 <body>
 
-    <!-- Navigation -->
+    <!-- Navigation and accessibility controls -->
 
     <nav
         class="nav-shell"
@@ -51,8 +55,9 @@
 
         </div>
         
-    <!-- Accessibility Menu -->
 
+    <!-- Accessibility Menu -->
+    <!-- Accessibility menu allows users to adjust text size -->
     <div
         class="Accessibility-Overlay"
         id="accessibility-overlay"
@@ -96,7 +101,6 @@
                 <span id="text-size-value">
                     100%
                 </span>
-
             </div>
 
             <div class="Accessibility-Actions">
@@ -119,7 +123,7 @@
 
 
 
-    <!-- Dashboard -->
+  <!-- Main dashboard containing portfolio and thesis information -->
 
     <main
         class="home-shell dashboard-home"
@@ -127,7 +131,7 @@
         aria-labelledby="dashboard-title"
     >
 
-        <!-- Dashboard Heading -->
+       <!-- Dashboard heading and link to create a new thesis -->
 
         <section
             class="dashboard-heading"
@@ -159,8 +163,8 @@
         </section>
 
 
-        <!-- Loading Screen -->
-
+        <!-- Loading screen while dashboard data loads -->
+        <!-- CODE FOR THIS ANIMATION FROM UI VERSE -->
         <div
             id="loading-screen"
             class="loading-screen"
@@ -178,23 +182,22 @@
                 <div></div>
                 <div></div>
             </div>
-
         </div>
 
 
-        <!-- Dashboard Summary Widgets -->
+        <!-- Summary widgets provide an overview of the user's portfolio -->
 
         <section
             class="dashboard-widgets"
             aria-label="Dashboard summary"
         >
-
+            <!-- Values are updated dynamically using JavaScript -->
             <div class="dashboard-account-value">
 
                 <span class="dashboard-widget-label">
                     Real Holdings Value:
                 </span>
-
+                <!-- Values are updated dynamically using JavaScript -->
                 <span class="dashboard-widget-amount">
                     $10,000
                 </span>
@@ -221,7 +224,7 @@
             <div class="dashboard-theses-review">
 
                 <span class="dashboard-widget-label">
-                    Theses Needing Review:
+                    Theses Up For Review:
                 </span>
 
                 <span
@@ -233,13 +236,13 @@
 
             </div>
 
-
+            <!-- Displays the distribution of theses across confidence levels -->
             <div class="dashboard-confidence">
 
                 <span class="dashboard-widget-label">
                     Average Confidence:
                 </span>
-
+                <!-- Comes from the average of user's stored thesis data -->
                 <span
                     class="dashboard-widget-amount"
                     id="confidence-amount"
@@ -252,7 +255,7 @@
         </section>
 
 
-        <!-- Middle Dashboard Row -->
+        <!-- Middle Dashboard Row containing the distribution chart and the theses needing review -->
 
         <div class="dashboard-middle-row">
 
@@ -268,7 +271,7 @@
                     <div>
 
                         <h2 id="confidence-title">
-                            Confidence Distribution
+                            Confidence Distribution Chart:
                         </h2>
 
                         <p>
@@ -284,14 +287,13 @@
                     id="confidence-chart"
                     class="confidence-chart"
                 >
-                    <!-- Chart will be generated here -->
+                    <!-- Chart will be inputted here -->
                 </div>
 
             </section>
 
 
-            <!-- Theses Needing Review -->
-
+            <!-- Displays theses that require the user's attention -->
             <section
                 class="dashboard-review-section"
                 aria-labelledby="review-title"
@@ -302,7 +304,7 @@
                     <div>
 
                         <h2 id="review-title">
-                            Theses Needing Review
+                            Theses Up For Review
                         </h2>
 
                         <p>
@@ -313,7 +315,7 @@
 
                 </div>
 
-
+                <!-- Theses added through javascript -->
                 <ul
                     id="review-container"
                     aria-label="Theses needing review"
@@ -325,8 +327,7 @@
         </div>
 
 
-        <!-- My Theses -->
-
+        <!-- Displays all investment theses stored by the user -->
         <section
             class="Stocklist dashboard-stocklist"
             aria-labelledby="my-theses-title"
@@ -340,7 +341,7 @@
                     id="my-theses-title"
                     class="dashboard-stock-header"
                 >
-                    My Theses
+                    Stored Theses:
                 </h2>
 
                 <div id="theses-container">
