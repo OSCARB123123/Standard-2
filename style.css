@@ -571,7 +571,7 @@ select {
     letter-spacing: -0.5px;
 }
 
-.dashboard-newthesis,
+
 .dashboard-heading p {
     color: var(--off-white);
     text-align: left;
@@ -580,6 +580,25 @@ select {
     letter-spacing: 0.16em;
 
     margin: 1vh 0 0 1vw;
+}
+
+.dashboard-newthesis {
+    color: var(--off-white);
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
+    letter-spacing: 0.16em;
+    font-weight: 600;
+    margin: 2vh 0 0 1vw;
+    display: inline-block;  
+
+}
+
+.dashboard-newthesis:hover {
+    background-color: var(--offwhite);  
+    color: var(--black);
+    margin: 2vh 0 0 1vw;   
+    padding: 8px 12px;
+    border-radius: 8px;
+    box-shadow: 0 6px 20px rgba(217, 132, 82, 0.356);  
 }
 
 /* Navigation */
@@ -801,6 +820,7 @@ wider, it doesn't happen in a big jump
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    overflow-x: hidden;
     margin: 20px 0 0;
     padding: 4px 20px;
     color: var(--off-white);
@@ -817,6 +837,7 @@ wider, it doesn't happen in a big jump
 .dashboard-features-list {
     width: 100%;
     margin: 0;
+    box-sizing: border-box;
 }
 
 .dashboard-stock-header {
@@ -861,7 +882,9 @@ wider, it doesn't happen in a big jump
     max-width: none;
     max-height: none;
     flex: 1;
-    overflow-y: auto;
+    min-width: 0;
+    overflow-y: scroll;
+    overflow-x: hidden;
     box-sizing: border-box;
     padding: 0;
     color: var(--off-white);
@@ -1149,7 +1172,14 @@ button.regular-button:active {
             .detail-value {
                 font-size: 16px;
                 color: #333;
+                word-wrap: break-word;          
+                overflow-wrap: break-word;      
+                word-break: break-word;   
+
             }
+
+             
+
             .thesis-text-section {
                 margin-bottom: 20px;
             }
@@ -1158,8 +1188,13 @@ button.regular-button:active {
                 color: #444;
                 margin: 0;
                 white-space: pre-wrap;
-            }
+                word-wrap: break-word;           
+                overflow-wrap: break-word;       
+                overflow-x: hidden;
     
+            }
+
+              
             .back-button:hover {
                 background-color: #5a6268;
             }
@@ -1257,20 +1292,7 @@ button.regular-button:active {
     height: 100%;
 }
 
-.vignette {
-    position: fixed;
-    inset: 0;
-    z-index: 1;
 
-    pointer-events: none;
-
-    background: radial-gradient(
-        circle at center,
-        transparent 15%,
-        rgba(9, 7, 13, 0.25) 55%,
-        rgba(9, 7, 13, 0.85) 100%
-    );
-}
 
 .landing-content {
     position: relative;

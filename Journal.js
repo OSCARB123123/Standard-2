@@ -14,11 +14,22 @@ const getTheses = () =>
 function saveThesis(event) {
     event.preventDefault();
 
-    // creates an object with all the information listed in the thesis form
+    // Validate required fields
+    const date = document.getElementById("Thesis-Date").value.trim();
+    const stockName = document.getElementById("Stock-Name-Search").value.trim();
+    const ticker = document.getElementById("Stock-Ticker").value.trim();
+
+    if (!date || !stockName || !ticker) {
+        alert("Please fill in all required fields: Date, Stock Name, and Ticker");
+        return;
+    }
+
+    // Rest of your code continues below...
     const thesis = {
-        date: document.getElementById("Thesis-Date").value,
-        stockName: document.getElementById("Stock-Name-Search").value,
-        ticker: document.getElementById("Stock-Ticker").value,
+        date: date,
+        stockName: stockName,
+        ticker: ticker,
+
         exchange: document.getElementById("Stock-Exchange").value,
         sector: document.getElementById("Stock-Sector").value,
         entryPrice: document.getElementById("Entry-Price").value,
