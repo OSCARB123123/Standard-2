@@ -36,6 +36,14 @@ function saveThesis(event) {
         targetPrice: document.getElementById("Target-Price").value,
         stopLoss: document.getElementById("Stop-Loss").value,
         positionSize: document.getElementById("Position-Size").value,
+
+        pe: document.getElementById("Stock-PE").value,
+        eps: document.getElementById("Stock-EPS").value,
+        week52: document.getElementById("Stock-52W").value,
+        marketCap: document.getElementById("Stock-Cap").value,
+        fcfg: document.getElementById("Stock-FCFG").value,
+        per: document.getElementById("Stock-PER").value,
+
         bullCase: document.getElementById("Bull-Case-Reasoning").value,
         bearCase: document.getElementById("Bear-Case-Reasoning").value,
         confidence: document.getElementById("Confidence-Level").value,
@@ -93,6 +101,9 @@ function initDashboard() {
             <li class="dashboard-stock-row">
                 <a href="ThesisView.html?id=${i}" style="text-decoration:none;color:inherit;">
                     <strong class="dashboard-stock-name">${t.ticker}</strong>
+                    <span class="dashboard-review-date">
+                        ${new Date(t.date).toLocaleDateString()}
+                    </span>
                 </a>
             </li>
         `).join("")
@@ -104,6 +115,7 @@ function initDashboard() {
                 </p>
             </li>
         `;
+        
     // sorts the theses in theses up for review from from oldest to newest date
     // this ensures the most urgent ones get reviewed first
     const sorted = [...thesesNeedingReview].sort(
@@ -167,9 +179,46 @@ function initDashboard() {
     }
 }
 
+
 function initThesisForm() {
     const form = document.getElementById("Thesis-Form");
     if (!form) return;
+
+    const confidenceInfoToggle = document.getElementById(
+        "confidence-info-toggle"
+    );
+    const confidenceInfoOverlay = document.getElementById(
+        "confidence-info-overlay"
+    );
+    const confidenceInfoClose = document.getElementById(
+        "confidence-info-close"
+    );
+
+    if (
+        confidenceInfoToggle &&
+        confidenceInfoOverlay &&
+        confidenceInfoClose
+    ) {
+        const closeConfidenceInfo = () => {
+            confidenceInfoOverlay.hidden = true;
+            confidenceInfoToggle.setAttribute("aria-expanded", "false");
+            confidenceInfoToggle.focus();
+        };
+
+        confidenceInfoToggle.addEventListener("click", () => {
+            confidenceInfoOverlay.hidden = false;
+            confidenceInfoToggle.setAttribute("aria-expanded", "true");
+            confidenceInfoClose.focus();
+        });
+
+        confidenceInfoClose.addEventListener("click", closeConfidenceInfo);
+        confidenceInfoOverlay.addEventListener("click", event => {
+            if (event.target === confidenceInfoOverlay) {
+                closeConfidenceInfo();
+            }
+        });
+    }
+
     const continueButton = document.getElementById("Continue-Button");
     if (continueButton) {
         continueButton.addEventListener("click", () => {
@@ -254,6 +303,15 @@ function initThesisView() {
         "detail-target-price": "targetPrice",
         "detail-stop-loss": "stopLoss",
         "detail-position-size": "positionSize",
+
+        "detail-pe": "pe",
+        "detail-eps": "eps",
+        "detail-52w": "week52",
+        "detail-cap": "marketCap",
+        "detail-fcfg": "fcfg",
+        "detail-per": "per",
+
+
         "detail-bull-case": "bullCase",
         "detail-bear-case": "bearCase",
         "detail-confidence": "confidence",
@@ -279,6 +337,8 @@ function initThesisView() {
             value = `${value}%`;
         } else if (elementId === "detail-notes") {
             value = value || "No additional notes";
+        } else if (elementId === "detail-market-cap") {
+            value = formatMarketCap(value);
         }
 
         element.textContent = value;
@@ -327,7 +387,13 @@ function initThesisView() {
                 property === "entryPrice" ||
                 property === "targetPrice" ||
                 property === "stopLoss" ||
-                property === "positionSize"
+                property === "positionSize" ||
+                property === "pe" ||
+                property === "eps" ||
+                property === "week52" ||
+                property === "marketCap" ||
+                property === "fcfg" ||
+                property === "per"
             ) {
                 input.type = "number";
             }

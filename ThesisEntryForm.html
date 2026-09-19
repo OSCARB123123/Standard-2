@@ -116,6 +116,8 @@
         </div>
 
     </div>
+
+    
     </nav>
 
     <!-- Data Disclaimer -->
@@ -134,7 +136,6 @@
         >
 
             <div class="Disclaimer-Header">
-                <span class="Disclaimer-Label">DATA NOTICE</span>
                 <h2 id="disclaimer-title">Before you continue</h2>
             </div>
 
@@ -297,6 +298,83 @@
             </div>
         </fieldset>
 
+         <!-- Stock Details -->
+                    <fieldset class="Stock-Details">
+            <legend class="Thesis-Form-Subtitle">
+                Stock Metrics
+            </legend>
+
+            <div class="Stock-Details-Grid">
+          
+
+                <div>
+                    <label for="Stock-PE">P/E Ratio</label>
+                    <input
+                        type="number"
+                        step="0.01"
+                        id="Stock-PE"
+                        name="Stock-PE"
+                        placeholder="Enter P/E Ratio"
+                    >
+                </div>
+
+                <div>
+                    <label for="Stock-EPS">EPS</label>
+                    <input
+                        type="number"
+                        step="0.01"
+                        id="Stock-EPS"
+                        name="Stock-EPS"
+                        placeholder="Enter EPS"
+                    >
+                </div>
+
+                <div>
+                    <label for="Stock-52W">52 Week Change (%)</label>
+                    <input
+                        type="number"
+                        step="0.01"
+                        id="Stock-52W"
+                        name="Stock-52W"
+                        placeholder="e.g. -10.5"
+                    >
+                </div>
+
+                <div>
+                    <label for="Stock-Cap">Market Cap Size</label>
+                    <input
+                        type="number"
+                        step="0.01"
+                        id="Stock-Cap"
+                        name="Stock-Cap"
+                        placeholder="e.g. 10000000"
+                    >
+                </div>
+
+                <div>
+                    <label for="Stock-FCFG">FCF Growth</label>
+                    <input
+                        type="number"
+                        step="0.01"
+                        id="Stock-FCFG"
+                        name="Stock-FCFG"
+                        placeholder="Enter FCF growth"
+                    >
+                </div>
+
+                <div>
+                    <label for="Stock-PER">Relative P/E Ratio</label>
+                    <input
+                        type="number"
+                        step="0.01"
+                        id="Stock-PER"
+                        name="Stock-PER"
+                        placeholder="PE / Industry PE"
+                    >
+                </div>
+            </div>
+        </fieldset>
+
 
 
             <!-- Main Thesis -->
@@ -315,7 +393,7 @@
                 <textarea
                     id="Bull-Case-Reasoning"
                     name="Bull-Case-Reasoning"
-                    placeholder="Enter the bullish thesis"
+                    placeholder="Describe why you think the stock will outperform. You may like to include: Growth Drivers, Competitive Moat, Margin Expansion Potential."
                     rows="5"
                 ></textarea>
 
@@ -332,7 +410,7 @@
                 <textarea
                     id="Bear-Case-Reasoning"
                     name="Bear-Case-Reasoning"
-                    placeholder="Enter the bearish thesis"
+                    placeholder="Describe reasons why the stock price could decline in the future. You may like to include: Pontential Bearish News, Cost Pressures, Economic Downturn Potential."
                     rows="5"
                 ></textarea>
 
@@ -341,10 +419,59 @@
 
             <!-- Confidence Level -->
             <div class="Confidence-Level">
+            
+
 
                 <label for="Confidence-Level">
                     Confidence Level:
                 </label>
+
+                <button
+                    id="confidence-info-toggle"
+                    class="regular-button confidence-info-button"
+                    type="button"
+                    aria-expanded="false"
+                    aria-controls="confidence-info-overlay"
+                    aria-label="Explain confidence level"
+                >
+                    ?
+                </button>
+
+                <div
+                    class="Confidence-Overlay"
+                    id="confidence-info-overlay"
+                    hidden
+                >
+                    <div
+                        class="Confidence-Info"
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby="confidence-info-title"
+                    >
+                        <div class="Disclaimer-Header">
+                            <h2 id="confidence-info-title">What does confidence level mean?</h2>
+                        </div>
+
+                        <div class="Disclaimer-Content">
+                            <p>
+                                Confidence represents how strongly you believe your investment thesis is correct based on your research and current evidence.
+                            </p>
+                            <p class="Disclaimer-Warning">
+                                Use a lower percentage when your thesis needs more evidence, and a higher percentage when your reasoning is well supported. This is a reflection tool, not a guarantee of performance.
+                            </p>
+                        </div>
+
+                        <div class="Disclaimer-Actions">
+                            <button
+                                type="button"
+                                class="Disclaimer-Button Disclaimer-Button--secondary"
+                                id="confidence-info-close"
+                            >
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
 
                 <input
                     type="range"

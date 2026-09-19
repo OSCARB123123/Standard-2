@@ -71,7 +71,8 @@ body::before {
 */
 
 .Disclaimer-Overlay,
-.Accessibility-Overlay {
+.Accessibility-Overlay,
+.Confidence-Overlay {
     position: fixed;
     inset: 0;
     z-index: 1000;
@@ -86,9 +87,11 @@ body::before {
 }
 
 
+
 /*Merged disclaimer and accesibility containers*/
 .Disclaimer, 
-.Accessibility {
+.Accessibility,
+.Confidence-Info {
     width: min(560px, 100%);
     box-sizing: border-box;
 
@@ -247,6 +250,10 @@ again through a button press.
 */
 
 .Accessibility-Overlay[hidden] {
+    display: none;
+}
+
+.Confidence-Overlay[hidden] {
     display: none;
 }
 
@@ -538,6 +545,8 @@ select {
     box-shadow: var(--card-shadow);
 }
 
+
+
 .dashboard-account-value {
     color: var(--black);
     background: var(--off-white);
@@ -577,15 +586,15 @@ select {
     text-align: left;
 
     font-size: clamp(0.8rem, 1.5vw, 1rem);
-    letter-spacing: 0.16em;
-
+    letter-spacing: 0.2em;
+    font-weight: 600;
     margin: 1vh 0 0 1vw;
 }
 
 .dashboard-newthesis {
     color: var(--off-white);
     font-size: clamp(0.8rem, 1.5vw, 1rem);
-    letter-spacing: 0.16em;
+    letter-spacing: 0.2em;
     font-weight: 600;
     margin: 2vh 0 0 1vw;
     display: inline-block;  
@@ -593,15 +602,22 @@ select {
 }
 
 .dashboard-newthesis:hover {
-    background-color: var(--offwhite);  
-    color: var(--black);
+    color: var(--off-white);
     margin: 2vh 0 0 1vw;   
-    padding: 8px 12px;
-    border-radius: 8px;
-    box-shadow: 0 6px 20px rgba(217, 132, 82, 0.356);  
+    text-shadow: 0 0 5px var(--apricot);
+
+  
 }
 
 /* Navigation */
+
+nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 20px;
+}
+
 
 .nav-shell {
     width: min(1200px, calc(100% - 3rem));
@@ -668,19 +684,18 @@ select {
 
 */
 .dashboard-review-section {
-    height: 213px;
+    height: 298px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-  
-    padding: 22px 24px;
+    padding: 22px 22px;
     color: var(--off-white);
     background: linear-gradient(
         135deg,
         rgba(111, 91, 77, 0.92) 0%,
         rgba(170, 84, 23, 0.116) 100%
     );
-    border: var(--border);
+   
     border-radius: var(--card-radius);
     box-shadow: var(--card-shadow);
 }
@@ -696,21 +711,15 @@ select {
     font-size: 18px;
 }
 
-.dashboard-review-header p {
-    margin: 5px 0 20px;
+/* Standardized paragraph styling for both sections */
+.dashboard-review-header p,
+.dashboard-stocklist p {
+    margin: 0 0 20px 0;
     color: var(--off-white);
+    font-size: 14px;
 }
 
-#review-container {
-    flex: 1;
 
-    overflow-y: auto;
-
-    margin: 0;
-    padding: 0;
-
-    list-style: none;
-}
 
 .dashboard-review-date {
     margin-left: auto;
@@ -811,28 +820,87 @@ wider, it doesn't happen in a big jump
     font-size: 14px;
 }
 
+
+
+/* Standardized container styling */
+#review-container,
+.features-list {
+    width: 100%;
+    max-width: none;
+    flex: 1;
+    min-width: 0;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    color: var(--off-white);
+    font-family: var(--font-main);
+  
+}
+
+/* Standardized row styling */
+#review-container li,
+.features-list li {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        padding-left 0.2s ease;
+}
+
+#review-container li:hover,
+.features-list li:hover {
+    background: rgba(255, 244, 218, 0.06);
+    border-radius: 8px;
+    transform: translateX(3px);
+    padding-left: 19px;
+}
+
+#review-container li:last-child,
+.features-list li:last-child {
+    border-bottom: none;
+}
+
+
+
+
+
 /* Stock List */
+
 
 .dashboard-stocklist {
     width: min(500px, calc(70% - 3rem));
-    height: 213px;
+    height: 250px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     overflow: hidden;
     overflow-x: hidden;
     margin: 20px 0 0;
-    padding: 4px 20px;
+    padding: 4px 20px; 
+ 
+   
     color: var(--off-white);
     background: linear-gradient(
         135deg,
         rgba(111, 91, 77, 0.92) 0%,
         rgba(170, 84, 23, 0.116) 100%
     );
-    border: var(--border);
+    
     border-radius: var(--card-radius);
     box-shadow: var(--card-shadow);
 }
+
+.dashboard-stocklist h2 {
+
+    font-size: 18px;
+}
+
 
 .dashboard-features-list {
     width: 100%;
@@ -854,7 +922,7 @@ wider, it doesn't happen in a big jump
 }
 
 .dashboard-stock-row {
-    min-height: 55px;
+    min-height: 40px;
 
     display: flex;
     align-items: center;
@@ -877,51 +945,6 @@ wider, it doesn't happen in a big jump
     text-align: right;
 }
 
-.features-list {
-    width: 100%;
-    max-width: none;
-    max-height: none;
-    flex: 1;
-    min-width: 0;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    box-sizing: border-box;
-    padding: 0;
-    color: var(--off-white);
-    font-family: var(--font-main);
-    font-size: 18px;
-}
-
-.features-list .dashboard-stock-header {
-    margin: 0 -20px;
-    padding: 18px 25px;
-    font-size: 18px;
-}
-
-.features-list li {
-    min-height: 55px;
-
-    display: flex;
-    align-items: center;
-
-    padding-left: 5px;
-
-
-    transition:
-        background 0.2s ease,
-        transform 0.2s ease,
-        padding-left 0.2s ease;
-}
-
-.features-list li:last-child {
-    border-bottom: none;
-}
-
-.features-list li:hover {
-    background: rgba(255, 244, 218, 0.06);
-    border-radius: 8px;
-    transform: translateX(3px);
-}
 
 /* Customised Scrollbar  */
 /* 
@@ -962,7 +985,7 @@ h1.Welcome,
 
     font-size: clamp(2rem, 4vw, 3.2rem);
     font-weight: 600;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.1em;
 }
 
 /* Buttons */
@@ -1503,7 +1526,7 @@ hr {
 
     .dashboard-stock-header {
         grid-template-columns: 1fr 70px 70px;
-        padding: 0 20px 10px;
+    
         font-size: 14px;
     }
 
