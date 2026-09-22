@@ -358,6 +358,8 @@ again through a button press.
     minmax(0,1fr) lets the grid collumns shrink below natural width of content, stopping them from 
     overflowing the grid.
 */
+
+
 .Stock-Details-Grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr)); 

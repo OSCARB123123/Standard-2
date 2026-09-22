@@ -24,7 +24,9 @@ function saveThesis(event) {
         return;
     }
 
-    // Rest of your code continues below...
+
+    // Collects all form values into one thesis object
+    // so the complete entry can be stored together
     const thesis = {
         date: date,
         stockName: stockName,
@@ -51,25 +53,27 @@ function saveThesis(event) {
         lastReviewed: document.getElementById("Thesis-Date").value
     };
     // adds new thesis to existing array before the data is saved
+    // Retrieve existing theses, add the new entry,
+    // then save the updated array back to local storage
     const theses = getTheses();
-
     theses.push(thesis);
-
     localStorage.setItem(
         "theses",
         JSON.stringify(theses)
     );
-
     window.location.href = "JournalHome.html";
 }
 
 function initDashboard() {
+
     const thesesContainer = document.getElementById("theses-container");
     const reviewContainer = document.getElementById("review-container");
     if (!thesesContainer || !reviewContainer) return;
 
     const theses = getTheses();
     // finds all the theses that have a creation date older than three months
+    // Create a date object representing three months ago
+    // this is used to determine which theses need to be reviewed
     const threeMonthsAgo = new Date();
     threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
 
@@ -80,6 +84,9 @@ function initDashboard() {
 
     // calculates the average confidence from the confidence percentage enetered
     // in all the saved theses 
+    // Set removes duplicate stock tickers so that the number of unique stocks can be displayed
+    // it means each stock is only counted once.
+    // this is important for the stocks tracked wiget to accurately reflect the number of unique stocks being tracked
     const stocks = new Set(theses.map(t => t.ticker));
     const average = theses.length
         ? Math.round(
@@ -96,6 +103,8 @@ function initDashboard() {
     
 
     // creates links for each saved thesis 
+    //Display the saved theses, or show a message if none exist. 
+    // Each thesis is displayed as a list item with a link to view the thesis details.
     thesesContainer.innerHTML = theses.length
         ? theses.map((t, i) => `
             <li class="dashboard-stock-row">
@@ -122,7 +131,7 @@ function initDashboard() {
         (a, b) =>
             new Date(a.lastReviewed || a.date) -
             new Date(b.lastReviewed || b.date)
-    );
+    );v
 
     reviewContainer.innerHTML = sorted.length
         ? sorted.map(t => {
@@ -319,6 +328,9 @@ function initThesisView() {
         "detail-notes": "notes"
     };
 
+    // Loop through the field mapping so the same code can handle
+    // every thesis field instead of repeating it for each element
+
     Object.entries(fields).forEach(([elementId, property]) => {
         const element = document.getElementById(elementId);
         if (!element) return;
@@ -371,7 +383,7 @@ function initThesisView() {
             const element = document.getElementById(elementId);
             if (!element) return;
 
-            
+            // Create the appropriate input type based on the thesis field.
             const input = document.createElement(
                 property === "bullCase" ||
                 property === "bearCase" ||
@@ -410,6 +422,7 @@ function initThesisView() {
                 input.required = true;
             }
 
+            // store the thesis property in a data attribute so it can be accessed later when saving
             input.value = thesis[property] || "";
             input.dataset.property = property;
             input.id = elementId;
