@@ -447,7 +447,7 @@ again through a button press.
 }
 
 .Stock-Details + .Stock-Details {
-    margin-top: 12px;
+    margin-top: 35px;
 }
 
 input::placeholder,
@@ -1351,15 +1351,28 @@ button.regular-button:active {
     text-shadow: 0 0 30px rgba(255, 198, 126, 0.18);
 }
 
-.landing-title p {
-    margin: 22px 0 0;
+.landing-button {
+    margin-top: 200px;
+    padding: 1.2em 2.5em;
 
     color: var(--off-white);
 
-    font-size: clamp(0.9rem, 1.5vw, 1.2rem);
-    font-weight: 400;
-    letter-spacing: 0.3em;
-    opacity: 0.75;
+    font-size: 18px;
+    font-weight: bold;
+
+    background-color: var(--brown);
+    border: 0.25em solid var(--beige);
+    border-radius: 1em;
+
+    outline: none;
+    box-shadow:
+        0 0 1em 0.25em var(--beige),
+        0 0 4em 1em rgba(255, 198, 126, 0.3),
+        inset 0 0 0.75em 0.25em var(--beige);
+
+    text-shadow: 0 0 0.5em var(--beige);
+
+    transition: all 0.3s;
 }
 
 /* Miscellaneous */
