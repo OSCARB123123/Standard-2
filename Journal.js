@@ -131,7 +131,7 @@ function initDashboard() {
         (a, b) =>
             new Date(a.lastReviewed || a.date) -
             new Date(b.lastReviewed || b.date)
-    );v
+    );
 
     reviewContainer.innerHTML = sorted.length
         ? sorted.map(t => {

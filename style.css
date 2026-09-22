@@ -446,6 +446,10 @@ again through a button press.
     font-weight: 600;
 }
 
+.Stock-Details + .Stock-Details {
+    margin-top: 12px;
+}
+
 input::placeholder,
 textarea::placeholder {
     color: var(--off-white);
