@@ -1003,6 +1003,16 @@ h1.Welcome,
     variables and are then reused throughout the glow effects below.
 */
 
+/*
+    - Button adapted from Uiverse.io
+    - Creator: cssbuttons-io
+    - Source link: https://uiverse.io/cssbuttons-io/funny-dog-69
+    - Lisence: MIT
+    - Date of implimentation: 4/08/26
+*/
+/*
+UI VERSE BUTTON CODE START
+*/
 button {
     --glow-color: var(--beige);
     --glow-spread-color: var(--apricot);
@@ -1079,6 +1089,9 @@ button:active {
         0 0 2.5em 2em var(--glow-spread-color),
         inset 0 0 0.5em 0.25em var(--glow-color);
 }
+/*
+UI VERSE BUTTON CODE END
+*/
 
 button.nav-button svg,
 button.nav-button .nav-icon {
@@ -1247,6 +1260,18 @@ button.regular-button:active {
     animation-delay: 1.2s;
 }
 
+/*
+ * Loader adapted from Uiverse.io
+ * Creator: vk-uiux
+ * Source: https://uiverse.io/vk-uiux/grumpy-dolphin-30
+ * Licence: MIT
+ * Date of implementation: around 5/08/26
+ */
+
+/*
+ * UI VERSE LOADER CODE START
+ */
+
 .loader {
     position: relative;
 
@@ -1270,9 +1295,6 @@ button.regular-button:active {
     animation: loader 4s infinite;
 }
 
-/*
-  CODE FOR THIS ANIMATION FROM UI VERSE
-*/
 .loader div:nth-child(1) {
     animation-delay: 0.15s;
 }
@@ -1292,6 +1314,10 @@ button.regular-button:active {
 .loader div:nth-child(5) {
     animation-delay: 0.75s;
 }
+
+/*
+ * UI VERSE LOADER CODE END
+ */
 
 /* Landing Page */
 
