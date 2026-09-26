@@ -3,13 +3,10 @@
 
 /*
     Root variables for global page styling
-
     store main colors, fonts, gradients, borders and corner radius and shadows
     which are used throughout my website.
-
     Using root variables allows me to, for example, change the colour scheme of
     my website by editing just the colours up here,
-
     rather than going through every line of CSS and changing the colours manually.
 */
 
@@ -20,23 +17,19 @@
     --off-white: #FFEEC7;
     --black: #09070D;
     --font-main: "Urbanist", Arial, sans-serif;
-
     --surface: linear-gradient(
         135deg,
         rgba(111, 91, 77, 0.92) 0%,
         rgba(78, 64, 54, 0.98) 100%
     );
-
     --border: 1px solid rgba(255, 244, 218, 0.1);
     --soft-border: 1px solid rgba(255, 244, 218, 0.06);
     --card-radius: 14px;
     --card-shadow: 0 10px 26px rgba(0, 0, 0, 0.2);
 }
 
-
 /*
     Sets the overall appearance and layout of every page.
-
     The body fills the viewport, removing the browser's default margins.
     It also applies the font family and main colours used throughout my pages.
 */
@@ -56,31 +49,24 @@ body::before {
     inset: -18%;
     z-index: -1;
     pointer-events: none;
-
     background: radial-gradient(
         circle,
         rgba(255, 198, 126, 0.34) 0%,
         rgba(217, 132, 82, 0.2) 34%,
         transparent 62%
     );
-
     /*
         Decorative background glow to give the website a warm glow, placed behind
         the content using a negative z-index.
     */
-
     filter: blur(30px);
 }
 
-
 /*
     Merged overlay sections
-
     position fixed and inset: 0 makes the overlay cover the whole viewport width.
-
     high z-index of 1000 ensures the overlay is displayed above the other content
     on the screen, backdrop filter blurs the page behind the overlay.
-
     this ensures good visual separation to maintain the legibility of the popup.
 */
 
@@ -100,7 +86,6 @@ body::before {
     -webkit-backdrop-filter: blur(8px);
 }
 
-
 /*
     Merged disclaimer and accessibility containers
 */
@@ -119,19 +104,14 @@ body::before {
     animation: disclaimerFlyIn 0.4s ease-out;
 }
 
-
 /*
     Creates central card containing information.
-
     Width limited so messages remain legible on larger screens.
-
     Shadow, rounded borders and high contrast visually separate the pop-up
     from the background.
 */
 
-
 /* Disclaimer section */
-
 /* Base styling for the different wording components of the disclaimer */
 
 .Disclaimer-Label {
@@ -141,17 +121,13 @@ body::before {
     letter-spacing: 0.15em;
 }
 
-
 /* Disclaimer label, styles heading above the main disclaimer title */
-
 .Disclaimer h2 {
     margin: 8px 0 20px;
     font-size: 28px;
 }
 
-
 /* Styles main heading */
-
 .Disclaimer-Content {
     color: rgba(255, 244, 218);
     font-size: 15px;
@@ -168,18 +144,14 @@ body::before {
     border-radius: 5px;
 }
 
-
 /*
     Adds subtle background colour to the specific warning message to draw
     attention to it.
 */
 
-
 /*
     Styling for the buttons on the disclaimer screen.
-
     This ensures they look the same as the rest of the buttons.
-
     Updated the opacity to ensure they remain legible.
 */
 
@@ -216,13 +188,9 @@ button.Disclaimer-Continue:hover {
     background: rgba(255, 198, 126, 0.1) !important;
 }
 
-
 /* Accessibility menu */
-
-
 /*
     Adds padding around the menu.
-
     Sets text colour default for the accessibility menu to the global
     off-white colour.
 */
@@ -232,10 +200,8 @@ button.Disclaimer-Continue:hover {
     color: var(--off-white);
 }
 
-
 /*
     Accessibility menu heading.
-
     Sets default top margin and adds the global beige colour.
 */
 
@@ -245,10 +211,8 @@ button.Disclaimer-Continue:hover {
     font-size: 20px;
 }
 
-
 /*
     Changes the labels from default inline behaviour to block.
-
     This ensures each label occupies its own row.
 */
 
@@ -257,7 +221,6 @@ button.Disclaimer-Continue:hover {
     margin-bottom: 8px;
     font-size: 14px;
 }
-
 
 /*
     Style for the text size slider.
@@ -273,10 +236,8 @@ button.Disclaimer-Continue:hover {
     color: var(--beige);
 }
 
-
 /*
     Hidden state for the accessibility menu, display: none.
-
     Hides the menu completely when present, ensuring it is not seen until
     triggered again through a button press.
 */
@@ -285,7 +246,6 @@ button.Disclaimer-Continue:hover {
 .Confidence-Overlay[hidden] {
     display: none;
 }
-
 
 /* Main accessibility panel */
 
@@ -319,20 +279,16 @@ button.Disclaimer-Continue:hover {
     margin-top: 25px;
 }
 
-
 /* Thesis Form */
 
 .Form-Shell {
     width: clamp(700px, 65vw, 1000px);
-
     /*
         clamp element for the width is preferred at 65vw but must stay between
         700 and 1000px.
-
         this ensures the form remains a sensible size and isn't too overwhelming
         with textboxes everywhere.
     */
-
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -383,13 +339,9 @@ button.Disclaimer-Continue:hover {
     font-weight: 600;
 }
 
-
 /* Stock Details Grid */
-
-
 /*
     Sort the stock details section into grids of three columns by default.
-
     minmax(0,1fr) lets the grid columns shrink below the natural width of
     content, stopping them from overflowing the grid.
 */
@@ -399,7 +351,6 @@ button.Disclaimer-Continue:hover {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0 20px;
 }
-
 
 /*
     min-width means that children will shrink as the columns do
@@ -420,7 +371,6 @@ button.Disclaimer-Continue:hover {
     width: 100%;
     box-sizing: border-box;
 }
-
 
 /* Main writing areas for the thesis */
 
@@ -445,16 +395,12 @@ button.Disclaimer-Continue:hover {
     margin: 20px 0 10px;
 }
 
-
 /* Customised slider for the Confidence level section */
-
 
 /*
     Pseudo elements from WebKit replace the default blue and grey slider.
-
     This ensures the slider matches my website for a more refined feel.
 */
-
 
 /* Custom track */
 
@@ -463,7 +409,6 @@ button.Disclaimer-Continue:hover {
     background: rgb(97, 97, 97);
     border-radius: 5px;
 }
-
 
 /* Custom thumb */
 
@@ -523,7 +468,6 @@ textarea {
     resize: none;
 }
 
-
 /* Dashboard */
 
 .dashboard-home {
@@ -569,10 +513,8 @@ textarea {
         scales the heading font size for a more responsive design,
         with minimum value of 2rem
         and a maximum value of 3.2rem.
-
         this is done to ensure the text doesn't get too small or too big based
         off VW, remaining legible.
-
         4vw is growth rate.
     */
 
@@ -585,13 +527,9 @@ textarea {
     font-weight: 700;
 }
 
-
 /* Widgets of the Dashboard */
-
-
 /*
     flex-wrap means that widgets can wrap onto another row when necessary.
-
     Shrinking down to one single column if the VW gets small enough is handled
     by the mobile media query.
 */
@@ -604,12 +542,9 @@ textarea {
     margin-top: 20px;
 }
 
-
 /*
     flex 1 1 0 ensures an even share of the available width for the widgets.
-
     min-width ensures they don't become so narrow that they aren't readable.
-
     if they reach the min-width, flex-wrap moves them to another row.
 */
 
@@ -695,14 +630,11 @@ textarea {
     outline-offset: 3px;
 }
 
-
 /* Dashboard Review Section */
-
 
 /*
     middle row contains the confidence chart and the theses needing review,
     placing them beside one another.
-
     flex:1 is used on both elements to ensure they take up equal width of the
     available space.
 */
@@ -717,24 +649,18 @@ textarea {
 .dashboard-confidence-chart,
 .dashboard-review-section {
     flex: 1;
-
     /*
         stops flexbox automatic minimum width from causing either panel
         to overflow into the other widget's half of the row
     */
-
     min-width: 0;
     box-sizing: border-box;
 }
-
-
 /*
     overflow: hidden prevents the list from increasing the fixed height of the
     dashboard review section.
-
     this ensures a scroll bar gets added instead of having a really tall
     mid-row section.
-
     visually declutters the screen.
 */
 
@@ -765,7 +691,6 @@ textarea {
     font-size: 18px;
 }
 
-
 /* Standardized paragraph styling for both sections */
 
 .dashboard-review-header p,
@@ -781,7 +706,6 @@ textarea {
     font-weight: 400;
     opacity: 0.7;
 }
-
 
 /* ConfidenceChart */
 
@@ -819,12 +743,9 @@ textarea {
     gap: 12px;
     color: var(--off-white);
 }
-
-
 /*
     flex-shrink: 0 stops the labels on the bar chart from becoming narrower
     when the bars need extra space.
-
     this ensures the counter remains legible.
 */
 
@@ -836,11 +757,9 @@ textarea {
     white-space: nowrap;
 }
 
-
 /*
     flex: 1 makes the bars occupy all the available space in the half of the
     mid-row allocated to the confidence chart.
-
     staying within margins etc, and maintaining a readable number.
 */
 
@@ -859,11 +778,9 @@ textarea {
     border-radius: 4px;
 }
 
-
 /*
     JavaScript changes each bar depending on the number of theses logged
     in local storage within that range.
-
     transition: width 0.4s ease ensures that when these update and the bar gets
     wider, it doesn't happen in a big jump.
 */
@@ -901,7 +818,6 @@ textarea {
     font-family: var(--font-main);
 }
 
-
 /* Standardized row styling */
 
 #review-container li,
@@ -928,7 +844,6 @@ textarea {
 .features-list li:last-child {
     border-bottom: none;
 }
-
 
 /* Stock List */
 
@@ -1000,16 +915,13 @@ textarea {
     text-align: right;
 }
 
-
 /* Customised Scrollbar */
-
 
 /*
     WebKit scrollbar pseudo elements used to customise the stock and review
     containers' scroll elements, rather than all the scrollbars
     on my page.
 */
-
 .features-list::-webkit-scrollbar,
 #review-container::-webkit-scrollbar {
     width: 7px;
@@ -1032,9 +944,7 @@ textarea {
     background: rgba(255, 244, 218, 0.35);
 }
 
-
 /* Welcome */
-
 h1.Welcome,
 .Welcome {
     margin: 1vh 0 0 1vw;
@@ -1045,9 +955,7 @@ h1.Welcome,
     letter-spacing: 0.1em;
 }
 
-
 /* Navigation */
-
 nav {
     position: sticky;
     top: 0;
@@ -1083,16 +991,11 @@ nav {
     letter-spacing: 1px;
 }
 
-
 /* Buttons */
-
-
 /*
     Button-specific CSS variables inherit colours from the site's main
     variables and are then reused throughout the glow effects below.
 */
-
-
 /*
     - Button adapted from Uiverse.io
     - Creator: cssbuttons-io
@@ -1100,12 +1003,9 @@ nav {
     - Licence: MIT
     - Date of implementation: 4/08/26
 */
-
-
 /*
     UI VERSE BUTTON CODE START
 */
-
 button {
     --glow-color: var(--beige);
     --glow-spread-color: var(--apricot);
@@ -1123,11 +1023,9 @@ button {
     border: 0.25em solid var(--glow-color);
     border-radius: 1em;
     outline: none;
-
     /*
         Shadows layered together to create the outer glow.
     */
-
     box-shadow:
         0 0 1em 0.25em var(--glow-color),
         0 0 4em 1em var(--glow-spread-color),
@@ -1136,14 +1034,11 @@ button {
     text-shadow: 0 0 0.5em var(--glow-color);
     transition: all 0.3s;
 }
-
-
 /*
     Creates a separate transformed and blurred shape beneath the button.
 
     pointer-events: none stops the mouse from interacting with this element.
 */
-
 button::after {
     content: "";
     position: absolute;
@@ -1157,7 +1052,6 @@ button::after {
     opacity: 0;
     transform: perspective(1.5em) rotateX(35deg) scale(1, 0.6);
 }
-
 button:hover {
     color: var(--black);
     background-color: var(--beige);
@@ -1166,19 +1060,15 @@ button:hover {
         0 0 4em 2em var(--glow-spread-color),
         inset 0 0 0.75em 0.25em var(--glow-color);
 }
-
 button:active {
     box-shadow:
         0 0 0.6em 0.25em var(--glow-color),
         0 0 2.5em 2em var(--glow-spread-color),
         inset 0 0 0.5em 0.25em var(--glow-color);
 }
-
-
 /*
     UI VERSE BUTTON CODE END
 */
-
 button.nav-button svg,
 button.nav-button .nav-icon {
     width: 22px;
@@ -1222,15 +1112,10 @@ button.regular-button:focus {
 button.regular-button:active {
     background: rgba(255, 198, 126, 0.18) !important;
 }
-
-
 /* ThesisView.html */
-
-
 /*
     Thesis actions
 */
-
 .thesis-actions {
     display: flex;
     justify-content: center;
@@ -1373,7 +1258,6 @@ button.regular-button:active {
     background-color: #5a6268;
 }
 
-
 /* Loading Screen */
 
 .loading-screen {
@@ -1387,8 +1271,6 @@ button.regular-button:active {
     animation: fade-out 1.2s ease forwards;
     animation-delay: 1.2s;
 }
-
-
 /*
     * Loader adapted from Uiverse.io
     * Creator: vk-uiux
@@ -1396,8 +1278,6 @@ button.regular-button:active {
     * Licence: MIT
     * Date of implementation: around 5/08/26
 */
-
-
 /*
     * UI VERSE LOADER CODE START
 */
@@ -1438,13 +1318,9 @@ button.regular-button:active {
 .loader div:nth-child(5) {
     animation-delay: 0.75s;
 }
-
-
 /*
     * UI VERSE LOADER CODE END
 */
-
-
 /* Landing Page */
 
 .landing-page {
@@ -1510,26 +1386,18 @@ button.regular-button:active {
     transition: all 0.3s;
 }
 
-
 /* Miscellaneous */
-
 hr {
     margin: 10px 0;
     border: none;
     border-top: 1px solid #050505;
 }
-
-
 /* Media Queries */
-
-
 /*
     Used for a more responsive layout.
 
     This is one of my advanced techniques for my interface.
 */
-
-
 /*
     For medium sized screens.
 */
@@ -1545,20 +1413,14 @@ hr {
     }
 }
 
-
 /*
     Tablet Layout
 */
-
-
 /*
     default flex for the midrow is row.
-
     under a VW of 900px means that there is not enough space
     for review and confidence panels to stay side-by-side
-
     as they would become unreadable.
-
     flex-direction: column; ensures they stack above each other at lower
     than 900px VW.
 */
@@ -1587,23 +1449,16 @@ hr {
     }
 }
 
-
 /*
     Mobile Layout
 */
-
-
 /*
     underneath 650px the interface needs to become sized to suit mobile phone
     sized screens. Hence the long media query changes most of the layouts to
     a single-column.
-
     dashboard widgets stack vertically
-
     stock-details align in 2 columns because they are small
-
     inputs expand to full available width
-
     nav bar allowed to wrap for redundancy, theres
     not enough elements to it to need this yet.
 */
@@ -1778,16 +1633,12 @@ hr {
     }
 }
 
-
 /* Animations */
-
-
 /*
     Rotates each loader element around its y axis, nth-child animation delays
     cause the elements to rotate one after another, rather than all at the
     same time.
 */
-
 @keyframes loader {
     0% {
         transform: rotateY(0deg);
@@ -1804,14 +1655,10 @@ hr {
         transform: rotateY(-180deg);
     }
 }
-
-
 /*
     Fades the loading overlay out and then sets visibility: hidden
     so the invisible element no longer remains visually active.
 */
-
-
 /*
     CODE FOR THIS ANIMATION FROM UI VERSE
 */
