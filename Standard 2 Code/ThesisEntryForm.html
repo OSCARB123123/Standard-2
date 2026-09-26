@@ -1,46 +1,24 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-    <meta
-        name="description"
-        content="Create and save a new investment thesis."
-    >
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1"
-    >
-
+    <meta name="description" content="Create and save a new investment thesis.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="style.css">
     <script type="module" src="Journal.js"></script>
-
     <title>Log New Thesis</title>
 </head>
 
 
 <body>
-
- 
-    <nav
-        class="nav-shell"
-        aria-label="Main navigation"
-    >
-
+    <!-- Main navigation and accessibility controls -->
+    <nav class="nav-shell" aria-label="Main navigation">
         <div class="nav-panel">
-
-            <button
-                class="regular-button"
-                type="button"
-                onclick="window.location.href='JournalHome.html'"
-            >
+            <button class="regular-button" type="button" onclick="window.location.href='JournalHome.html'">
                 Dashboard
             </button>
-
+            <!-- Returns the user to the main dashboard -->
             <button
                 id="accessibility-toggle"
                 class="regular-button"
@@ -50,17 +28,11 @@
             >
                 Accessibility Menu
             </button>
-
         </div>
         
     <!-- Accessibility Menu -->
-
-    <div
-        class="Accessibility-Overlay"
-        id="accessibility-overlay"
-        hidden
-    >
-
+    <!-- Accessibility menu allows users to adjust text size -->
+    <div class="Accessibility-Overlay" id="accessibility-overlay" hidden>
         <div
             class="Accessibility"
             id="accessibility-menu"
@@ -68,23 +40,17 @@
             aria-modal="true"
             aria-labelledby="accessibility-title"
         >
-
             <div class="Accessibility-Header">
-
-            
-
                 <h2 id="accessibility-title">
                     Accessibility Settings
                 </h2>
-
             </div>
 
             <div class="Accessibility-Content">
-
+                <!-- Text size control -->
                 <label for="text-size-slider">
                     Text Size:
                 </label>
-
                 <input
                     type="range"
                     id="text-size-slider"
@@ -94,15 +60,12 @@
                     step="10"
                     aria-describedby="text-size-value"
                 >
-
                 <span id="text-size-value">
                     100%
                 </span>
-
             </div>
 
             <div class="Accessibility-Actions">
-
                 <button
                     type="button"
                     class="regular-button"
@@ -110,22 +73,13 @@
                 >
                     Close
                 </button>
-
             </div>
-
         </div>
-
     </div>
-
-    
     </nav>
 
-    <!-- Data Disclaimer -->
-    <div
-        class="Disclaimer-Overlay"
-        id="Disclaimer-Overlay"
-        role="presentation"
-    >
+    <!-- Data disclaimer shown before the user enters a thesis -->
+    <div class="Disclaimer-Overlay" id="Disclaimer-Overlay" role="presentation">
         <div
             class="Disclaimer"
             id="Disclaimer"
@@ -134,7 +88,6 @@
             aria-labelledby="disclaimer-title"
             aria-describedby="disclaimer-description"
         >
-
             <div class="Disclaimer-Header">
                 <h2 id="disclaimer-title">Before you continue</h2>
             </div>
@@ -159,7 +112,7 @@
             </div>
 
             <div class="Disclaimer-Actions">
-
+                <!-- Returns to the dashboard without entering a thesis -->
                 <button
                     type="button"
                     class="Disclaimer-Button Disclaimer-Button--secondary"
@@ -167,7 +120,6 @@
                 >
                     Back
                 </button>
-
                 <button
                     type="button"
                     class="Disclaimer-Button Disclaimer-Button--primary"
@@ -175,42 +127,28 @@
                 >
                     Continue
                 </button>
-
             </div>
-
         </div>
     </div>
 
-
-
-    <!-- Main Content -->
+    <!-- Main thesis entry form -->
     <main>
-
-        <form
-            class="Form-Shell"
-            id="Thesis-Form"
-
-        >
-
+        <form class="Form-Shell" id="Thesis-Form">
             <h1 class="Thesis-Form-Title">
                 Log New Thesis
             </h1>
-
-
                     <!-- Stock Details -->
+                     
                     <fieldset class="Stock-Details">
             <legend class="Thesis-Form-Subtitle">
                 Stock Details
             </legend>
-
+            
+            <!-- Stock identification and trading information -->
             <div class="Stock-Details-Grid">
                 <div class="Thesis-Date">
                     <label for="Thesis-Date">Date:</label>
-                    <input
-                        type="date"
-                        id="Thesis-Date"
-                        name="Thesis-Date"
-                    >
+                    <input type="date" id="Thesis-Date" name="Thesis-Date">
                 </div>
 
                 <div>
@@ -298,19 +236,15 @@
             </div>
         </fieldset>
 
-         <!-- Metrics -->
+            <!-- Metrics -->
+            <!-- Financial metrics used to support the investment thesis -->
                     <fieldset class="Stock-Details">
             
-            <legend 
-            class="Thesis-Form-Subtitle"
-            id="stock-metrics-title"
-            >
+            <legend class="Thesis-Form-Subtitle" id="stock-metrics-title">
                 Stock Metrics
             </legend>
 
             <div class="Stock-Details-Grid">
-          
-
                 <div>
                     <label for="Stock-PE">P/E Ratio</label>
                     <input
@@ -381,55 +315,45 @@
 
 
 
-            <!-- Main Thesis -->
+            <!-- Main reasoning behind the investment thesis -->
             <h2 class="Thesis-Form-Subtitle">
                 Main Thesis
             </h2>
 
-
-            <!-- Bull Case -->
+            <!-- Bull case records reasons the stock could outperform -->
             <div class="Bull-Case">
-
                 <label for="Bull-Case-Reasoning">
                     Bull Case:
                 </label>
-
                 <textarea
                     id="Bull-Case-Reasoning"
                     name="Bull-Case-Reasoning"
                     placeholder="Describe why you think the stock will outperform. You may like to include: Growth Drivers, Competitive Moat, Margin Expansion Potential."
                     rows="5"
                 ></textarea>
-
             </div>
 
 
-            <!-- Bear Case -->
+            <!-- Bear case records reasons the stock could decline -->
             <div class="Bear-Case">
-
                 <label for="Bear-Case-Reasoning">
                     Bear Case:
                 </label>
-
                 <textarea
                     id="Bear-Case-Reasoning"
                     name="Bear-Case-Reasoning"
                     placeholder="Describe reasons why the stock price could decline in the future. You may like to include: Pontential Bearish News, Cost Pressures, Economic Downturn Potential."
                     rows="5"
                 ></textarea>
-
             </div>
 
 
-            <!-- Confidence Level -->
+            <!-- Confidence level records how strongly the user supports their thesis -->
             <div class="Confidence-Level">
-            
-
-
                 <label for="Confidence-Level">
                     Confidence Level:
                 </label>
-
+                <!-- Explains how the confidence rating should be interpreted -->
                 <button
                     id="confidence-info-toggle"
                     class="regular-button confidence-info-button"
@@ -440,7 +364,6 @@
                 >
                     ?
                 </button>
-
                 <div
                     class="Confidence-Overlay"
                     id="confidence-info-overlay"
@@ -464,7 +387,6 @@
                                 Use a lower percentage when your thesis needs more evidence, and a higher percentage when your reasoning is well supported. This is a reflection tool, not a guarantee of performance.
                             </p>
                         </div>
-
                         <div class="Disclaimer-Actions">
                             <button
                                 type="button"
@@ -487,67 +409,42 @@
                     value="50"
                     aria-describedby="Confidence-Value"
                 >
-
                 <span id="Confidence-Value">
                     50%
                 </span>
-
             </div>
 
 
             <!-- Additional Notes -->
+            <!-- Allows the user to record information not covered by the main thesis fields -->
             <div class="Additional-Notes">
-
                 <label for="Thesis-Notes">
                     Additional Notes:
                 </label>
-
                 <textarea
                     id="Thesis-Notes"
                     name="Thesis-Notes"
                     placeholder="Enter any additional notes"
                     rows="4"
                 ></textarea>
-
             </div>
-
-
-            <!-- Save -->
-            <button
-                type="submit"
-                class="regular-button"
-            >
+            
+            <!-- Saves the completed thesis -->
+            <button type="submit" class="regular-button">
                 Save Thesis
             </button>
-
         </form>
-
     </main>
 
-
-
-    <!-- Loading Screen -->
-    <div
-        id="loading-screen"
-        class="loading-screen"
-    >
-
-        <div
-            class="loader"
-            role="status"
-            aria-label="Loading"
-        >
-
+    <!-- Loading screen displayed while the thesis is being processed -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loader" role="status" aria-label="Loading">
             <div></div>
             <div></div>
             <div></div>
             <div></div>
             <div></div>
-
         </div>
-
     </div>
-
 </body>
-
 </html>
