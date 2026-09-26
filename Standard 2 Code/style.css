@@ -519,6 +519,10 @@ select {
     border-radius: 8px;
 }
 
+textarea {
+    resize: none;
+}
+
 
 /* Dashboard */
 
