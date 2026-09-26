@@ -6,6 +6,14 @@
 const getTheses = () =>
     JSON.parse(localStorage.getItem("theses")) || [];
 
+const getTodayDateString = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+};
+
 
 // saves information entered in the the thesis form
 // event.prevetDefault stops the browser from submitting the form
@@ -21,6 +29,11 @@ function saveThesis(event) {
 
     if (!date || !stockName || !ticker) {
         alert("Please fill in all required fields: Date, Stock Name, and Ticker");
+        return;
+    }
+
+    if (date > getTodayDateString()) {
+        alert("The date cannot be later than today.");
         return;
     }
 
@@ -180,7 +193,9 @@ function initDashboard() {
             <div class="confidence-chart-row">
                 <span class="confidence-chart-label">${label}</span>
                 <div class="confidence-bar-container">
-                    <div class="confidence-bar" style="width:${brackets[i] / max * 100}%"></div>
+                    <div class="confidence-bar-track">
+                        <div class="confidence-bar" style="width:${brackets[i] / max * 100}%"></div>
+                    </div>
                     <span class="confidence-chart-number">${brackets[i]}</span>
                 </div>
             </div>
@@ -192,6 +207,8 @@ function initDashboard() {
 function initThesisForm() {
     const form = document.getElementById("Thesis-Form");
     if (!form) return;
+
+    document.getElementById("Thesis-Date").max = getTodayDateString();
 
     const confidenceInfoToggle = document.getElementById(
         "confidence-info-toggle"
@@ -420,12 +437,16 @@ function initThesisView() {
             if (property === "date") {
                 input.type = "date";
                 input.required = true;
+                input.max = getTodayDateString();
             }
 
             // store the thesis property in a data attribute so it can be accessed later when saving
             input.value = thesis[property] || "";
             input.dataset.property = property;
             input.id = elementId;
+            input.dataset.originalFontSize =
+                element.dataset.originalFontSize ||
+                window.getComputedStyle(element).fontSize;
 
             input.addEventListener("input", () => {
                 unsavedChanges = true;
@@ -434,12 +455,16 @@ function initThesisView() {
             element.replaceWith(input);
         });
 
+        document.getElementById("date-review-hint").hidden = false;
+
         editButton.style.display = "none";
         saveButton.style.display = "block";
     });
 
     // updates the thesis object and saved edited information to local storage
     saveButton.addEventListener("click", () => {
+        const previousDate = thesis.date;
+
         Object.entries(fields).forEach(([elementId, property]) => {
             if (
                 property === "ticker" ||
@@ -460,6 +485,15 @@ function initThesisView() {
         if (!thesis.date) {
             alert("Please add a date.");
             return;
+        }
+
+        if (thesis.date > getTodayDateString()) {
+            alert("The date cannot be later than today.");
+            return;
+        }
+
+        if (thesis.date !== previousDate) {
+            thesis.lastReviewed = thesis.date;
         }
 
         theses[id] = thesis;
@@ -525,28 +559,65 @@ function initAccessibility() {
         textSizeSlider.value = savedTextSize;
         textSizeValue.textContent = `${savedTextSize}%`;
 
-        const textElements = document.querySelectorAll(
-            "h1, h2, h3, h4, h5, h6, p, a, button, label, span, li, legend, input, textarea, select"
-        );
+        const textElements = new Set();
+        let currentScale = 1;
 
-        textElements.forEach(element => {
-            element.dataset.originalFontSize =
-                window.getComputedStyle(element).fontSize;
+        const getElementTree = element => [
+            element,
+            ...element.querySelectorAll("*")
+        ];
+
+        const registerElementTree = element => {
+            getElementTree(element).forEach(child => {
+                if (!child.dataset.originalFontSize) {
+                    const computedSize = parseFloat(
+                        window.getComputedStyle(child).fontSize
+                    );
+                    child.dataset.originalFontSize =
+                        `${computedSize / currentScale}px`;
+                }
+                textElements.add(child);
+                child.style.fontSize = `${
+                    parseFloat(child.dataset.originalFontSize) * currentScale
+                }px`;
+            });
+        };
+
+        const unregisterElementTree = element => {
+            getElementTree(element).forEach(child => textElements.delete(child));
+        };
+
+        registerElementTree(document.documentElement);
+
+        const elementObserver = new MutationObserver(records => {
+            records.forEach(record => {
+                record.removedNodes.forEach(node => {
+                    if (node.nodeType === Node.ELEMENT_NODE) {
+                        unregisterElementTree(node);
+                    }
+                });
+                record.addedNodes.forEach(node => {
+                    if (node.nodeType === Node.ELEMENT_NODE) {
+                        registerElementTree(node);
+                    }
+                });
+            });
+        });
+        elementObserver.observe(document.documentElement, {
+            childList: true,
+            subtree: true
         });
 
         const applyTextSize = () => {
-            const scale = Number(textSizeSlider.value) / 100;
+            currentScale = Number(textSizeSlider.value) / 100;
 
             textSizeValue.textContent = `${textSizeSlider.value}%`;
 
             localStorage.setItem("textSize", textSizeSlider.value);
 
             textElements.forEach(element => {
-                const originalSize = parseFloat(
-                    element.dataset.originalFontSize
-                );
-
-                element.style.fontSize = `${originalSize * scale}px`;
+                const originalSize = parseFloat(element.dataset.originalFontSize);
+                element.style.fontSize = `${originalSize * currentScale}px`;
             });
         };
 

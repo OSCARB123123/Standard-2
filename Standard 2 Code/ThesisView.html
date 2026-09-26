@@ -9,25 +9,16 @@
         <link rel="stylesheet" href="style.css">
         <script type="module" src="Journal.js"></script>
         <title>Thesis View</title>
-     
     </head>
     <body>
 
-      <nav
-        class="nav-shell"
-        aria-label="Main navigation"
-    >
-
+   <!-- Main navigation and accessibility controls -->
+    <nav class="nav-shell" aria-label="Main navigation">
         <div class="nav-panel">
-
-            <button
-                class="regular-button"
-                type="button"
-                onclick="window.location.href='JournalHome.html'"
-            >
+            <button class="regular-button" type="button" onclick="window.location.href='JournalHome.html'">
                 Dashboard
             </button>
-
+            <!-- Returns the user to the main dashboard -->
             <button
                 id="accessibility-toggle"
                 class="regular-button"
@@ -37,17 +28,11 @@
             >
                 Accessibility Menu
             </button>
-
         </div>
         
     <!-- Accessibility Menu -->
-
-    <div
-        class="Accessibility-Overlay"
-        id="accessibility-overlay"
-        hidden
-    >
-
+    <!-- Accessibility menu allows users to adjust text size -->
+    <div class="Accessibility-Overlay" id="accessibility-overlay" hidden>
         <div
             class="Accessibility"
             id="accessibility-menu"
@@ -55,23 +40,17 @@
             aria-modal="true"
             aria-labelledby="accessibility-title"
         >
-
             <div class="Accessibility-Header">
-
-            
-
                 <h2 id="accessibility-title">
                     Accessibility Settings
                 </h2>
-
             </div>
 
             <div class="Accessibility-Content">
-
+                <!-- Text size control -->
                 <label for="text-size-slider">
                     Text Size:
                 </label>
-
                 <input
                     type="range"
                     id="text-size-slider"
@@ -81,15 +60,12 @@
                     step="10"
                     aria-describedby="text-size-value"
                 >
-
                 <span id="text-size-value">
                     100%
                 </span>
-
             </div>
 
             <div class="Accessibility-Actions">
-
                 <button
                     type="button"
                     class="regular-button"
@@ -97,27 +73,22 @@
                 >
                     Close
                 </button>
-
             </div>
-
         </div>
-
     </div>
     </nav>
 
-
+        <!-- Thesis header and editing controls -->
         <div class="thesis-view-container">
             <div class="thesis-view-header">
                 <div>
                     <h1 class="thesis-view-title" id="ticker-display">--</h1>
                     <p class="thesis-view-subtitle" id="stock-name-display">--</p>
                 </div>
-
                    <div class="thesis-actions">
                         <button class="regular-button" id="edit-thesis">
                             Edit Thesis
                         </button>
-
                         <button class="regular-button" id="save-thesis" style="display: none;">
                             Save Changes
                         </button>
@@ -148,36 +119,30 @@
             </div>
 
 
-    <!-- Stock Metrics Section -->
+            <!-- Stock Metrics Section -->
             <div class="thesis-section">
                 <div class="thesis-section-title">Stock Metrics</div>
-
                 <div class="thesis-details-grid">
                     <div class="detail-item">
                         <div class="detail-label">P/E Ratio</div>
                         <div class="detail-value" id="detail-pe">--</div>
                     </div>
-
                     <div class="detail-item">
                         <div class="detail-label">EPS</div>
                         <div class="detail-value" id="detail-eps">--</div>
                     </div>
-
                     <div class="detail-item">
                         <div class="detail-label">52 Week Change</div>
                         <div class="detail-value" id="detail-52w">--</div>
                     </div>
-
                     <div class="detail-item">
                         <div class="detail-label">Market Cap</div>
                         <div class="detail-value" id="detail-cap">--</div>
                     </div>
-
                     <div class="detail-item">
                         <div class="detail-label">FCF Growth</div>
                         <div class="detail-value" id="detail-fcfg">--</div>
                     </div>
-
                     <div class="detail-item">
                         <div class="detail-label">Relative P/E Ratio</div>
                         <div class="detail-value" id="detail-per">--</div>
@@ -211,12 +176,10 @@
             <!-- Thesis Analysis Section -->
             <div class="thesis-section">
                 <div class="thesis-section-title">Thesis Analysis</div>
-                
                 <div class="thesis-text-section">
                     <div class="detail-label">Bull Case</div>
                     <p id="detail-bull-case">--</p>
                 </div>
-
                 <div class="thesis-text-section">
                     <div class="detail-label">Bear Case</div>
                     <p id="detail-bear-case">--</p>
@@ -233,7 +196,12 @@
                     </div>
                     <div class="detail-item">
                         <div class="detail-label">Date Added</div>
-                        <div class="detail-value" id="detail-date">--</div>
+                        <div class="date-edit-row">
+                            <div class="detail-value" id="detail-date">--</div>
+                            <span class="date-review-hint" id="date-review-hint" hidden>
+                                Update this date after reviewing the thesis, then save to keep the last reviewed date current.
+                            </span>
+                        </div>
                     </div>
                 </div>
                 

@@ -1,11 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;700&display=swap');
 
-/* 
-Root variables for global page styling
-store main colors, fonts, gradients, borders and corner radius and shadows which are used throughout my websitex.
-Using root variables allows me to for example change the colour scheme of my website by editing just the colours up here, 
-rather than going through every line of css and changing the colours manually.
+
+/*
+    Root variables for global page styling
+
+    store main colors, fonts, gradients, borders and corner radius and shadows
+    which are used throughout my website.
+
+    Using root variables allows me to, for example, change the colour scheme of
+    my website by editing just the colours up here,
+
+    rather than going through every line of CSS and changing the colours manually.
 */
+
 :root {
     --brown: #7B5132;
     --apricot: #D98452;
@@ -26,9 +33,13 @@ rather than going through every line of css and changing the colours manually.
     --card-shadow: 0 10px 26px rgba(0, 0, 0, 0.2);
 }
 
-/*  Sets the overall appearance and layout of every page.
-    The body fills the viewport, removing the browser's default margins
-    it also applies the font family and main colours used throughout my pages */
+
+/*
+    Sets the overall appearance and layout of every page.
+
+    The body fills the viewport, removing the browser's default margins.
+    It also applies the font family and main colours used throughout my pages.
+*/
 
 body {
     margin: 0;
@@ -53,21 +64,24 @@ body::before {
         transparent 62%
     );
 
-    /* decorative background glow to give the website a warm glow, placed behind the content using 
-    a negative Z index.
+    /*
+        Decorative background glow to give the website a warm glow, placed behind
+        the content using a negative z-index.
     */
 
     filter: blur(30px);
 }
 
+
 /*
     Merged overlay sections
-    
-    position fixed and inset: 0 makes the overlay cover the whole viewport width 
 
-    high z index of 1000 ensures the overlay is displayed above the other content
-    on the screen, backdrop filter blurs the apge behind the overlay
-    this ensures good visual separation to maintain the legibility of the popup
+    position fixed and inset: 0 makes the overlay cover the whole viewport width.
+
+    high z-index of 1000 ensures the overlay is displayed above the other content
+    on the screen, backdrop filter blurs the page behind the overlay.
+
+    this ensures good visual separation to maintain the legibility of the popup.
 */
 
 .Disclaimer-Overlay,
@@ -87,38 +101,39 @@ body::before {
 }
 
 
+/*
+    Merged disclaimer and accessibility containers
+*/
 
-/*Merged disclaimer and accesibility containers*/
-.Disclaimer, 
+.Disclaimer,
 .Accessibility,
 .Confidence-Info {
     width: min(560px, 100%);
     box-sizing: border-box;
-
     padding: 30px;
-
     color: var(--off-white);
     background: var(--black);
-
     border: var(--border);
     border-radius: var(--card-radius);
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
-
     animation: disclaimerFlyIn 0.4s ease-out;
 }
-/* 
-creates central card containing information
-width limited so messages remain legible on larger screens
 
-shadow, and rounded borders and high contrast visuallly separate the pop-up 
-from the background
+
+/*
+    Creates central card containing information.
+
+    Width limited so messages remain legible on larger screens.
+
+    Shadow, rounded borders and high contrast visually separate the pop-up
+    from the background.
 */
 
 
 /* Disclaimer section */
 
-
 /* Base styling for the different wording components of the disclaimer */
+
 .Disclaimer-Label {
     color: var(--beige);
     font-size: 12px;
@@ -126,14 +141,16 @@ from the background
     letter-spacing: 0.15em;
 }
 
-/* disclaimer label, styles heading above the main disclaimer title*/
+
+/* Disclaimer label, styles heading above the main disclaimer title */
 
 .Disclaimer h2 {
     margin: 8px 0 20px;
     font-size: 28px;
 }
 
-/* styles main heading*/
+
+/* Styles main heading */
 
 .Disclaimer-Content {
     color: rgba(255, 244, 218);
@@ -150,13 +167,20 @@ from the background
     background: rgba(217, 132, 82, 0.1);
     border-radius: 5px;
 }
-/*adds subtle background colour to the specific warning message to draw attention to it*/
 
 
 /*
-Styling for the buttons on the disclaimer screen.
-This ensures they look the same as the rest of the buttons.
-Updated the opacity to ensure they remain legible.
+    Adds subtle background colour to the specific warning message to draw
+    attention to it.
+*/
+
+
+/*
+    Styling for the buttons on the disclaimer screen.
+
+    This ensures they look the same as the rest of the buttons.
+
+    Updated the opacity to ensure they remain legible.
 */
 
 .Disclaimer-Actions {
@@ -194,10 +218,13 @@ button.Disclaimer-Continue:hover {
 
 
 /* Accessibility menu */
+
+
 /*
-adds padding around the menu 
-sets text colour defulat for the accessibility menu to the global variables 
-offwhite colour
+    Adds padding around the menu.
+
+    Sets text colour default for the accessibility menu to the global
+    off-white colour.
 */
 
 .accessibility-menu {
@@ -205,10 +232,11 @@ offwhite colour
     color: var(--off-white);
 }
 
+
 /*
-Accessibility meny heading
-sets default top margin 
-adds a a global variable color beige
+    Accessibility menu heading.
+
+    Sets default top margin and adds the global beige colour.
 */
 
 .accessibility-menu h2 {
@@ -217,17 +245,22 @@ adds a a global variable color beige
     font-size: 20px;
 }
 
-/* changes the labels from default inline behavoir to block
-this ensures each label occupies its own row.
+
+/*
+    Changes the labels from default inline behaviour to block.
+
+    This ensures each label occupies its own row.
 */
+
 .accessibility-menu label {
     display: block;
     margin-bottom: 8px;
     font-size: 14px;
 }
 
+
 /*
-Style for the text size slider 
+    Style for the text size slider.
 */
 
 #text-size-slider {
@@ -241,29 +274,25 @@ Style for the text size slider
 }
 
 
-
-
 /*
-hidden state for the accessibility menu, display: none;
-hides the menu completely when present ensuring it is not seen until triggered 
-again through a button press.
+    Hidden state for the accessibility menu, display: none.
+
+    Hides the menu completely when present, ensuring it is not seen until
+    triggered again through a button press.
 */
 
-.Accessibility-Overlay[hidden] {
-    display: none;
-}
-
+.Accessibility-Overlay[hidden],
 .Confidence-Overlay[hidden] {
     display: none;
 }
 
-/* Main accessibility panel */
 
+/* Main accessibility panel */
 
 .Accessibility h2 {
     margin: 8px 0 20px;
-    font-size: 28px;
     color: var(--beige);
+    font-size: 28px;
     font-weight: 700;
     letter-spacing: 0.15em;
 }
@@ -291,31 +320,29 @@ again through a button press.
 }
 
 
-
 /* Thesis Form */
 
 .Form-Shell {
-    width: clamp(700px, 65vw, 1000px); 
-    /* 
-    clamp element for the width is preffered at 65vw but must stay between
-    700 and 1000px
-    this ensures the form remains a sensible size and isn't too overwhelming with textboxes everywhere
-    */ 
-    box-sizing: border-box;
+    width: clamp(700px, 65vw, 1000px);
 
+    /*
+        clamp element for the width is preferred at 65vw but must stay between
+        700 and 1000px.
+
+        this ensures the form remains a sensible size and isn't too overwhelming
+        with textboxes everywhere.
+    */
+
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: stretch;
-
     margin: 20px auto;
     padding: 50px;
-
     color: var(--off-white);
     font-family: var(--font-main);
     font-size: 18px;
-
     background: var(--black);
-
     border: var(--border);
     border-radius: var(--card-radius);
     box-shadow: var(--card-shadow);
@@ -323,19 +350,14 @@ again through a button press.
 
 .Thesis-Date {
     width: 100%;
-    
 }
 
 .Thesis-Date input {
     width: 25%;
     box-sizing: border-box;
-
     padding: 10px 12px;
-    
-
     color: var(--off-white);
     font-family: var(--font-main);
-
     background: var(--surface);
     border: var(--soft-border);
     border-radius: 10px;
@@ -347,30 +369,41 @@ again through a button press.
     font-weight: 700;
 }
 
+.Stock-Details {
+    min-width: 0;
+    margin: 0;
+    padding: 10px 16px 18px;
+    border: 1px solid rgba(255, 244, 218, 0.14);
+    border-radius: 10px;
+}
+
 .Stock-Details label {
     display: block;
     margin: 20px 0 5px;
     font-weight: 600;
 }
 
-/* Stock Detials Grid */
 
-/* 
-    Sort the stock details section into grids of three collumns by default
-    minmax(0,1fr) lets the grid collumns shrink below natural width of content, stopping them from 
-    overflowing the grid.
+/* Stock Details Grid */
+
+
+/*
+    Sort the stock details section into grids of three columns by default.
+
+    minmax(0,1fr) lets the grid columns shrink below the natural width of
+    content, stopping them from overflowing the grid.
 */
-
 
 .Stock-Details-Grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr)); 
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0 20px;
 }
 
-/* 
-    min-width means that children will shrink as the collumns do 
-    rather than overflowing
+
+/*
+    min-width means that children will shrink as the columns do
+    rather than overflowing.
 */
 
 .Stock-Details-Grid > div {
@@ -388,7 +421,9 @@ again through a button press.
     box-sizing: border-box;
 }
 
-/* Main writing areas for the thesis*/
+
+/* Main writing areas for the thesis */
+
 .Bull-Case label,
 .Bear-Case label,
 .Additional-Notes label,
@@ -396,7 +431,6 @@ again through a button press.
     display: block;
     margin: 20px 0 10px;
     padding: 5px 10px;
-
     font-weight: 600;
     background: rgb(48, 48, 48);
     border-radius: 8px;
@@ -411,45 +445,55 @@ again through a button press.
     margin: 20px 0 10px;
 }
 
+
 /* Customised slider for the Confidence level section */
 
+
 /*
-   pseudo elements from webkit replace the default blue and grey slider
-   This ensures the slider matches my website for a more refined feel.
+    Pseudo elements from WebKit replace the default blue and grey slider.
+
+    This ensures the slider matches my website for a more refined feel.
 */
 
-/* custom track */
-#Confidence-Level::-webkit-slider-runnable-track {
+
+/* Custom track */
+
+.Confidence-Level input[type="range"]::-webkit-slider-runnable-track {
     height: 6px;
     background: rgb(97, 97, 97);
     border-radius: 5px;
 }
 
-/* custom thumb */
-#Confidence-Level::-webkit-slider-thumb {
+
+/* Custom thumb */
+
+.Confidence-Level input[type="range"]::-webkit-slider-thumb {
     width: 18px;
     height: 18px;
     margin-top: -6px;
-
     appearance: none;
     border-radius: 50%;
     cursor: pointer;
 }
 
 .Additional-Notes textarea {
-    margin-bottom: 100px;
+    margin-bottom: 24px;
 }
 
 .Thesis-Form-Subtitle {
-    margin: 70px 0 30px;
-
+    margin: 28px 0 18px;
     color: var(--off-white);
     font-size: 25px;
     font-weight: 600;
 }
 
 .Stock-Details + .Stock-Details {
-    margin-top: 35px;
+    margin-top: 24px;
+}
+
+#Thesis-Form > button[type="submit"] {
+    align-self: flex-start;
+    margin-top: 18px !important;
 }
 
 input::placeholder,
@@ -466,45 +510,68 @@ textarea,
 select {
     width: 100%;
     box-sizing: border-box;
-
     padding: 10px 12px;
-
     color: var(--off-white);
     font-family: var(--font-main);
     text-align: left;
-
     background: var(--surface);
     border: var(--soft-border);
     border-radius: 8px;
 }
 
+
 /* Dashboard */
 
 .dashboard-home {
-    width: min(1400px, calc(100% - 2rem)); 
-
-    min-height: 100vh;
+    width: min(1400px, calc(100% - 2rem));
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: stretch;
     margin: 0 auto;
-    padding: 2rem 0 3rem;
+    padding: 1.25rem 0 2rem;
+}
+
+.dashboard-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.dashboard-heading .dashboard-title {
+    margin: 0;
+    color: var(--beige);
+    font-size: 2.5rem;
+    letter-spacing: 0.06em;
+    line-height: 1.1;
+}
+
+.dashboard-heading p {
+    margin: 8px 0 0;
+    color: rgba(255, 238, 199, 0.72);
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: 0.03em;
 }
 
 .dashboard-title,
 .Welcome {
     color: var(--off-white);
     text-align: left;
-
     font-size: clamp(2rem, 4vw, 3.2rem);
-    /* scales the heading font size for a more responsive design,
+
+    /*
+        scales the heading font size for a more responsive design,
         with minimum value of 2rem
-        and a maximum value of 3.2rem
-        this is done to ensure the text doesn't get too small or too big based off VW
-        remaining legible
-        4vw is growth rate
+        and a maximum value of 3.2rem.
+
+        this is done to ensure the text doesn't get too small or too big based
+        off VW, remaining legible.
+
+        4vw is growth rate.
     */
+
     letter-spacing: 0.16em;
     line-height: 1;
 }
@@ -514,33 +581,41 @@ select {
     font-weight: 700;
 }
 
+
 /* Widgets of the Dashboard */
-/* 
-    flex-wrap means that widget will remain in one single row usually
-    Shrinking down to one single collumn if the VW gets small enough.
+
+
+/*
+    flex-wrap means that widgets can wrap onto another row when necessary.
+
+    Shrinking down to one single column if the VW gets small enough is handled
+    by the mobile media query.
 */
+
 .dashboard-widgets {
     display: flex;
     flex-wrap: wrap;
-
     gap: 20px;
     width: 100%;
-    margin-top: 25px;
+    margin-top: 20px;
 }
 
-/* 
-    flex 1 1 0 ensures even share of the VW for the widgets
 
-    min-width ensures the don't become so narrow that they aren't readable
-    if they pressure the min-width flex-wrap moves them to another row.
+/*
+    flex 1 1 0 ensures an even share of the available width for the widgets.
+
+    min-width ensures they don't become so narrow that they aren't readable.
+
+    if they reach the min-width, flex-wrap moves them to another row.
 */
+
 .dashboard-account-value,
 .dashboard-stocks-tracked,
 .dashboard-theses-review,
 .dashboard-confidence {
     flex: 1 1 0;
     min-width: 180px;
-    max-width: none;
+    min-height: 112px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -552,8 +627,6 @@ select {
     border-radius: var(--card-radius);
     box-shadow: var(--card-shadow);
 }
-
-
 
 .dashboard-account-value {
     color: var(--black);
@@ -588,122 +661,91 @@ select {
     letter-spacing: -0.5px;
 }
 
-
-.dashboard-heading p {
-    color: var(--off-white);
-    text-align: left;
-
-    font-size: clamp(0.8rem, 1.5vw, 1rem);
-    letter-spacing: 0.2em;
-    font-weight: 600;
-    margin: 1vh 0 0 1vw;
-}
-
 .dashboard-newthesis {
-    color: var(--off-white);
-    font-size: clamp(0.8rem, 1.5vw, 1rem);
-    letter-spacing: 0.2em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin: 0 0 2px;
+    padding: 11px 16px;
+    color: var(--black);
+    background: var(--beige);
+    border: 1px solid rgba(255, 238, 199, 0.38);
+    border-radius: 8px;
+    font-size: 14px;
     font-weight: 600;
-    margin: 2vh 0 0 1vw;
-    display: inline-block;  
-
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .dashboard-newthesis:hover {
-    color: var(--off-white);
-    margin: 2vh 0 0 1vw;   
-    text-shadow: 0 0 5px var(--apricot);
-
-  
+    color: var(--black);
+    background: var(--off-white);
+    transform: translateY(-1px);
 }
 
-/* Navigation */
-
-nav {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    padding: 20px;
+.dashboard-newthesis:focus-visible,
+.dashboard-stock-row a:focus-visible {
+    outline: 2px solid var(--beige);
+    outline-offset: 3px;
 }
 
-
-.nav-shell {
-    width: min(1200px, calc(100% - 3rem));
-    margin: 20px auto;
-}
-
-.nav-panel {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-
-    gap: 10px;
-    padding: 8px;
-
-    background: rgba(78, 64, 54, 0.65);
-
-    border: var(--border);
-    border-radius: var(--card-radius);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
-
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-}
-
-.nav-brand {
-    margin-right: 10px;
-    padding: 10px 14px;
-
-    color: var(--beige);
-    font-size: 15px;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
 
 /* Dashboard Review Section */
-/* 
- middle row contains the confidence chart and the theses needing review
- placing them beside one another
- flex:1 is used on both elements to ensure they take up equal width of the width of the vw
+
+
+/*
+    middle row contains the confidence chart and the theses needing review,
+    placing them beside one another.
+
+    flex:1 is used on both elements to ensure they take up equal width of the
+    available space.
 */
+
 .dashboard-middle-row {
     display: flex;
     gap: 20px;
-
     width: 100%;
-    margin-top: 20px;
+    margin-top: 16px;
 }
 
 .dashboard-confidence-chart,
 .dashboard-review-section {
     flex: 1;
-    /* 
-    stops flexbox automatic minimum width from causing either panel
-    to overflow into the other widgets half of the row
+
+    /*
+        stops flexbox automatic minimum width from causing either panel
+        to overflow into the other widget's half of the row
     */
+
     min-width: 0;
     box-sizing: border-box;
 }
 
-/* 
-    overflow: hidden prevents list from increasing the fixed height of the dashboard review section
-    this ensures a scroll bar gets added instead of a having a really tall mid row section
-    visually declutters the screen
 
+/*
+    overflow: hidden prevents the list from increasing the fixed height of the
+    dashboard review section.
+
+    this ensures a scroll bar gets added instead of having a really tall
+    mid-row section.
+
+    visually declutters the screen.
 */
+
 .dashboard-review-section {
-    height: 298px;
+    height: 286px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    padding: 22px 22px;
+    padding: 22px;
     color: var(--off-white);
     background: linear-gradient(
-        135deg,
-        rgba(111, 91, 77, 0.92) 0%,
-        rgba(170, 84, 23, 0.116) 100%
+        270deg,
+        rgba(111, 91, 77, 0.96) 0%,
+        rgba(65, 53, 45, 0.99) 100%
     );
-   
     border-radius: var(--card-radius);
     box-shadow: var(--card-shadow);
 }
@@ -719,25 +761,22 @@ nav {
     font-size: 18px;
 }
 
+
 /* Standardized paragraph styling for both sections */
+
 .dashboard-review-header p,
 .dashboard-stocklist p {
-    margin: 0 0 20px 0;
+    margin: 0 0 20px;
     color: var(--off-white);
     font-size: 14px;
 }
 
-
-
 .dashboard-review-date {
     margin-left: auto;
-
     font-size: 13px;
     font-weight: 400;
     opacity: 0.7;
 }
-
-
 
 
 /* ConfidenceChart */
@@ -745,8 +784,11 @@ nav {
 .dashboard-confidence-chart {
     margin: 0;
     padding: 22px 24px;
-
-    background: var(--brown);
+    background: linear-gradient(
+        90deg,
+        rgba(111, 91, 77, 0.96) 0%,
+        rgba(65, 53, 45, 0.99) 100%
+    );
     border-radius: var(--card-radius);
 }
 
@@ -763,78 +805,86 @@ nav {
 .confidence-chart {
     display: flex;
     flex-direction: column;
-
-    gap: 0;
+    gap: 15px;
     margin-top: 18px;
 }
 
 .confidence-chart-row {
     display: flex;
     align-items: center;
-
     gap: 12px;
     color: var(--off-white);
 }
 
 
-/* 
- flex-shrink: 0 stops the labels on the bar chart from becoming narrower
- when the bars need extra space. 
-this ensures the counter remains legible
-*/
-.confidence-chart-label {
-    width: 55px;
-    flex-shrink: 0;
+/*
+    flex-shrink: 0 stops the labels on the bar chart from becoming narrower
+    when the bars need extra space.
 
+    this ensures the counter remains legible.
+*/
+
+.confidence-chart-label {
+    width: 60px;
+    flex-shrink: 0;
     font-size: 14px;
     text-align: right;
+    white-space: nowrap;
 }
 
-/* 
-flex: 1; makes the bars occupy all the available space, in the half of the mid row allocated to the confidence chart
-staying within margins etc, and maintaining a readable number.
+
+/*
+    flex: 1 makes the bars occupy all the available space in the half of the
+    mid-row allocated to the confidence chart.
+
+    staying within margins etc, and maintaining a readable number.
 */
+
 .confidence-bar-container {
     flex: 1;
-
     display: flex;
     align-items: center;
-
     gap: 10px;
 }
 
-/*
-java changes each bar depending on the number of theses logged
-in local storage within that range
-
-transition: width 0.4s ease ensures that when these update and the bar gets
-wider, it doesn't happen in a big jump
-*/
-.confidence-bar {
-    min-width: 3px;
+.confidence-bar-track {
+    flex: 1;
     height: 14px;
+    overflow: hidden;
+    background: rgba(255, 244, 218, 0.15);
+    border-radius: 4px;
+}
 
+
+/*
+    JavaScript changes each bar depending on the number of theses logged
+    in local storage within that range.
+
+    transition: width 0.4s ease ensures that when these update and the bar gets
+    wider, it doesn't happen in a big jump.
+*/
+
+.confidence-bar {
+    width: 0;
+    height: 100%;
     background: var(--off-white);
     border-radius: 4px;
-
     transition: width 0.4s ease;
 }
 
 .confidence-chart-number {
     width: 20px;
     flex-shrink: 0;
-
     color: var(--off-white);
     font-size: 14px;
 }
 
 
-
 /* Standardized container styling */
+
 #review-container,
 .features-list {
     width: 100%;
-    max-width: none;
     flex: 1;
     min-width: 0;
     overflow-y: scroll;
@@ -845,10 +895,11 @@ wider, it doesn't happen in a big jump
     list-style: none;
     color: var(--off-white);
     font-family: var(--font-main);
-  
 }
 
+
 /* Standardized row styling */
+
 #review-container li,
 .features-list li {
     min-height: 48px;
@@ -875,40 +926,35 @@ wider, it doesn't happen in a big jump
 }
 
 
-
-
-
 /* Stock List */
 
-
 .dashboard-stocklist {
-    width: min(500px, calc(70% - 3rem));
-    height: 250px;
+    width: 100%;
+    height: 220px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    overflow-x: hidden;
-    margin: 20px 0 0;
-    padding: 4px 20px; 
- 
-   
+    margin: 16px 0 0;
+    padding: 18px 22px;
     color: var(--off-white);
-    background: linear-gradient(
-        135deg,
-        rgba(111, 91, 77, 0.92) 0%,
-        rgba(170, 84, 23, 0.116) 100%
-    );
-    
+    background: var(--surface);
     border-radius: var(--card-radius);
     box-shadow: var(--card-shadow);
 }
 
 .dashboard-stocklist h2 {
-
+    margin: 0 0 12px;
     font-size: 18px;
 }
 
+.dashboard-stocklist p a {
+    color: var(--beige);
+}
+
+.dashboard-stocklist p a:hover {
+    color: var(--off-white);
+}
 
 .dashboard-features-list {
     width: 100%;
@@ -918,7 +964,6 @@ wider, it doesn't happen in a big jump
 
 .dashboard-stock-header {
     display: grid;
-
     color: var(--off-white);
     font-size: 17px;
     font-weight: 700;
@@ -931,10 +976,8 @@ wider, it doesn't happen in a big jump
 
 .dashboard-stock-row {
     min-height: 40px;
-
     display: flex;
     align-items: center;
-
     font-size: 13px;
     font-weight: 400;
 }
@@ -954,12 +997,15 @@ wider, it doesn't happen in a big jump
 }
 
 
-/* Customised Scrollbar  */
-/* 
-    webkit scrollbar pseudo elements used to customise the stock and review
-    containers scroll elements, rather than all the scrollbars
+/* Customised Scrollbar */
+
+
+/*
+    WebKit scrollbar pseudo elements used to customise the stock and review
+    containers' scroll elements, rather than all the scrollbars
     on my page.
 */
+
 .features-list::-webkit-scrollbar,
 #review-container::-webkit-scrollbar {
     width: 7px;
@@ -982,37 +1028,80 @@ wider, it doesn't happen in a big jump
     background: rgba(255, 244, 218, 0.35);
 }
 
+
 /* Welcome */
 
 h1.Welcome,
 .Welcome {
     margin: 1vh 0 0 1vw;
-
     color: var(--beige);
     text-align: left;
-
     font-size: clamp(2rem, 4vw, 3.2rem);
     font-weight: 600;
     letter-spacing: 0.1em;
 }
 
+
+/* Navigation */
+
+nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.nav-shell {
+    width: min(1200px, calc(100% - 3rem));
+    margin: 20px auto;
+}
+
+.nav-panel {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    padding: 8px;
+    background: rgba(78, 64, 54, 0.65);
+    border: var(--border);
+    border-radius: var(--card-radius);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.nav-brand {
+    margin-right: 10px;
+    padding: 10px 14px;
+    color: var(--beige);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+
 /* Buttons */
+
 
 /*
     Button-specific CSS variables inherit colours from the site's main
     variables and are then reused throughout the glow effects below.
 */
 
+
 /*
     - Button adapted from Uiverse.io
     - Creator: cssbuttons-io
     - Source link: https://uiverse.io/cssbuttons-io/funny-dog-69
-    - Lisence: MIT
-    - Date of implimentation: 4/08/26
+    - Licence: MIT
+    - Date of implementation: 4/08/26
 */
+
+
 /*
-UI VERSE BUTTON CODE START
+    UI VERSE BUTTON CODE START
 */
+
 button {
     --glow-color: var(--beige);
     --glow-spread-color: var(--apricot);
@@ -1021,62 +1110,53 @@ button {
 
     display: block;
     position: relative;
-
     margin: 40px auto 0;
     padding: 1.15em 2.4em;
-
     color: var(--off-white);
-
     font-size: 16px;
     font-weight: bold;
-
     background-color: var(--btn-color);
-
     border: 0.25em solid var(--glow-color);
     border-radius: 1em;
-
     outline: none;
+
     /*
-    shadows layered together to create the outer glow
+        Shadows layered together to create the outer glow.
     */
+
     box-shadow:
         0 0 1em 0.25em var(--glow-color),
         0 0 4em 1em var(--glow-spread-color),
         inset 0 0 0.75em 0.25em var(--glow-color);
 
     text-shadow: 0 0 0.5em var(--glow-color);
-
     transition: all 0.3s;
 }
 
+
 /*
-    creates a separate transformed and blurred shape beneath the button
+    Creates a separate transformed and blurred shape beneath the button.
+
     pointer-events: none stops the mouse from interacting with this element.
 */
+
 button::after {
     content: "";
-
     position: absolute;
     top: 120%;
     left: 0;
-
     width: 100%;
     height: 100%;
-
     pointer-events: none;
-
     background-color: var(--glow-spread-color);
-
     filter: blur(2em);
     opacity: 0;
-
     transform: perspective(1.5em) rotateX(35deg) scale(1, 0.6);
 }
 
 button:hover {
     color: var(--black);
     background-color: var(--beige);
-
     box-shadow:
         0 0 1em 0.25em var(--glow-color),
         0 0 4em 2em var(--glow-spread-color),
@@ -1089,8 +1169,10 @@ button:active {
         0 0 2.5em 2em var(--glow-spread-color),
         inset 0 0 0.5em 0.25em var(--glow-color);
 }
+
+
 /*
-UI VERSE BUTTON CODE END
+    UI VERSE BUTTON CODE END
 */
 
 button.nav-button svg,
@@ -1105,16 +1187,13 @@ button.regular-button:focus,
 button.regular-button:active {
     margin: 0 !important;
     padding: 10px 18px !important;
-
     color: var(--off-white) !important;
     font-family: var(--font-main);
     font-size: 14px;
     font-weight: 600;
-
     background: transparent !important;
     border: none !important;
     border-radius: 9px;
-
     outline: none !important;
     box-shadow: none !important;
     text-shadow: none !important;
@@ -1125,7 +1204,6 @@ button.regular-button {
     align-items: center;
     justify-content: center;
     position: relative;
-
     transition:
         background 0.2s ease,
         color 0.2s ease;
@@ -1142,106 +1220,155 @@ button.regular-button:active {
 }
 
 
-/* ThesisView.html */ 
-
-    /*
-    Thesis actions 
-    */
-
-    .thesis-actions {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-    }
+/* ThesisView.html */
 
 
- .thesis-view-container {
-                max-width: 900px;
-                margin: 0 auto;
-                padding: 20px;
-                border-radius: 8px;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            }
-            .thesis-view-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                border-bottom: 2px solid #FFF4DA;
-                padding-bottom: 15px;
-                margin-bottom: 20px;
-            }
-            .thesis-view-title {
-                font-size: 28px;
-                font-weight: bold;
-                margin: 0;
-                color: #FFC67E;
-            }
-            .thesis-view-subtitle {
-                font-size: 16px;
-                color:#FFF4DA;
-                margin: 5px 0 0 0;
-            }
-            .thesis-section {
-                margin-bottom: 30px;
-                padding: 15px;
-                background-color: #FFF4DA;
-                
-                border-radius: 8px;
-            }
-            .thesis-section-title {
-                font-size: 18px;
-                font-weight: bold;
-                margin-bottom: 10px;
-                color: #333;
-            }
-            .thesis-details-grid {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 15px;
-            }
-            .detail-item {
-                padding: 10px;
-                background-color: #FFF4DA;
-                border-radius: 4px;
+/*
+    Thesis actions
+*/
 
-            }
-            .detail-label {
-                font-weight: bold;
-                color: #555;
-                font-size: 12px;
-                text-transform: uppercase;
-                margin-bottom: 5px;
-            }
-            .detail-value {
-                font-size: 16px;
-                color: #333;
-                word-wrap: break-word;          
-                overflow-wrap: break-word;      
-                word-break: break-word;   
+.thesis-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
 
-            }
+.thesis-view-container {
+    width: min(900px, calc(100% - 2rem));
+    box-sizing: border-box;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
 
-             
+.thesis-view-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 1px solid rgba(255, 244, 218, 0.32);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
 
-            .thesis-text-section {
-                margin-bottom: 20px;
-            }
-            .thesis-text-section p {
-                line-height: 1.6;
-                color: #444;
-                margin: 0;
-                white-space: pre-wrap;
-                word-wrap: break-word;           
-                overflow-wrap: break-word;       
-                overflow-x: hidden;
-    
-            }
+.thesis-view-title {
+    margin: 0;
+    color: #FFC67E;
+    font-size: 28px;
+    font-weight: bold;
+}
 
-              
-            .back-button:hover {
-                background-color: #5a6268;
-            }
+.thesis-view-subtitle {
+    margin: 5px 0 0;
+    color: #FFF4DA;
+    font-size: 16px;
+}
+
+.thesis-section {
+    margin-bottom: 20px;
+    padding: 16px;
+    color: #333;
+    background: #FFF4DA;
+    border: 1px solid rgba(255, 244, 218, 0.18);
+    border-radius: 8px;
+}
+
+.thesis-section-title {
+    margin-bottom: 10px;
+    color: var(--brown);
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.thesis-details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.detail-item {
+    padding: 10px;
+    background: #F4D9B3;
+    border: 1px solid rgba(123, 81, 50, 0.14);
+    border-radius: 6px;
+}
+
+.detail-label {
+    margin-bottom: 5px;
+    color: var(--brown);
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.detail-value {
+    color: #333;
+    font-size: 16px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+.date-edit-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.date-review-hint {
+    flex: 1 1 180px;
+    padding: 9px 11px;
+    color: #5b3c27;
+    background: rgba(217, 132, 82, 0.12);
+    border-left: 3px solid var(--apricot);
+    border-radius: 4px;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.date-edit-row input[type="date"] {
+    flex: 0 1 170px;
+    width: 170px;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 9px 10px;
+    color: #333;
+    font: inherit;
+    background: #fffaf0;
+    border: 1px solid rgba(123, 81, 50, 0.3);
+    border-radius: 6px;
+}
+
+.date-edit-row input[type="date"]:focus-visible {
+    outline: 2px solid var(--apricot);
+    outline-offset: 2px;
+}
+
+.date-review-hint[hidden] {
+    display: none;
+}
+
+.thesis-text-section {
+    margin-bottom: 20px;
+}
+
+.thesis-text-section p {
+    margin: 0;
+    color: #444;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    overflow-x: hidden;
+}
+
+.back-button:hover {
+    background-color: #5a6268;
+}
+
 
 /* Loading Screen */
 
@@ -1249,49 +1376,42 @@ button.regular-button:active {
     position: fixed;
     inset: 0;
     z-index: 9999;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     background: #000;
-
     animation: fade-out 1.2s ease forwards;
     animation-delay: 1.2s;
 }
 
-/*
- * Loader adapted from Uiverse.io
- * Creator: vk-uiux
- * Source: https://uiverse.io/vk-uiux/grumpy-dolphin-30
- * Licence: MIT
- * Date of implementation: around 5/08/26
- */
 
 /*
- * UI VERSE LOADER CODE START
- */
+    * Loader adapted from Uiverse.io
+    * Creator: vk-uiux
+    * Source: https://uiverse.io/vk-uiux/grumpy-dolphin-30
+    * Licence: MIT
+    * Date of implementation: around 5/08/26
+*/
+
+
+/*
+    * UI VERSE LOADER CODE START
+*/
 
 .loader {
     position: relative;
-
     width: 33px;
     height: 33px;
-
     perspective: 67px;
 }
 
 .loader div {
     position: absolute;
     left: 50%;
-
     width: 100%;
     height: 100%;
-
     background: var(--beige);
-
     transform-origin: left;
-
     animation: loader 4s infinite;
 }
 
@@ -1315,21 +1435,20 @@ button.regular-button:active {
     animation-delay: 0.75s;
 }
 
+
 /*
- * UI VERSE LOADER CODE END
- */
+    * UI VERSE LOADER CODE END
+*/
+
 
 /* Landing Page */
 
 .landing-page {
     min-height: 100vh;
-
     margin: 0;
     overflow: hidden;
-
     color: var(--off-white);
     font-family: var(--font-main);
-
     background: var(--black);
 }
 
@@ -1337,133 +1456,109 @@ button.regular-button:active {
     position: fixed;
     inset: 0;
     z-index: 0;
-
     width: 100%;
     height: 100%;
 }
 
 #canvas-container canvas {
     display: block;
-
     width: 100%;
     height: 100%;
 }
 
-
-
 .landing-content {
     position: relative;
     z-index: 2;
-
     width: 100%;
     min-height: 100vh;
-
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
     text-align: center;
 }
 
 .landing-title h1 {
     margin: 0;
-
     color: var(--beige);
-
     font-size: clamp(4rem, 10vw, 9rem);
     font-weight: 600;
     letter-spacing: 0.08em;
     line-height: 0.9;
-
     text-shadow: 0 0 30px rgba(255, 198, 126, 0.18);
 }
 
 .landing-button {
     margin-top: 200px;
     padding: 1.2em 2.5em;
-
     color: var(--off-white);
-
     font-size: 18px;
     font-weight: bold;
-
     background-color: var(--brown);
     border: 0.25em solid var(--beige);
     border-radius: 1em;
-
     outline: none;
     box-shadow:
         0 0 1em 0.25em var(--beige),
         0 0 4em 1em rgba(255, 198, 126, 0.3),
         inset 0 0 0.75em 0.25em var(--beige);
-
     text-shadow: 0 0 0.5em var(--beige);
-
     transition: all 0.3s;
 }
+
 
 /* Miscellaneous */
 
 hr {
     margin: 10px 0;
-
     border: none;
     border-top: 1px solid #050505;
 }
 
 
 /* Media Queries */
-/*
-  used for a more responsive layout.
-  this is one of my advanced techniques for my interface
 
-*/
 
 /*
- Special desktop media query to ensure the separation between bars
- on the confidence chart remains large enough
+    Used for a more responsive layout.
+
+    This is one of my advanced techniques for my interface.
 */
-@media (max-width: 1920px) {
-  .confidence-chart {
-        gap: 15px;
-    }
 
-
-}
 
 /*
- For medium sized screens
+    For medium sized screens.
 */
+
 @media (max-width: 1100px) {
     .Form-Shell {
         width: min(85vw, 850px);
     }
 
-    .dashboard-middle-row {
-        gap: 16px;
-    }
-
+    .dashboard-middle-row,
     .dashboard-widgets {
         gap: 16px;
     }
-
-    .confidence-chart {
-        gap: 15px;
-    }
 }
 
-/*
- Tablet Layout
-*/
-/*
-  default flex for the midrow is row
-  under a VW of 900px means that there is not enough space 
-  for review and confidence panels to stay side by-side
-  as they would become unreadable.
-  flex-direction: column; ensures they stack above each other at lower that 900px VW
 
+/*
+    Tablet Layout
 */
+
+
+/*
+    default flex for the midrow is row.
+
+    under a VW of 900px means that there is not enough space
+    for review and confidence panels to stay side-by-side
+
+    as they would become unreadable.
+
+    flex-direction: column; ensures they stack above each other at lower
+    than 900px VW.
+*/
+
 @media (max-width: 900px) {
     .dashboard-middle-row {
         flex-direction: column;
@@ -1488,23 +1583,28 @@ hr {
     }
 }
 
-/*
- Mobile Layout
-*/
-/*
- underneath 650px the interface needs to become sized to suit mobile phone
- sized screens. Hence the long media query changes most of the layouts to 
- a single-column.
 
- dashboard widgets stack vertically
- stock-details align in 2 columns because they are small
- inputs expand to full available width
- nav bar allowed to wrap for redundancy, theres
- not enough elements to it to need this yet.
+/*
+    Mobile Layout
+*/
+
+
+/*
+    underneath 650px the interface needs to become sized to suit mobile phone
+    sized screens. Hence the long media query changes most of the layouts to
+    a single-column.
+
+    dashboard widgets stack vertically
+
+    stock-details align in 2 columns because they are small
+
+    inputs expand to full available width
+
+    nav bar allowed to wrap for redundancy, theres
+    not enough elements to it to need this yet.
 */
 
 @media (max-width: 650px) {
-    
     .Stock-Details-Grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -1519,7 +1619,15 @@ hr {
 
     .Form-Shell {
         width: calc(100vw - 2rem);
-        padding: 30px 20px;
+        padding: 26px 18px;
+    }
+
+    .Thesis-Form-Title {
+        font-size: 32px;
+    }
+
+    .Stock-Details {
+        padding: 8px 12px 16px;
     }
 
     .Thesis-Date input,
@@ -1538,6 +1646,20 @@ hr {
         padding: 1.5rem 1rem 2rem;
     }
 
+    .dashboard-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .dashboard-heading .dashboard-title {
+        font-size: 2rem;
+    }
+
+    .dashboard-newthesis {
+        align-self: flex-start;
+    }
+
     .dashboard-widgets {
         flex-direction: column;
         gap: 14px;
@@ -1548,7 +1670,6 @@ hr {
     .dashboard-theses-review,
     .dashboard-confidence {
         width: 100%;
-        max-width: none;
         min-width: 0;
     }
 
@@ -1558,7 +1679,7 @@ hr {
     }
 
     .dashboard-review-section {
-        height: 220px;
+        height: 240px;
         padding: 18px;
     }
 
@@ -1569,11 +1690,11 @@ hr {
     .dashboard-stocklist {
         width: 100%;
         margin-top: 14px;
+        padding: 16px;
     }
 
     .dashboard-stock-header {
         grid-template-columns: 1fr 70px 70px;
-    
         font-size: 14px;
     }
 
@@ -1597,7 +1718,6 @@ hr {
 
     .features-list {
         width: 100%;
-        max-width: none;
         padding: 15px;
         font-size: 16px;
     }
@@ -1607,7 +1727,7 @@ hr {
     }
 
     .confidence-chart-label {
-        width: 45px;
+        width: 54px;
         font-size: 13px;
     }
 
@@ -1622,13 +1742,46 @@ hr {
     .Confidence-Level input[type="range"] {
         width: 100%;
     }
+
+    .thesis-view-container {
+        width: calc(100% - 1rem);
+        padding: 14px;
+    }
+
+    .thesis-view-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .thesis-view-title {
+        font-size: 24px;
+    }
+
+    .thesis-actions {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .thesis-section {
+        padding: 14px;
+    }
 }
 
+@media (max-width: 480px) {
+    .thesis-details-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+
 /* Animations */
+
+
 /*
     Rotates each loader element around its y axis, nth-child animation delays
-    cause the elements to rotate one after another, rather than all at the same time
-
+    cause the elements to rotate one after another, rather than all at the
+    same time.
 */
 
 @keyframes loader {
@@ -1649,15 +1802,16 @@ hr {
 }
 
 
-
-
 /*
     Fades the loading overlay out and then sets visibility: hidden
     so the invisible element no longer remains visually active.
 */
+
+
 /*
-  CODE FOR THIS ANIMATION FROM UI VERSE
+    CODE FOR THIS ANIMATION FROM UI VERSE
 */
+
 @keyframes fade-out {
     from {
         opacity: 1;
@@ -1667,4 +1821,14 @@ hr {
         opacity: 0;
         visibility: hidden;
     }
+}
+
+.dashboard-stock-row > a {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 40px;
+    gap: 12px;
+    color: inherit;
+    text-decoration: none;
 }
